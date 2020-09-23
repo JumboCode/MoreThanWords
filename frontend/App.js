@@ -13,7 +13,7 @@ export default function App() {
             <Text>{data}</Text>
             <StatusBar style="auto" />
         </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
