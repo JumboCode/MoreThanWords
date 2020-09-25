@@ -8,6 +8,7 @@ CORS(app)
 def helloWorld():
     d = dict();
     d['data'] = 'hello world!!!! pls work!!'
+    d['status'] = 'good'
     return d
 
 if __name__ == '__main__':
