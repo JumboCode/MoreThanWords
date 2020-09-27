@@ -1,3 +1,4 @@
 .idea
 backend/backendEnv/*
 backend/__pycache__/*
+frontend/app.config.js
