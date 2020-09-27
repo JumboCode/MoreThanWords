@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Constants from 'expo-constants';
 
 export default function App() {
     const [data, setData] = React.useState("default");
-    fetch('http://127.0.0.1:5000/').then(rawResult => rawResult.json()).then(jsonResult => {
+    fetch(Constants.manifest.extra.apiUrl).then(rawResult => rawResult.json()).then(jsonResult => {
         setData(jsonResult.data)
     });
     return (
