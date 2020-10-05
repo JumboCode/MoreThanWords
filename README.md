@@ -1,6 +1,6 @@
 
 # MoreThanWords
-A Tufts JumboCode 2020-2021 project.
+A Tufts JumboCode 2020-2021 project for More than Words.
 ## Welcome
 Welcome to the More than Words projects, a project run through [Tufts JumboCode](https://www.jumbocode.org). Here are some steps to get you started.
 
