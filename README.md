@@ -34,10 +34,10 @@ Make branches with Sourcetree or on the command line. If you're on the command l
 ```
 git checkout staging
 git pull
-git checkout -b MTW-01
+git checkout -b mtw-01
 ```
 
-This will go to our staging branch, pull the latest version, and `checkout` (switch) to a new branch (in this case `MTW-01`).
+This will go to our staging branch, pull the latest version, and `checkout` (switch) to a new branch (in this case `mtw-01`).
 
 Make your branches the same name as the ticket # you're working on.
 > Issue #1 is on branch mtw-01
