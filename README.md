@@ -4,10 +4,10 @@ A Tufts JumboCode 2020-2021 project.
 ## Welcome
 Welcome to the More than Words projects, a project run through [Tufts JumboCode](https://www.jumbocode.org). Here are some steps to get you started.
 
-## The team
-Current team members: 
--PM: Titapa (PunPun) Chaiyakiturajai 
--Tech Lead: Jacqueline Chin 
+## The Team
+Current team members:
+* PM: Titapa (PunPun) Chaiyakiturajai
+* Tech Lead: Jacqueline Chin
 
 ## Recommended software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
