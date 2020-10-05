@@ -9,7 +9,7 @@ Current team members:
 * PM: Titapa (PunPun) Chaiyakiturajai
 * Tech Lead: Jacqueline Chin
 
-## Recommended software 
+## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
 
 ### Easy Setup
@@ -20,7 +20,7 @@ your Local IP Address which can be found in System Preference > Network
 2. Terminal window 2: `sh startBackend.sh`
 3. Terminal window 3: `sh startFrontend.sh`
 
-## Building the project 
+## Building the Project 
 - React Native (frontend)
 - Flask (backend, Python)
 
@@ -60,7 +60,7 @@ To push the current branch and set the remote as upstream, use
 ```
 Just run the command they specify and you should be good to go.
 
-#### Commit messages
+#### Commit Messages
 Your commit message should A) reference the issue and B) be meaningful
 
 
