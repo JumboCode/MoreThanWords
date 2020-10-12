@@ -8,6 +8,7 @@ Welcome to the More than Words projects, a project run through [Tufts JumboCode]
 Current team members:
 * PM: Titapa (PunPun) Chaiyakiturajai
 * Tech Lead: Jacqueline Chin
+* Developer: Yichen Wei
 
 ## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
