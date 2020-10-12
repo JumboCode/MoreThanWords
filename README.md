@@ -72,7 +72,7 @@ Think your code is good to go? Great! Let's just get someone to take a look at i
  - If you don't see your recently updated branch, go to the `branches` tab and find your branch.
  - Click on `compare and make pull request`
  - Here, you can compare the branches -- your branch vs a specified branch (usually `staging`)
- - If you're good to go, title the PR (Pull Request) with the ticket # and name it the same name as the ticket name.
+ - If you're good to go, title the PR (Pull Request) "mtw-#: ", where # is the ticket number, and the colon is followed by the ticket name.
  - Enter in corresponding information, including what you did and what your reviewer can do to test it
  - `Create Pull Request`
  - Select who you want to review your code!
