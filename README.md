@@ -1,15 +1,16 @@
 
 # MoreThanWords
 A Tufts JumboCode 2020-2021 project.
+
 ## Welcome
 Welcome to the More than Words projects, a project run through [Tufts JumboCode](https://www.jumbocode.org). Here are some steps to get you started.
 
-## The team
+## The Team
 Current team members:
 -PM: Titapa (PunPun) Chaiyakiturajai
 -Tech Lead: Jacqueline Chin
 
-## Recommended software 
+## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
 
 ### Easy Setup
@@ -20,8 +21,8 @@ your Local IP Address which can be found in System Preference > Network
 2. Terminal window 2: `sh startBackend.sh`
 3. Terminal window 3: `sh startFrontend.sh`
 
-## Building the project 
-- React Native (frontend)
+## Building the Project 
+- React Native (frontend, JavaScript)
 - Flask (backend, Python)
 
 ### Details 
@@ -60,7 +61,7 @@ To push the current branch and set the remote as upstream, use
 ```
 Just run the command they specify and you should be good to go.
 
-#### Commit messages
+#### Commit Messages
 Your commit message should A) reference the issue and B) be meaningful
 
 
