@@ -8,7 +8,9 @@ Welcome to the More than Words projects, a project run through [Tufts JumboCode]
 Current team members:
 * PM: Titapa (PunPun) Chaiyakiturajai
 * Tech Lead: Jacqueline Chin
+* Developer: Ryan Beckwith
 * Developer: Kiran Misner
+
 
 ## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
@@ -76,4 +78,4 @@ Think your code is good to go? Great! Let's just get someone to take a look at i
  - Enter in corresponding information, including what you did and what your reviewer can do to test it
  - `Create Pull Request`
  - Select who you want to review your code!
-
+ 
