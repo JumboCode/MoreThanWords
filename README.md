@@ -1,14 +1,14 @@
 
 # MoreThanWords
-A Tufts JumboCode 2020-2021 project.
+A Tufts JumboCode 2020-2021 project for More than Words.
 
 ## Welcome
 Welcome to the More than Words projects, a project run through [Tufts JumboCode](https://www.jumbocode.org). Here are some steps to get you started.
 
 ## The Team
 Current team members:
--PM: Titapa (PunPun) Chaiyakiturajai
--Tech Lead: Jacqueline Chin
+* PM: Titapa (PunPun) Chaiyakiturajai
+* Tech Lead: Jacqueline Chin
 
 ## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
@@ -23,6 +23,7 @@ your Local IP Address which can be found in System Preference > Network
 
 ## Building the Project 
 - React Native (frontend, JavaScript)
+
 - Flask (backend, Python)
 
 ### Details 
@@ -35,13 +36,13 @@ Make branches with Sourcetree or on the command line. If you're on the command l
 ```
 git checkout staging
 git pull
-git checkout -b MTW-01
+git checkout -b mtw-01
 ```
 
-This will go to our staging branch, pull the latest version, and `checkout` (switch) to a new branch (in this case `MTW-01`).
+This will go to our staging branch, pull the latest version, and `checkout` (switch) to a new branch (in this case `mtw-01`).
 
 Make your branches the same name as the ticket # you're working on.
-> Issue #1 is on branch MTW-01
+> Issue #1 is on branch mtw-01
 
 Note: you should only be branching and merging into the staging branch. Nothig should ever go direcly into the production branch.
 
@@ -57,7 +58,7 @@ If git tells you to do something like:
 ```
 To push the current branch and set the remote as upstream, use
 
-    git push --set-upstream origin MTW-01
+    git push --set-upstream origin mtw-01
 ```
 Just run the command they specify and you should be good to go.
 
