@@ -10,6 +10,7 @@ Current team members:
 * Tech Lead: Jacqueline Chin
 * Developer: Ryan Beckwith
 * Developer: Kiran Misner
+* Developer: Sophia Yang
 
 
 ## Recommended Software 
