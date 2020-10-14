@@ -9,6 +9,7 @@ Current team members:
 * PM: Titapa (PunPun) Chaiyakiturajai
 * Tech Lead: Jacqueline Chin
 * Developer: Kiran Misner
+*            Mengqi Irina Wang
 
 ## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
@@ -43,7 +44,7 @@ This will go to our staging branch, pull the latest version, and `checkout` (swi
 Make your branches the same name as the ticket # you're working on.
 > Issue #1 is on branch mtw-01
 
-Note: you should only be branching and merging into the staging branch. Nothig should ever go direcly into the production branch.
+Note: you should only be branching and merging into the staging branch. Nothing should ever go direcly into the production branch.
 
 ### Committing
 Commit early and often on your feature branch! Commit with the help of SourceTree (I'll give instructions) or through the command line.
