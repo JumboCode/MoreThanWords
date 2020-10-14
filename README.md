@@ -9,6 +9,7 @@ Current team members:
 * PM: Titapa (PunPun) Chaiyakiturajai
 * Tech Lead: Jacqueline Chin
 * Developer: Kiran Misner
+* Developer: Alec Xu
 
 ## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
