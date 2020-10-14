@@ -11,6 +11,7 @@ Current team members:
 * Developer: Yichen Wei
 * Developer: Ryan Beckwith
 * Developer: Kiran Misner
+* Developer: Alec Xu
 * Developer: Julia Klein
 * Developer: Sophia Yang
 
