@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Constants from 'expo-constants';
 
-import Home from './components/home'
+import LotsOfPods from './components/home'
 
 export default function App() {
     const [data, setData] = React.useState("default");
@@ -12,10 +12,11 @@ export default function App() {
     });
     return (
         <View style={styles.container}>
-            <Text>Open up App.js to start working on your app!</Text>
-            <Text>{data}</Text>
+            {/* <Text>Open up App.js to start working on your app!</Text> */}
+            {/* <Text>{data}</Text> */}
             <StatusBar style="auto" />
-            <Home />
+        {/* Home pods */}
+            <LotsOfPods />
         </View>
     );
 }
