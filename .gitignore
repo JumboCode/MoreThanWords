@@ -2,3 +2,5 @@
 backend/backendEnv/*
 backend/__pycache__/*
 frontend/app.config.js
+.env
+.DS_Store
