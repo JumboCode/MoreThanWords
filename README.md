@@ -16,6 +16,7 @@ Current team members:
 * Developer: Julia Klein
 * Developer: Sophia Yang
 * Developer: Emily Hu
+* Designer: Abe Park
 
 ## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
