@@ -1,5 +1,5 @@
 import React, { useState, } from 'react'
-import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, Button } from 'react-native';
 
 export default function Homepage() {
     const [email, setEmail] = useState('')
@@ -17,6 +17,11 @@ export default function Homepage() {
                     style={styles.inputField}    
                     placeholder={'Password'}
                 />
+            <Button 
+                title="Login"
+                color="red"
+                accessibilityLabel="Login"
+            />
         </View>
     )
 }
@@ -39,5 +44,8 @@ const styles = StyleSheet.create({
         paddingRight: '40%',
         borderRadius: 2,
         alignItems: 'center',
+    },
+    login: {
+        color: 'red',
     }
 })
