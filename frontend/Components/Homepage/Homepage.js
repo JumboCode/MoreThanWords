@@ -1,17 +1,22 @@
-import React from 'react'
+import React, { useState, } from 'react'
 import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
 
 export default function Homepage() {
+    const [email, setEmail] = useState('')
     return (
         <View style={styles.container}>
             <Image 
                 style={styles.image}
                 source={require('./TransparentMTWLogo.png')}
             />
-            <TextInput 
-                style={styles.inputField}
-                value={'Hello'}    
-            />
+                <TextInput 
+                    style={styles.inputField}
+                    placeholder={'Email'}    
+                />
+                <TextInput 
+                    style={styles.inputField}    
+                    placeholder={'Password'}
+                />
         </View>
     )
 }
@@ -22,13 +27,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        marginBottom: 5
+        marginBottom: '0%',
+        marginTop: "-50%"
     },
     inputField: {
-        height: '10%',
-        width: '20%',
+        position: 'relative',
+        height: '15%',
+        marginTop: '3%',
+        backgroundColor: '#e0dcdc',
+        paddingLeft: '10%',
+        paddingRight: '40%',
         borderRadius: 2,
-        borderColor: '#f0ffff',
         alignItems: 'center',
     }
 })
