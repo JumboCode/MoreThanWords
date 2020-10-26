@@ -16,22 +16,38 @@ export default function Homepage() {
 
     function handlePassInput(e) {
         setPassword(e)
+        console.log(e)
+    }
+
+    function handleLogin() {
+        console.log('logging in')
+        //Password Auth 
+    }
+
+    function handleRecoverPass() {
+        console.log("recover password")
+        //Navigate to recover pass component 
+    }
+
+    function handleNewUser() {
+        console.log("create new user")
+        //Navigate to new user page
     }
 
     return (
         <View style={styles.container}>
-            <Image 
+            <Image
                 style={styles.image}
                 source={require('./TransparentMTWLogo.png')}
             />
             <View style={styles.inputContainer}>
                 <TextInput 
                     onChangeText={(value) => handleEmailInput(value)}
-                    style={styles.inputField}
+                    style={styles.emailField}
                     placeholder={'Email'}    
                 />
                 <TextInput 
-                    // secureTextEntry
+                    secureTextEntry
                     style={styles.inputField}    
                     onChangeText={(value) => handlePassInput(value)}
                     placeholder={'Password'}
@@ -39,11 +55,24 @@ export default function Homepage() {
             </View>
             <View style={styles.button}>
                 <Button 
+                    onPress={() => handleLogin()}
                     title="LOGIN"
                     color="#FFFFFF"
                     accessibilityLabel="Login"
                 />
             </View>
+            <Text style={styles.forgot}>
+                <Text >Forgot Password?</Text>
+                <Text 
+                    style={{ color: '#FF3D3D', fontWeight: 'bold' }} 
+                    onPress={() => handleRecoverPass()}> Recover here</Text>
+            </Text>
+            <Text style={styles.noAccount}>
+                <Text>Don't have an account? </Text>
+                <Text
+                    style={{ color: '#FF3D3D', fontWeight: 'bold' }} 
+                    onPress={() => handleNewUser()}>Signup here</Text>
+            </Text>
         </View>
     )
 }
@@ -52,27 +81,47 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        marginHorizontal: 16
+        // position: 'absolute',
+        marginHorizontal: 16,
+        // flex: 1,
     },
     image: {
-        marginBottom: '20%',
-        marginTop: "-50%",
+        marginBottom: '-2%',
+        marginTop: "-20%",
+        position: 'relative',
     },
     inputContainer: {
+        flex: 0.6,
+        // paddingTop: '50%',
         position: 'relative',
-        width: '68%',
-        marginLeft: '16%',
-        marginRight: '16%'
+        // backgroundColor: 'red',
+        width: '70%'
+        
     },
-    inputField: {
-        height: '80%',
-        marginTop: '3%',
+    emailField: {
+        position: 'absolute',
+        marginTop: '0%',
         backgroundColor: '#e0dcdc',
-        paddingLeft: '10%',
+        paddingLeft: '15%',
         paddingRight: '40%',
         borderRadius: 2, 
-        alignItems: 'center',
+        marginLeft: '-50%',
+        height: '25%',
+        width: '116%',
+
+        alignItems: 'center'
+    },
+    inputField: {
+        position: 'absolute',
+        marginTop: '22%',
+        backgroundColor: '#e0dcdc',
+        paddingLeft: '15%',
+        paddingRight: '40%',
+        borderRadius: 2, 
+        marginLeft: '-50%',
+        height: '15%',
+        width: '116%',
+        alignItems: 'center'
     },
     button: {
         marginVertical: 3,
@@ -81,7 +130,15 @@ const styles = StyleSheet.create({
         paddingTop: '1.5%',
         paddingBottom: '1.5%',
         backgroundColor: '#FF3D3D',
-        marginTop: '25%',
+        marginTop: '-8%',
         borderRadius: 5,
+    },
+    forgot: {
+        marginTop: '3%',
+        fontSize: 10,
+    },
+    noAccount: {
+        marginTop: '10%',
+        fontSize: 12,
     }
 })
