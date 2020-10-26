@@ -1,18 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-// import { StackNavigator } from 'react-navigation';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 
 import PodScreen from './PodScreen.js';
 
 export default function HomeScreen() {
-    console.log("App executed");
+    const handlePress = () => console.log("Used function!");
     
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>
-                HOME SCREEN
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.title} numberOfLines={1} onPress={handlePress}>
+                HOME SCREEN really really long text blahb lbahbblah hahah
             </Text>
             
             <TouchableOpacity style={styles.block}>
@@ -38,7 +37,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
                                     
             <StatusBar style="auto" />
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
                 marginTop: 40,
                 width: 300,
                 height: 180,
-                backgroundColor: '#e7f7c1',
+                backgroundColor: 'dodgerblue',
                 borderColor: 'white',
                 borderWidth: 1,
                 borderRadius: 10,
