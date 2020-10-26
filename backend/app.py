@@ -1,10 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
+import os # for environment variables
 from flask import request # imported for parsing arguemnts
 from simple_salesforce import Salesforce, format_soql # import Salesforce
 
 # global connection to Salesforce so we don't need to connect everytime, CHANGE TO ENV VARIABLE OR take  
-sf = Salesforce(username='', ', security_token='')
+sf = Salesforce(username=os.environ['SALESFORCE_USERNAME'],password=os.environ['SALESFORCE_PASSWORD'],security_token=os.environ['SALESFORCE_SECURITY_TOKEN'])
 app = Flask(__name__)
 CORS(app)
 

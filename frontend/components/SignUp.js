@@ -28,12 +28,12 @@ class SignUpPage extends React.Component {
 			email: "",
 			password: "",
 			confirmpassword: "",
-			verified: false,
-			accountChecked: false,
-			showVerifiedModal: false,
-			checkedAgreement: false
-
 		}
+		this.validateFirstName = this.validateFirstName.bind(this) 
+		this.validateLastName = this.validateLastName.bind(this) 
+		this.validateEmail = this.validateEmail.bind(this)
+		this.validatePassword = this.validatePassword.bind(this)
+		this.validateConfirmedPassword = this.validateConfirmedPassword.bind(this)
 	}
 	
 	/* verify Identity
@@ -45,14 +45,30 @@ class SignUpPage extends React.Component {
 	async verifyIdentity() {
 		try {
 			// consider making this a POST request, considering we are passing sensitive user data like password
-			var verify = await fetch(`http://192.168.68.117:5000/verifySignUp?firstname=${this.state.firstname}&lastname=${this.state.lastname}&email=${this.state.email}`)
+			var verify = await fetch(`http://130.64.218.142:5000/verifySignUp?firstname=${this.state.firstname}&lastname=${this.state.lastname}&email=${this.state.email}`)
 				.then(response => response.json())
   				.then(data => {
-  					console.log(data)
+  					// if not verified tell them
   					if (!data.verified) {
-  						this.setState({verified: false, showVerifiedModal: true})
+  						Alert.alert(
+  									  'You are not authorized to use this app. Please check your credentials and contact MTW if you think this is an issue.',
+  									  '',
+  									  [
+  									    { text: 'OK' }
+  									  ],
+  									  { cancelable: false }
+  									)
+  					} else { // if verified, currently sends an alert saying that you are good to go
+  						Alert.alert(
+  									  'Welcome to MTW!',
+  									  '',
+  									  [
+  									    { text: 'OK'}
+  									  ],
+  									  { cancelable: false }
+  									)
+
   					}
-  					this.setState({accountChecked: true})
   				});
 		} catch(e) {
 			console.log("SignUpError: ", e)
@@ -133,6 +149,47 @@ class SignUpPage extends React.Component {
 		this.setState({ checkedAgreement: !this.state.checkedAgreement})
 	}
 
+	validateFirstName() {
+		if (this.state.firstname === "") {
+			this.setState({firstnameError: true});
+		} else {
+			this.setState({firstnameError: false});
+		}
+	}
+
+	validateLastName() {
+		if (this.state.lastname === "") {
+			this.setState({lastnameError: true});
+		} else {
+			this.setState({lastnameError: false});
+		}
+	}
+
+	validateEmail() {
+		var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!regex.test(this.state.email)) {
+			this.setState({ emailError: true})
+		} else {
+			this.setState({ emailError: false})
+		}
+	}
+
+	validatePassword() {
+		var regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+		if (!regex.test(this.state.password)) {
+			this.setState({ passwordError: true})
+		} else {
+			this.setState({ passwordError: false})
+		}
+	}
+
+	validateConfirmedPassword() {
+		if (this.state.password != this.state.confirmpassword) {
+			this.setState({ passwordMatch: false})
+		} else {
+			this.setState({ passwordMatch: true})
+		}
+	}
 
 	/* render
 	 * Paramsters: none
@@ -142,40 +199,70 @@ class SignUpPage extends React.Component {
 	 */
 	render() {
 		return (
-			<View>
+			<View style = {styles.viewStyles}>
 			<Text style={styles.signupheader}> Sign Up Page </Text>
 				<TextInput
 					  style={styles.signupinput}
 				      onChangeText={text => this.updateFirstName(text)}
 				      value={this.state.firstname}
 				      placeholder="First Name"
+				      onBlur={this.validateFirstName}
 				/>
+				{
+					this.state.firstnameError &&
+					<Text style = {styles.errorMessages}> You must enter your first name. </Text>
+
+				}
 				<TextInput
 					  style={styles.signupinput}
 				      onChangeText={text => this.updateLastName(text)}
 				      value={this.state.lastname}
 				      placeholder="Last Name"
+				      onBlur={this.validateLastName}
 				/>
+				{
+					this.state.lastnameError &&
+					<Text style = {styles.errorMessages}> You must enter your last name. </Text>
+
+				}
 				<TextInput
 					  style={styles.signupinput}
 				      onChangeText={text => this.updateEmail(text)}
 				      value={this.state.email}
 				      placeholder="Email"
+				      onBlur={this.validateEmail}
 				/>
+				{
+					this.state.emailError &&
+					<Text style = {styles.errorMessages}> Please enter a valid email. </Text>
+
+				}
 				<TextInput
 					  style={styles.signupinput}
 				      secureTextEntry={true}
 				      onChangeText={text => this.updatePassword(text)}
 				      value={this.state.password}
 				      placeholder="Password"
+				      onBlur={this.validatePassword}
 				/>
+				{
+					this.state.passwordError &&
+					<Text style = {styles.errorMessages}> Password must be at least 8 characters and contain at least 1 number and 1 letter. </Text>
+
+				}
 				<TextInput
 				      style={styles.signupinput}
 				      secureTextEntry={true}
 				      onChangeText={text => this.updateConfirmPassword(text)}
 				      value={this.state.confirmpassword}
 				      placeholder="Confirm Password"
+				      onBlur={this.validateMatchingPassword}
 				/>
+				{
+					this.state.passwordError &&
+					<Text style = {styles.errorMessages}> Please ensure that your two passwords match. </Text>
+
+				}
 				{
 					// if pressed and agreed to display in green
 					this.state.checkedAgreement &&
@@ -199,23 +286,6 @@ class SignUpPage extends React.Component {
 				>
 				     <Text style = {styles.submittext}> Submit </Text>
 				</TouchableOpacity>
-			{
-				!this.state.verified && this.state.accountChecked &&
-				/* should be converted into a popup/modal that says "you haven't been verified based on SF" */
-				Alert.alert(
-				  'You are not authorized to use this app. Please check your credentials and contact MTW if you think this is an issue.',
-				  '',
-				  [
-				    { text: 'OK', onPress: () => console.log('OK Pressed') }
-				  ],
-				  { cancelable: false }
-				)
-			}
-			{
-				this.state.verified && this.state.accountChecked &&
-			    /* will be converted into a redirect to the home page */
-				alert("good to go, lets set up an account")
-			}
 			</View>
 
 		)
@@ -227,6 +297,9 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "#eaeaea",
 
+  },
+  viewStyles: {
+  	width: 325
   },
   signupsubmit: {
   	backgroundColor: 'red',
@@ -264,10 +337,15 @@ const styles = StyleSheet.create({
   },
   agreement: {
   	flex: 1,
-  	flexDirection: "row"
+  	flexDirection: "row",
+  	textAlign: 'center'
   },
   checkicon: {
   	textAlign: "center"
+  },
+  errorMessages: {
+  	color: 'red',
+  	fontSize: 10
   }
 });
 export default SignUpPage;
