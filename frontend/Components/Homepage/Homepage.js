@@ -16,7 +16,6 @@ export default function Homepage() {
 
     function handlePassInput(e) {
         setPassword(e)
-        console.log(e)
     }
 
     function handleLogin() {
@@ -81,9 +80,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        // position: 'absolute',
         marginHorizontal: 16,
-        // flex: 1,
     },
     image: {
         marginBottom: '-2%',
@@ -92,9 +89,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flex: 0.6,
-        // paddingTop: '50%',
         position: 'relative',
-        // backgroundColor: 'red',
         width: '70%'
         
     },
