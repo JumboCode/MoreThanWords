@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FF3D3D',
         marginTop: '-8%',
         borderRadius: 5,
+        fontWeight: 'bold',
     },
     forgot: {
         marginTop: '3%',
