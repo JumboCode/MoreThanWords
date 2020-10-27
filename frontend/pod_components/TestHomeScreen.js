@@ -5,12 +5,10 @@ import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-export default function HomeScreen({ navigation }) {
-    const handlePress = () => console.log("touched!");
-    
+export default function TestHomeScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title} onPress={handlePress}>
+            <Text style={styles.title} >
                 HOME SCREEN
             </Text>
             
