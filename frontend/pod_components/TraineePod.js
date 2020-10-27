@@ -1,46 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
-export default function HomeScreen({ navigation }) {
-    const handlePress = () => console.log("touched!");
-    
+export default function TraineePodScreen() {
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title} onPress={handlePress}>
-                HOME SCREEN
+            <Text style={styles.title}>
+                TRAINEE POD
             </Text>
             
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Trainee Pod')}
-            >
+            <TouchableOpacity style={styles.block}>
                 <Text style={styles.blockText}>
-                    Trainee Pod 
+                    Competencies
                 </Text>
                 
                 <Text>Outcomes Achieved</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Associate Pod')}
-            >
+            <TouchableOpacity style={styles.block}>
                 <Text style={styles.blockText}>
-                    Associate Pod 
+                    Career Pathway
                 </Text>
                 <Text>Outcomes Achieved</Text>
             </TouchableOpacity>
         
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Partner Pod')}
-            >                
+            <TouchableOpacity style={styles.block}>
                 <Text style={styles.blockText}>
-                    Partner Pod 
+                    Life Essentials/ Support Network
                 </Text>
                 <Text>Outcomes Achieved</Text>
             </TouchableOpacity>
@@ -64,9 +51,9 @@ const styles = StyleSheet.create({
         marginTop: 40,
         width: 300,
         height: 180,
-        backgroundColor: 'dodgerblue',
-        borderColor: 'white',
+        backgroundColor: '#fae484',
         borderWidth: 1,
+        borderColor: 'white',
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
@@ -76,6 +63,3 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
-
-//questions: style and indenting? sizing? style of buttons when pressed?
-//the code for each pod component is so similar. is there a way to make it more modular? 

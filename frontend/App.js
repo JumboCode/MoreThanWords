@@ -6,8 +6,12 @@ import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-// import TestHomeScreen from './pod_components/TestHomeScreen.js';
-import PodScreen from './pod_components/PodScreen.js';
+import TestHomeScreen from './pod_components/TestHomeScreen.js';
+import TraineePodScreen from './pod_components/TraineePod.js';
+import AssociatePodScreen from './pod_components/AssociatePod.js';
+import PartnerPodScreen from './pod_components/PartnerPod.js';
+
+const Stack = createStackNavigator();
 
 export default function App() {  
     const [data, setData] = React.useState("default");
@@ -16,11 +20,16 @@ export default function App() {
     });
         
     return (
-           <PodScreen />
+           <NavigationContainer>
+                <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen name="Home" component={TestHomeScreen} />
+                    <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
+                    <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
+                    <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
+                </Stack.Navigator>
+           </NavigationContainer>
     );
 }
-
-const Stack = createStackNavigator();
 
 const styles = StyleSheet.create({
         container: {
