@@ -8,8 +8,15 @@ Welcome to the More than Words projects, a project run through [Tufts JumboCode]
 Current team members:
 * PM: Titapa (PunPun) Chaiyakiturajai
 * Tech Lead: Jacqueline Chin
+* Developer: Yichen Wei
+* Developer: Ryan Beckwith
 * Developer: Kiran Misner
+* Developer: Mengqi Irina Wang
+* Developer: Alec Xu
+* Developer: Julia Klein
 * Developer: Sophia Yang
+* Developer: Emily Hu
+* Designer: Abe Park
 
 ## Recommended Software 
 - [SourceTree](https://www.sourcetreeapp.com) (free)
@@ -44,7 +51,7 @@ This will go to our staging branch, pull the latest version, and `checkout` (swi
 Make your branches the same name as the ticket # you're working on.
 > Issue #1 is on branch mtw-01
 
-Note: you should only be branching and merging into the staging branch. Nothig should ever go direcly into the production branch.
+Note: you should only be branching and merging into the staging branch. Nothing should ever go direcly into the production branch.
 
 ### Committing
 Commit early and often on your feature branch! Commit with the help of SourceTree (I'll give instructions) or through the command line.
@@ -77,4 +84,3 @@ Think your code is good to go? Great! Let's just get someone to take a look at i
  - Enter in corresponding information, including what you did and what your reviewer can do to test it
  - `Create Pull Request`
  - Select who you want to review your code!
-
