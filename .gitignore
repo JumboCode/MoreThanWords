@@ -4,3 +4,5 @@ backend/__pycache__/*
 frontend/app.config.js
 .env
 .DS_Store
+frontend/.expo/*
+*.log
