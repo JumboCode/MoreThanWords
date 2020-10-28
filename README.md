@@ -55,7 +55,7 @@ Make your branches the same name as the ticket # you're working on.
 Note: you should only be branching and merging into the staging branch. Nothing should ever go direcly into the production branch.
 
 ### Committing
-Before commiting, make sure to run `sh setup.sh` to remove your IP Address and will remove any changes to app.config.js
+Before commiting, make sure to run `sh setup.sh` to ignore any changes you made to app.config.js, namely, your IP Address.
 
 Commit early and often on your feature branch! Commit with the help of SourceTree (I'll give instructions) or through the command line.
 ```
