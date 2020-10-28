@@ -2,10 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
-export default function TestHomeScreen({ navigation }) {
+export default function HomeScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title} >
@@ -74,6 +72,3 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
-
-//questions: style and indenting? sizing? style of buttons when pressed?
-//the code for each pod component is so similar. is there a way to make it more modular? 

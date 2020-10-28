@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import TestHomeScreen from './TestHomeScreen.js';
+import HomeScreen from './HomeScreen.js';
 import TraineePodScreen from './TraineePod.js';
 import AssociatePodScreen from './AssociatePod.js';
 import PartnerPodScreen from './PartnerPod.js';
@@ -16,7 +16,7 @@ export default function MainStackNavigator() {
     return (
        <NavigationContainer>
            <Stack.Navigator initialRouteName="Home">
-               <Stack.Screen name="Home" component={TestHomeScreen} />
+               <Stack.Screen name="Home" component={HomeScreen} />
                <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
                <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
                <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
