@@ -41,7 +41,6 @@ class PasswordResetPage extends React.Component {
             }
 
         } catch (e) {
-            console.log(e);
             Alert.alert("Sorry! your request failed.", "Network connection failed.");
         }
 
@@ -51,12 +50,11 @@ class PasswordResetPage extends React.Component {
             // TODO: process.env!!!
             let request_body = {
                 "email": this.state.email,
-                "client_id": process.env.REACT_NATIVE_AUTH0_CLIENT_ID,
-                "connection": process.env.REACT_NATIVE_AUTH0_DBCONNECTION
+                "client_id": Constants.manifest.extra.auth0_client_id,
+                "connection": Constants.manifest.extra.auth0_dbconnection
             };
-            console.log(request_body);
 
-            let response = await fetch(process.env.REACT_NATIVE_AUTH0_DOMAIN + "/dbconnections/change_password", {
+            let response = await fetch(Constants.manifest.extra.auth0_domain + "/dbconnections/change_password", {
                 method: 'POST',
                 body: JSON.stringify(request_body),
                 headers: {
@@ -65,13 +63,11 @@ class PasswordResetPage extends React.Component {
             });
 
             if (!response.ok) {
-                console.log(await response.json());
                 Alert.alert("Error requesting an email to be sent. Please try again soon.")
             } else {
-                Alert.alert("Success!", await response.body()); 
+                Alert.alert("Success!", "Please check your email for a reset link."); 
             }
         } catch (e) {
-            console.log(e);
             Alert.alert("Error requesting an email to be sent. Please try again soon.")
         }
     }
