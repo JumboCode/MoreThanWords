@@ -12,15 +12,16 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text, View, FlatList} from 'react-native';
-// import { Accordion } from 'dooboo-ui';
+import { StyleSheet, View, FlatList} from 'react-native';
+import { Accordion, Container, Text, Content } from 'native-base';
+
 import Task from './Task';
 
 const Outcome = (props) => {
-    const data = [
+    const data = [ 
         {
             title: props.title,
-            bodies: [
+            content: [
                 {key: "Complete Career Exploration Module", starIsFilled: true, checked: true},
                 {key: "Attend at least one Site Visit / Info Session", starIsFilled: false, checked: true},
                 {key: "Identify a Post MTW Plan", starIsFilled: false, checked: true},
@@ -28,29 +29,45 @@ const Outcome = (props) => {
         }
     ];
 
+    // const dataArray = [
+    //     { title: "First Element", content: "Lorem ipsum dolor sit amet" },
+    //     { title: "Second Element", content: "Lorem ipsum dolor sit amet" },
+    //     { title: "Third Element", content: "Lorem ipsum dolor sit amet" }
+    // ];
+
     return (
-        <View>
-            <FlatList 
-                data={[
-                    {key: "Complete Career Exploration Module", starIsFilled: true, checked: true},
-                    {key: "Attend at least one Site Visit / Info Session", starIsFilled: false, checked: true},
-                    {key: "Identify a Post MTW Plan", starIsFilled: false, checked: true},
-                ]}
-                renderItem={({item}) => <Task name={item.key} starIsFilled={item.starIsFilled} checked={item.checked}/>}
-            />
-            {/* <Accordion
-                data={data}
-                shouldAnimate={true}
-                collapseOnStart={true}
-                animDuration={300}
-                activeOpacity={1}
-                renderTitle={(item) => <Text>{item.title}</Text>}
-                renderBody={(item) => <Text>Hello</Text>}
-                // toggleElement={<ArrowDown />}
-                >
-                
-            </Accordion> */}
-        </View>
+        // <View>
+        //     <FlatList 
+        //         data={[
+        //             {key: "Complete Career Exploration Module", starIsFilled: true, checked: true},
+        //             {key: "Attend at least one Site Visit / Info Session", starIsFilled: false, checked: true},
+        //             {key: "Identify a Post MTW Plan", starIsFilled: false, checked: true},
+        //         ]}
+        //         renderItem={({item}) => <Task name={item.key} starIsFilled={item.starIsFilled} checked={item.checked}/>}
+        //     />
+            
+        // </View>
+        <Container>
+            <Content padder>
+                <Accordion
+                    dataArray={data}
+                    // expanded={0}
+
+                    renderContent={(taskListObject) => {
+                        const itemComponents = taskListObject.content.map((taskObj) => 
+                            <Task name={taskObj.key} starIsFilled={taskObj.starIsFilled} checked={taskObj.checked}/>
+                        );
+                        return (
+                            <Container> 
+                                <Content padder>
+                                    {itemComponents}
+                                </Content>
+                            </Container>
+                        );
+                    }}
+                    />
+            </Content>
+        </Container>
     );
 };
 

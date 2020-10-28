@@ -34,7 +34,7 @@ class Task extends React.Component {
                 margin: 0,
             },
             taskContainer: {
-                flex: 1,
+                // flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
             },
