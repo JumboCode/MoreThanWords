@@ -2,7 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask import request
 
-#from auth import requires_auth, AuthError
 from simple_salesforce import Salesforce, format_soql
 
 import os
@@ -27,7 +26,7 @@ def helloWorld():
 @app.route("/reset", methods=['POST'])
 def resetPassword():
     """
-    checks if the user is in the database, 
+    checks if the user is in the mtw salesforce database, 
     before sending verification email.
     """
     req_data = request.json
