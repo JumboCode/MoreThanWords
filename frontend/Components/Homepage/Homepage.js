@@ -1,5 +1,6 @@
 import React, { useState, } from 'react'
-import { StyleSheet, 
+import { Platform,
+        StyleSheet, 
         Text, 
         View, 
         Image, 
@@ -58,7 +59,7 @@ export default function Homepage() {
                 <Button 
                     onPress={() => handleLogin()}
                     title="LOGIN"
-                    color="#FFFFFF"
+                    // color={`${Platform.OS == 'ios' ? 'white' : '#FF3D3D'}`}
                     accessibilityLabel="Login"
                 />
             </View>
