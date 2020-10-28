@@ -26,6 +26,10 @@ def helloWorld():
 
 @app.route("/reset", methods=['POST'])
 def resetPassword():
+    """
+    checks if the user is in the database, 
+    before sending verification email.
+    """
     req_data = request.json
     if 'email' not in req_data:
         return {'data': 'no email present in the data',
@@ -49,7 +53,7 @@ def resetPassword():
                 'status': 'good'}
     else:
         return {'data': 'Your Email is not registered in our databased.',
-                'status': 'bad'}
+                'status': 'bad'}, 403
 
 
 if __name__ == '__main__':
