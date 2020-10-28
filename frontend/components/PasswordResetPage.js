@@ -18,7 +18,6 @@ class PasswordResetPage extends React.Component {
 
         try {
             // CHECK IF EMAIL EXISTS in the SalesForce. Is it needed?
-            // TODO: Check if already signed up or not.
             // prepare and the request
             let request_body = {
                 "email": this.state.email
@@ -47,7 +46,6 @@ class PasswordResetPage extends React.Component {
         try {
             // SEND an email request to the Auth0 API.
             // API Doc: https://auth0.com/docs/api/authentication
-            // TODO: process.env!!!
             let request_body = {
                 "email": this.state.email,
                 "client_id": Constants.manifest.extra.auth0_client_id,
