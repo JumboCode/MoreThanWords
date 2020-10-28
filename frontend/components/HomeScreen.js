@@ -2,17 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Linking, Text, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 
-// class Home extends Component {
-//     render() {
-//         return (
-//             <View>
-//                 <Text>
-//                     hello world
-//                 </Text>
-//             </View>
-//         )
-//     }
-// }
+import { NavigationContainer } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   baseText: {
@@ -63,7 +53,7 @@ const ProgressBar = (props) => {
 const Pod = (props) => {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={() => Linking.openURL(props.url)}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Trainee Pod')/*Linking.openURL(props.url)*/}>
           <Text style={styles.baseText}>{props.name}</Text>
 
           <View style={styles.progressBar}>
