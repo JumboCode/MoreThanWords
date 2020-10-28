@@ -37,7 +37,9 @@ export default function Homepage() {
         <View style={styles.container}>
             <Image
                 style={styles.image}
-                source={require('./TransparentMTWLogo.png')}
+                source={
+                    { uri: "https://raw.githubusercontent.com/JumboCode/MoreThanWords/staging/images/Transparent%20MTW%20Logo.png" }} 
+                    style={{ width: 305, height: 159 }}
             />
             <View style={styles.inputContainer}>
                 <TextInput 
