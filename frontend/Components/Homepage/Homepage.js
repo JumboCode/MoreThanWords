@@ -59,6 +59,7 @@ export default function Homepage() {
                 <Button 
                     onPress={() => handleLogin()}
                     title="LOGIN"
+                    color="#FFFFFF"
                     // color={`${Platform.OS == 'ios' ? 'white' : '#FF3D3D'}`}
                     accessibilityLabel="Login"
                 />
