@@ -7,7 +7,7 @@ export default function TraineePodScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>
-                TRAINEE POD
+                TRAINEE POD 
             </Text>
             
             <TouchableOpacity 
