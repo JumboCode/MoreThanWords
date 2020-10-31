@@ -12,13 +12,37 @@
  */
 
 import React from 'react';
-import { StyleSheet, View, FlatList} from 'react-native';
-import { Accordion, Container, Text, Content } from 'native-base';
+import { StyleSheet, ScrollView } from 'react-native';
+import { Accordion, Container, Text, Content, View, Header } from 'native-base';
 
 import Task from './Task';
 
 const styles = StyleSheet.create({
-
+    accordion: {
+        borderRadius: 2,
+        // borderColor: "rgba(248, 248, 248, 1)",
+        // borderBottomWidth: 2
+        shadowColor: "rgba(248, 248, 248, 1)",
+        shadowOffset: { width: 1, height: 2 },
+        shadowRadius: 2,
+    },
+    headerStyle: {
+        flex: 1,
+        // width: "50%",
+        backgroundColor: "rgba(248, 248, 248, 0.5)",
+        fontSize: 20,
+        fontWeight: "bold"
+        // borderColor: "rgba(248, 248, 248, 0.5)"
+        // borderWidth: 0
+    },
+    // contentStyle: {
+    //     flex: 1,
+    //     // height: "50%"
+    //     backgroundColor: "#ECECEC"
+    // },
+    container: {
+        flexDirection: "column"
+    }
 });
 
 const Outcome = (props) => {
@@ -53,23 +77,41 @@ const Outcome = (props) => {
         // </View>
         <Container>
             <Content padder>
-                <Accordion
-                    dataArray={data}
-                    // expanded={0}
-
-                    renderContent={(taskListObject) => {
-                        const itemComponents = taskListObject.content.map((taskObj) => 
-                            <Task name={taskObj.key} starIsFilled={taskObj.starIsFilled} checked={taskObj.checked}/>
-                        );
-                        return (
-                            <Container> 
-                                <Content padder>
-                                    {itemComponents}
-                                </Content>
-                            </Container>
-                        );
-                    }}
+                {/* <ScrollView onContentSizeChange={(width, height) => { styles.headerStyle.width = `${width}%` }}>  */}
+                    <Accordion
+                        style={styles.accordion}
+                        dataArray={data}
+                        headerStyle={styles.headerStyle}
+                        // animation={false}
+                        // contentStyle={styles.contentStyle}
+                        // contentStyle={{backgroundColor: "#ECECEC"}}
+                        // expanded={0}
+                        // renderHeader={(item, expanded) => {
+                        //     return (
+                        //         <Container>
+                        //             <Text
+                        //                 style={styles.headerStyle}>
+                        //                 {item.title}
+                        //             </Text>
+                        //         </Container>
+                        //     );
+                        // }}
+                        renderContent={(taskListObject) => {
+                            const itemComponents = taskListObject.content.map((taskObj) => 
+                                <Task name={taskObj.key} starIsFilled={taskObj.starIsFilled} checked={taskObj.checked}/>
+                            );
+                            return (
+                                <Container
+                                    style={{padding: 5,
+                                            backgroundColor: "rgba(248, 248, 248, 0.5)"}}> 
+                                    {/* <Content padder> */}
+                                        {itemComponents}
+                                    {/* </Content> */}
+                                </Container>
+                            );
+                        }}
                     />
+                {/* </ScrollView> */}
             </Content>
         </Container>
     );

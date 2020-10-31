@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Container, Header, Left, Body, Right, Title} from 'native-base';
 import Constants from 'expo-constants';
 // import Task from './components/outcomes/Task'
 import Outcome from './components/outcomes/Outcome';
@@ -10,7 +11,7 @@ import TraineePodScreen from './pod_components/TraineePod.js';
 import AssociatePodScreen from './pod_components/AssociatePod.js';
 import PartnerPodScreen from './pod_components/PartnerPod.js';
 
-const Stack = createStackNavigator();
+// const Stack = createStackNavigator();
 
 export default function MainStackNavigator() {          
     return (
@@ -21,6 +22,15 @@ export default function MainStackNavigator() {
             <Task name="Goodbye"></Task>
             <Task name="Three"></Task>
             <StatusBar style="auto" /> */}
+            <Container>
+                <Header>
+                    <Left />
+                    <Body>
+                        <Title>Career Pathway</Title>
+                    </Body>
+                    <Right />
+                </Header>
+            </Container>
             <Outcome title="Example"/>
         </View>
     );
@@ -41,7 +51,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
+        // alignItems: 'center',
         justifyContent: 'center',
     },
     title: {
