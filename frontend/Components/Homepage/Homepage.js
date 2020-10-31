@@ -4,8 +4,9 @@ import { Platform,
         Text, 
         View, 
         Image, 
-        TextInput, 
-        Button } from 'react-native';
+        TextInput,
+        Button } from 'react-native'
+import { iosStyles, androidStyles } from './styling'
 
 export default function Homepage() {
     const [email, setEmail] = useState('')
@@ -34,6 +35,8 @@ export default function Homepage() {
         //Navigate to new user page
     }
 
+    const styles = Platform.OS === 'ios' ? iosStyles : androidStyles
+
     return (
         <View style={styles.container}>
             <Image
@@ -57,88 +60,25 @@ export default function Homepage() {
             </View>
             <View style={styles.button}>
                 <Button 
+                    style={styles.buttonBackgrou}
                     onPress={() => handleLogin()}
                     title="LOGIN"
-                    color="#FFFFFF"
-                    // color={`${Platform.OS == 'ios' ? 'white' : '#FF3D3D'}`}
+                    color={`${Platform.OS == 'ios' ? 'white' : '#FF3D3D'}`}
                     accessibilityLabel="Login"
                 />
             </View>
             <Text style={styles.forgot}>
                 <Text >Forgot Password?</Text>
                 <Text 
-                    style={{ color: '#FF3D3D', fontWeight: 'bold' }} 
+                    style={{ color: '#FF3D3D' }} 
                     onPress={() => handleRecoverPass()}> Recover here</Text>
             </Text>
             <Text style={styles.noAccount}>
                 <Text>Don't have an account? </Text>
                 <Text
-                    style={{ color: '#FF3D3D', fontWeight: 'bold' }} 
+                    style={{ color: '#FF3D3D' }} 
                     onPress={() => handleNewUser()}>Signup here</Text>
             </Text>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 16,
-    },
-    image: {
-        marginBottom: '-2%',
-        marginTop: "-20%",
-        position: 'relative',
-    },
-    inputContainer: {
-        flex: 0.6,
-        position: 'relative',
-        width: '70%'
-        
-    },
-    emailField: {
-        position: 'absolute',
-        marginTop: '0%',
-        backgroundColor: '#e0dcdc',
-        paddingLeft: '15%',
-        paddingRight: '40%',
-        borderRadius: 2, 
-        marginLeft: '-50%',
-        height: '25%',
-        width: '116%',
-
-        alignItems: 'center'
-    },
-    inputField: {
-        position: 'absolute',
-        marginTop: '22%',
-        backgroundColor: '#e0dcdc',
-        paddingLeft: '15%',
-        paddingRight: '40%',
-        borderRadius: 2, 
-        marginLeft: '-50%',
-        height: '15%',
-        width: '116%',
-        alignItems: 'center'
-    },
-    button: {
-        marginVertical: 3,
-        paddingLeft: '25%',
-        paddingRight: '25%',
-        paddingTop: '1.5%',
-        paddingBottom: '1.5%',
-        backgroundColor: '#FF3D3D',
-        marginTop: '-8%',
-        borderRadius: 5,
-        fontWeight: 'bold',
-    },
-    forgot: {
-        marginTop: '3%',
-        fontSize: 10,
-    },
-    noAccount: {
-        marginTop: '10%',
-        fontSize: 12,
-    }
-})

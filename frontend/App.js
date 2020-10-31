@@ -9,7 +9,6 @@ import TraineePodScreen from './pod_components/TraineePod.js';
 import AssociatePodScreen from './pod_components/AssociatePod.js';
 import PartnerPodScreen from './pod_components/PartnerPod.js';
 
-const Stack = createStackNavigator();
 
 export default function MainStackNavigator() {          
     return (
