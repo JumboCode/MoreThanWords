@@ -45,7 +45,7 @@ class SignUpPage extends React.Component {
 	async verifyIdentity() {
 		try {
 			// consider making this a POST request, considering we are passing sensitive user data like password
-			var verify = await fetch(`http://130.64.218.142:5000/verifySignUp?firstname=${this.state.firstname}&lastname=${this.state.lastname}&email=${this.state.email}`)
+			var verify = await fetch(`${Constants.manifest.extra.apiUrl}/verifySignUp?firstname=${this.state.firstname}&lastname=${this.state.lastname}&email=${this.state.email}`)
 				.then(response => response.json())
   				.then(data => {
   					// if not verified tell them
