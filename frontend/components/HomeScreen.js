@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Linking, Text, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { withNavigation } from 'react-navigation';
 
 const styles = StyleSheet.create({
   baseText: {
@@ -43,14 +45,8 @@ const styles = StyleSheet.create({
   }
 });
 
-const ProgressBar = (props) => {
-  return (
-    <View  >
-      
-    </View>
-  );
-}
-const Pod = (props) => {
+const Pod = (props, { navigation }) => {
+    
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Trainee Pod')/*Linking.openURL(props.url)*/}>
@@ -69,16 +65,16 @@ const Pod = (props) => {
     );
   }
 
-const LotsOfPods = () => {
+const LotsOfPods = (props) => {
     return (
       <View>
         <Text>PROMPT: Home Page</Text>
-        <Pod name ='Trainee'  complete = '5' total = '11' url = 'http://google.com'/>
-        <Pod name='Associate' complete = '3' total = '6'  url = 'http://google.com'/>
-        <Pod name='Partner'   complete = '0' total = '9'  url = 'http://google.com'/>
+        <Pod name='Trainee'   complete='5' total='11' navigation='props.navigation'/>
+        <Pod name='Associate' complete='3' total='6' />
+        <Pod name='Partner'   complete='0' total='9' />
       </View>
     );
   }
   
   
-export default LotsOfPods;
+export default withNavigation(LotsOfPods);

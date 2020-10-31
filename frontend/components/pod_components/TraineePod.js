@@ -4,8 +4,9 @@ import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-na
 import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { withNavigation } from 'react-navigation';
 
-export default function TraineePodScreen({ navigation }) {
+function TraineePodScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>
@@ -74,3 +75,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
+
+export default withNavigation(TraineePodScreen);
