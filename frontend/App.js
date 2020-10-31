@@ -5,10 +5,10 @@ import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeScreen from './pod_components/HomeScreen.js';
-import TraineePodScreen from './pod_components/TraineePod.js';
-import AssociatePodScreen from './pod_components/AssociatePod.js';
-import PartnerPodScreen from './pod_components/PartnerPod.js';
+import HomeScreen from './components/pod_components/HomeScreen.js';
+import TraineePodScreen from './components/pod_components/TraineePod.js';
+import AssociatePodScreen from './components/pod_components/AssociatePod.js';
+import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 
 const Stack = createStackNavigator();
 
