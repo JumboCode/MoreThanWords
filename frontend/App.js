@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
-import SignUp from './components/SignUp'
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -10,28 +10,31 @@ import HomeScreen from './pod_components/HomeScreen.js';
 import TraineePodScreen from './pod_components/TraineePod.js';
 import AssociatePodScreen from './pod_components/AssociatePod.js';
 import PartnerPodScreen from './pod_components/PartnerPod.js';
+import SignUp from './components/SignUp'
 
 const Stack = createStackNavigator();
 
-export default function MainStackNavigator() {          
+export default function MainStackNavigator() {
+    const [loggedIn, setLoggedIn] = React.useState(false);
+
     return (
-        <>
-        <View style={styles.container}>
-        {
-            // <Text>Open up App.js to start working on your app!</Text>
-            // <Text>{data}</Text>
-            // <StatusBar style="auto" />
-        }
-            <SignUp />
-        </View>
-        </>
-       <NavigationContainer>
-           <Stack.Navigator initialRouteName="Home">
-               <Stack.Screen name="Home" component={HomeScreen} />
-               <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
-               <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
-               <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
-               <Stack.Screen name="Random Screen" component={RandomScreen} />
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home">
+                {loggedIn ?(
+                    <>
+                        <Stack.Screen name="Home">
+                            {props => <HomeScreen {...props} loggedIn={loggedIn} />}
+                        </Stack.Screen>
+                        <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
+                        <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
+                        <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
+                        <Stack.Screen name="Random Screen" component={RandomScreen} />
+                    </>
+                ): (
+                    <>
+                        <Stack.Screen name="Sign Up" component={SignUp} />
+                    </>
+                )}
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -47,17 +50,3 @@ function RandomScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 30,
-        marginTop: 20,
-        fontWeight: 'bold',
-    },
-});
