@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Linking, Text, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 
+<<<<<<< HEAD:frontend/components/HomeScreen.js
 import { NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { withNavigation } from 'react-navigation';
+=======
+>>>>>>> cad77ccd45fa32669908eacb5e4f2a916415b01f:frontend/components/home.js
 
 const styles = StyleSheet.create({
   baseText: {
@@ -45,8 +48,12 @@ const styles = StyleSheet.create({
   }
 });
 
+<<<<<<< HEAD:frontend/components/HomeScreen.js
 const Pod = (props, { navigation }) => {
     
+=======
+const Pod = (props) => {
+>>>>>>> cad77ccd45fa32669908eacb5e4f2a916415b01f:frontend/components/home.js
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Trainee Pod')/*Linking.openURL(props.url)*/}>
@@ -59,8 +66,7 @@ const Pod = (props, { navigation }) => {
 
           <Text>{props.complete} of {props.total} outcome Achieved</Text>
         </TouchableOpacity>
-        
-        
+    
       </View>
     );
   }
