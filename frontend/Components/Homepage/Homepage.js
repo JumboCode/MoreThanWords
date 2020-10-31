@@ -43,7 +43,7 @@ export default function Homepage() {
                 style={styles.image}
                 source={
                     { uri: "https://raw.githubusercontent.com/JumboCode/MoreThanWords/staging/images/Transparent%20MTW%20Logo.png" }} 
-                    style={{ width: 305, height: 159 }}
+                style={{ width: 305, height: 159 }}
             />
             <View style={styles.inputContainer}>
                 <TextInput 
