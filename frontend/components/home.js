@@ -64,8 +64,6 @@ const LotsOfPods = () => {
     return (
       <View>
         <Text>PROMPT: Home Page</Text>
-
-        
         <Pod name ='Trainee'  complete = '5' total = '11' url = 'http://google.com'/>
         <Pod name='Associate' complete = '3' total = '6'  url = 'http://google.com'/>
         <Pod name='Partner'   complete = '0' total = '9'  url = 'http://google.com'/>
