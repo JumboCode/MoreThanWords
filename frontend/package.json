@@ -8,10 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-<<<<<<< HEAD
-=======
-    "@babel/runtime": "^7.12.1",
->>>>>>> mtw-19
+    "@babel/runtime": "7.12.1",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.6",
     "@react-navigation/stack": "^5.9.3",
@@ -26,12 +23,8 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
-<<<<<<< HEAD
-    "react-native-web": "~0.11.7"
-=======
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.4.2"
->>>>>>> mtw-19
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

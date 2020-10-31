@@ -2,17 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Linking, Text, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 
-// class Home extends Component {
-//     render() {
-//         return (
-//             <View>
-//                 <Text>
-//                     hello world
-//                 </Text>
-//             </View>
-//         )
-//     }
-// }
 
 const styles = StyleSheet.create({
   baseText: {
@@ -53,13 +42,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const ProgressBar = (props) => {
-  return (
-    <View  >
-      
-    </View>
-  );
-}
 const Pod = (props) => {
     return (
       <View style={styles.container}>
@@ -73,8 +55,7 @@ const Pod = (props) => {
 
           <Text>{props.complete} of {props.total} outcome Achieved</Text>
         </TouchableOpacity>
-        
-        
+    
       </View>
     );
   }
@@ -83,6 +64,8 @@ const LotsOfPods = () => {
     return (
       <View>
         <Text>PROMPT: Home Page</Text>
+
+        
         <Pod name ='Trainee'  complete = '5' total = '11' url = 'http://google.com'/>
         <Pod name='Associate' complete = '3' total = '6'  url = 'http://google.com'/>
         <Pod name='Partner'   complete = '0' total = '9'  url = 'http://google.com'/>

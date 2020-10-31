@@ -7,10 +7,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import LotsOfPods from './components/home'
+import PodProgressBar from './components/ProgressBar'
 
 const Stack = createStackNavigator();
 
-import MainStackNavigator from './pod_components/MainStackNavigator.js';
+import MainStackNavigator from './components/pod_components/MainStackNavigator.js';
 
 export default function App() {  
     const [data, setData] = React.useState("default");
@@ -19,22 +20,22 @@ export default function App() {
     });
         
     return (
-<<<<<<< HEAD
+        <View> 
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="Home" component={LotsOfPods} />
             </Stack.Navigator>
         </NavigationContainer>
-        // <View style={styles.container}>
-        //     {/* <Text>Open up App.js to start working on your app!</Text> */}
-        //     {/* <Text>{data}</Text> */}
-        //     <StatusBar style="auto" />
-        // {/* Home pods */}
-        //     <LotsOfPods />
-        // </View>
-=======
+         <View style={styles.container}>
+            {/* <Text>Open up App.js to start working on your app!</Text> */}
+             {/* <Text>{data}</Text> */}
+           <StatusBar style="auto" />
+         {/* Home pods */}
+             <LotsOfPods />
+        </View>
        <MainStackNavigator />
->>>>>>> mtw-19
+
+       </View>
     );
 }
 
