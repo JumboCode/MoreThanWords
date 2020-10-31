@@ -17,6 +17,10 @@ import { Accordion, Container, Text, Content } from 'native-base';
 
 import Task from './Task';
 
+const styles = StyleSheet.create({
+
+});
+
 const Outcome = (props) => {
     const data = [ 
         {
