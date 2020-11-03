@@ -3,6 +3,8 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
 
+import PodProgressBar from './PodProgressBar.js';
+
 export default function TraineePodScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
@@ -17,6 +19,8 @@ export default function TraineePodScreen({ navigation }) {
                 <Text style={styles.blockText}>
                     Competencies
                 </Text>
+                
+                <PodProgressBar />
                 
                 <Text>Outcomes Achieved</Text>
             </TouchableOpacity>
