@@ -1,5 +1,5 @@
 import {Container, Content, ProgressBar} from 'native-base';
-import React, {Component} from 'react-native';
+import React, {Component} from 'react';
 
 export default class PodProgressBar extends Component {
     render() {

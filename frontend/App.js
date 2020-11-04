@@ -10,24 +10,15 @@ import PodProgressBar from './components/ProgressBar'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeScreen from './pod_components/HomeScreen.js';
-import TraineePodScreen from './pod_components/TraineePod.js';
-import AssociatePodScreen from './pod_components/AssociatePod.js';
-import PartnerPodScreen from './pod_components/PartnerPod.js';
+import HomeScreen from './components/pod_components/HomeScreen.js';
+import TraineePodScreen from './components/pod_components/TraineePod.js';
+import AssociatePodScreen from './components/pod_components/AssociatePod.js';
+import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 
 const Stack = createStackNavigator();
 
 export default function MainStackNavigator() {          
     return (
- 
-         <View style={styles.container}>
-            {/* <Text>Open up App.js to start working on your app!</Text> */}
-             {/* <Text>{data}</Text> */}
-           <StatusBar style="auto" />
-         {/* Home pods */}
-             <LotsOfPods />
-             <PodProgressBar />
-
        <NavigationContainer>
            <Stack.Navigator initialRouteName="Home">
                <Stack.Screen name="Home" component={HomeScreen} />
@@ -37,8 +28,6 @@ export default function MainStackNavigator() {
                <Stack.Screen name="Random Screen" component={RandomScreen} />
             </Stack.Navigator>
         </NavigationContainer>
-        </View> 
-
     );
 }
 
