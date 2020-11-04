@@ -9,10 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.1",
-<<<<<<< HEAD
-=======
     "@expo/webpack-config": "^0.12.40",
->>>>>>> cad77ccd45fa32669908eacb5e4f2a916415b01f
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.6",
     "@react-navigation/stack": "^5.9.3",
