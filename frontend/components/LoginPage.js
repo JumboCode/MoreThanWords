@@ -3,7 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import jwtDecode from "jwt-decode";
 import * as React from "react";
 import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
-import { StackActions, CommonActions } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 import Constants from 'expo-constants';
 import { setItemAsync } from 'expo-secure-store';
 
