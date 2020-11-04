@@ -9,18 +9,20 @@ import HomeScreen from './components/pod_components/HomeScreen.js';
 import TraineePodScreen from './components/pod_components/TraineePod.js';
 import AssociatePodScreen from './components/pod_components/AssociatePod.js';
 import PartnerPodScreen from './components/pod_components/PartnerPod.js';
+import LoginScreen from './components/LoginPage.js';
 
 const Stack = createStackNavigator();
 
 export default function MainStackNavigator() {          
     return (
        <NavigationContainer>
-           <Stack.Navigator initialRouteName="Home">
+           <Stack.Navigator initialRouteName="Login Screen">
                <Stack.Screen name="Home" component={HomeScreen} />
                <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
                <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
                <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
                <Stack.Screen name="Random Screen" component={RandomScreen} />
+               <Stack.Screen name="Login Screen" component={LoginScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );
