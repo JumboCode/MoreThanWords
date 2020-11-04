@@ -2,11 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-
-import LotsOfPods from './components/home'
-import PodProgressBar from './components/ProgressBar'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
