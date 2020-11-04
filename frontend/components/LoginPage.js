@@ -3,7 +3,9 @@ import * as AuthSession from "expo-auth-session";
 import jwtDecode from "jwt-decode";
 import * as React from "react";
 import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
+import { StackActions, CommonActions } from "@react-navigation/native";
 import Constants from 'expo-constants';
+import { setItemAsync } from 'expo-secure-store';
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -14,50 +16,35 @@ import Constants from 'expo-constants';
 // You can open this app in the Expo client and check your logs to find out your redirect URL.
 
 const auth0ClientId = Constants.manifest.extra.auth0_client_id;
-const authorizationEndpoint = Constants.manifest.extra.auth0_auth0_domain;
+const authorizationEndpoint = Constants.manifest.extra.auth0_domain + "/authorize";
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
-class LoginPage extends React.Component {
-    state = {
-        request: null,
-        result: null,
-        promptAsync: null,
-        name: "",
-        setName: ""
-    }
+export default function LoginPage({ navigation }) {
+    const [name, setName] = React.useState(null);
 
-    componentDidMount() {
-        const [request, result, promptAsync] = AuthSession.useAuthRequest(
-            {
-                redirectUri,
-                clientId: auth0ClientId,
-                // id_token will return a JWT token
-                responseType: "id_token",
-                // retrieve the user's profile
-                scopes: ["openid", "profile"],
-                extraParams: {
-                    // ideally, this will be a random value
-                    nonce: "nonce",
-                },
+    const [request, result, promptAsync] = AuthSession.useAuthRequest(
+        {
+            redirectUri,
+            clientId: auth0ClientId,
+            // id_token will return a JWT token
+            responseType: "id_token",
+            // retrieve the user's profile
+            scopes: ["openid", "profile"],
+            extraParams: {
+                // ideally, this will be a random value
+                nonce: "nonce",
             },
-            { authorizationEndpoint }
-        );
+        },
+        { authorizationEndpoint }
+    );
 
-        this.setState({
-            request: request,
-            result: result,
-            promptAsync: promptAsync
-        });
+    // Retrieve the redirect URL, add this to the callback URL list
+    // of your Auth0 application.
+    console.log(`Redirect URL: ${redirectUri}`);
 
-        // Retrieve the redirect URL, add this to the callback URL list
-        // of your Auth0 application.
-        console.log(`Redirect URL: ${redirectUri}`);
-    }
-
-
-    componentDidUpdate() {
+    React.useEffect(() => {
         if (result) {
             if (result.error) {
                 Alert.alert(
@@ -73,26 +60,36 @@ class LoginPage extends React.Component {
 
                 const { name } = decoded;
                 setName(name);
-                
+
+                // stores the token in SecureStore
+                setItemAsync("access_token", jwtToken);
+
+                /* Goes into Home Screen */
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            { name: 'Home' },
+                        ],
+                    })
+                );
             }
         }
-    }
+    }, [result]);
 
-    render () {
-        return (
-            <View style={styles.container}>
-                {name ? (
-                    <Text style={styles.title}>You are logged in, {name}!</Text>
-                ) : (
-                    <Button
-                        disabled={!request}
-                        title="Log in"
-                        onPress={() => promptAsync({ useProxy })}
-                    />
-                )}
-            </View>
-        );
-    }
+    return (
+        <View style={styles.container}>
+            {name ? (
+                <Text style={styles.title}>You are logged in, {name}!</Text>
+            ) : (
+                <Button
+                    disabled={!request}
+                    title="Log in with Auth0"
+                    onPress={() => promptAsync({ useProxy })}
+                />
+            )}
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -108,6 +105,3 @@ const styles = StyleSheet.create({
         marginTop: 40,
     },
 });
-
-
-export default LoginPage;
