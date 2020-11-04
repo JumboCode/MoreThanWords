@@ -11,6 +11,7 @@ npm-debug.*
 web-build/
 app.config.js
 *.log
+auth0-configuration.js
 
 # macOS
 .DS_Store
