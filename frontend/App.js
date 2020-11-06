@@ -12,7 +12,6 @@ import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 import LoginScreen from './components/LoginPage.js';
 
 import { getName, isTokenValid } from "./utils/auth";
-import { CommonActions } from "@react-navigation/native";
 
 const Stack = createStackNavigator();
 
