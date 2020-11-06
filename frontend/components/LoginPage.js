@@ -34,6 +34,7 @@ export default function LoginPage({ navigation, refresh }) {
             extraParams: {
                 // ideally, this will be a random value
                 nonce: "nonce",
+                prompt: "login",
             },
         },
         { authorizationEndpoint }
