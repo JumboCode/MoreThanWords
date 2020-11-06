@@ -55,8 +55,10 @@ class MainStackNavigator extends React.Component {
                             name="Home" 
                             component={HomeScreen} 
                             options={{ 
-                                headerRight: () => (
-                                    <TouchableOpacity onPress={this.logout}><Text>Log Out</Text></TouchableOpacity>),
+                                headerRight: () => 
+                                    <TouchableOpacity onPress={this.logout} style={{marginRight: 16}}>
+                                        <Text>Log Out</Text>
+                                    </TouchableOpacity>,
                                 animationEnabled: false
                             }}
                         />
