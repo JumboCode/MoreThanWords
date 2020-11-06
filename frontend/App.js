@@ -32,7 +32,6 @@ class MainStackNavigator extends React.Component {
     }
     
     render() {
-        console.log(this.state.loggedIn);
         return (
             <NavigationContainer>
                 <Stack.Navigator initialRouteName={this.state.initialRouteName}>

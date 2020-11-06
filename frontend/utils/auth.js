@@ -24,7 +24,6 @@ export async function getName() {
 /* returns if the token has expired or not */
 export async function isTokenValid() {
     const jwt_token = await getjwt();
-    console.log(jwt_token);
     if (jwt_token === null) {
         // user is not logged in, just return false.
         return false;
@@ -32,7 +31,6 @@ export async function isTokenValid() {
         // process the jwt
         const jwt = jwtDecode(jwt_token);
         const expire_time = jwt.exp;
-        console.log(jwt);
 
         if (expire_time === null) {
             // if there's no expire time, it's always valid?
@@ -40,8 +38,6 @@ export async function isTokenValid() {
         }
 
         const currtime = Date.now().valueOf() / 1000;
-        console.log(currtime);
-        console.log(currtime < expire_time);
         return currtime < expire_time;
     }
 }
