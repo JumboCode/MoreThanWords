@@ -3,7 +3,6 @@ import * as AuthSession from "expo-auth-session";
 import jwtDecode from "jwt-decode";
 import * as React from "react";
 import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
-import { CommonActions } from "@react-navigation/native";
 import Constants from 'expo-constants';
 import { setItemAsync } from 'expo-secure-store';
 
@@ -21,7 +20,7 @@ const authorizationEndpoint = Constants.manifest.extra.auth0_domain + "/authoriz
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
-export default function LoginPage({ navigation }) {
+export default function LoginPage({ navigation, refresh }) {
     const [name, setName] = React.useState(null);
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
@@ -62,7 +61,9 @@ export default function LoginPage({ navigation }) {
                 setName(name);
 
                 // stores the token in SecureStore
-                setItemAsync("access_token", jwtToken);
+                setItemAsync("access_token", jwtToken).then(() => {
+                    refresh();
+                });
             }
         }
     }, [result]);

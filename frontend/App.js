@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -11,33 +11,53 @@ import AssociatePodScreen from './components/pod_components/AssociatePod.js';
 import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 import LoginScreen from './components/LoginPage.js';
 
-import { getName, isTokenValid } from "./utils/auth";
+import { getName, isTokenValid, removeToken } from "./utils/auth";
 
 const Stack = createStackNavigator();
+
+/* Higher order function that returns the component binded with refresh_func */
+function componentWithRefreshFunc(Component, refresh_func) {
+    return function ({...rest}) {
+        return <Component refresh={refresh_func} {...rest}/>
+    }
+}
 
 class MainStackNavigator extends React.Component {       
     state = {
         loggedIn: false
     };
 
-    componentDidMount() {
-        // if the result is valid, 
+    // refreshes login state, updating screen being displayed.
+    refreshLoginState = () => {
         isTokenValid().then(valid => {
-            if (valid) {
-                /* Goes into Home Screen */
-                this.setState({loggedIn: true});
-            }
+            this.setState({loggedIn: valid});
         });
+    }
+
+    /* removes the token and refreshes the state */
+    logout = async () => {
+        await removeToken();
+        this.refreshLoginState();
+    }
+
+    componentDidMount() {
+        this.refreshLoginState();
     }
     
     render() {
+        console.log("refresh function: ");
+        console.log(this.refreshLoginState);
         return (
             <NavigationContainer>
                 <Stack.Navigator initialRouteName={this.state.initialRouteName}>
                     {this.state.loggedIn ? (
                         /* Screens for logged in users */
                         <>
-                        <Stack.Screen name="Home" component={HomeScreen} />
+                        <Stack.Screen 
+                            name="Home" 
+                            component={HomeScreen} 
+                            options={{ headerRight: () => <Button onPress={this.logout} title="Hello"/> }}
+                        />
                         <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
                         <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
                         <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
@@ -45,7 +65,10 @@ class MainStackNavigator extends React.Component {
                         </>
                     ) : (
                         /* Screens for signed out users */
-                        <Stack.Screen name="Login Screen" component={LoginScreen} />
+                        <Stack.Screen 
+                            name="Login Screen" 
+                            component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)} 
+                        />
                     )}
                  </Stack.Navigator>
              </NavigationContainer>

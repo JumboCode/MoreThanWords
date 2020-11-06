@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 import Constants from 'expo-constants';
-import { setItemAsync, getItemAsync } from 'expo-secure-store';
-import { exp } from "react-native-reanimated";
+import { getItemAsync, deleteItemAsync } from 'expo-secure-store';
+import { revokeAsync } from 'expo-auth-session';
 
 const ACCESS_KEY = "access_token";
 
@@ -24,6 +24,7 @@ export async function getName() {
 /* returns if the token has expired or not */
 export async function isTokenValid() {
     const jwt_token = await getjwt();
+    console.log("jwttoken: ", jwt_token);
     if (jwt_token === null) {
         // user is not logged in, just return false.
         return false;
@@ -40,4 +41,9 @@ export async function isTokenValid() {
         const currtime = Date.now().valueOf() / 1000;
         return currtime < expire_time;
     }
+}
+
+/* removed token, effectively logging out */
+export async function removeToken() {
+    await deleteItemAsync(ACCESS_KEY);
 }
