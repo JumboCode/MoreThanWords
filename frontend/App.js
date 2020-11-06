@@ -56,7 +56,10 @@ class MainStackNavigator extends React.Component {
                         <Stack.Screen 
                             name="Home" 
                             component={HomeScreen} 
-                            options={{ headerRight: () => <Button onPress={this.logout} title="Hello"/> }}
+                            options={{ 
+                                headerRight: () => <Button onPress={this.logout} title="Log Out"/> ,
+                                animationEnabled: false
+                            }}
                         />
                         <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
                         <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
@@ -67,7 +70,10 @@ class MainStackNavigator extends React.Component {
                         /* Screens for signed out users */
                         <Stack.Screen 
                             name="Login Screen" 
-                            component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)} 
+                            component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
+                            options={{
+                                animationEnabled: false,
+                            }}
                         />
                     )}
                  </Stack.Navigator>
