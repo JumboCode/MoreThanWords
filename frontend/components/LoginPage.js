@@ -63,16 +63,6 @@ export default function LoginPage({ navigation }) {
 
                 // stores the token in SecureStore
                 setItemAsync("access_token", jwtToken);
-
-                /* Goes into Home Screen */
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [
-                            { name: 'Home' },
-                        ],
-                    })
-                );
             }
         }
     }, [result]);

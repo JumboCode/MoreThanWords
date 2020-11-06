@@ -11,21 +11,48 @@ import AssociatePodScreen from './components/pod_components/AssociatePod.js';
 import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 import LoginScreen from './components/LoginPage.js';
 
+import { getName, isTokenValid } from "./utils/auth";
+import { CommonActions } from "@react-navigation/native";
+
 const Stack = createStackNavigator();
 
-export default function MainStackNavigator() {          
-    return (
-       <NavigationContainer>
-           <Stack.Navigator initialRouteName="Login Screen">
-               <Stack.Screen name="Home" component={HomeScreen} />
-               <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
-               <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
-               <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
-               <Stack.Screen name="Random Screen" component={RandomScreen} />
-               <Stack.Screen name="Login Screen" component={LoginScreen} />
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+class MainStackNavigator extends React.Component {       
+    state = {
+        loggedIn: false
+    };
+
+    componentDidMount() {
+        // if the result is valid, 
+        isTokenValid().then(valid => {
+            if (valid) {
+                /* Goes into Home Screen */
+                this.setState({loggedIn: true});
+            }
+        });
+    }
+    
+    render() {
+        console.log(this.state.loggedIn);
+        return (
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName={this.state.initialRouteName}>
+                    {this.state.loggedIn ? (
+                        /* Screens for logged in users */
+                        <>
+                        <Stack.Screen name="Home" component={HomeScreen} />
+                        <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
+                        <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
+                        <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
+                        <Stack.Screen name="Random Screen" component={RandomScreen} />
+                        </>
+                    ) : (
+                        /* Screens for signed out users */
+                        <Stack.Screen name="Login Screen" component={LoginScreen} />
+                    )}
+                 </Stack.Navigator>
+             </NavigationContainer>
+         );
+    }
 }
 
 function RandomScreen() {
@@ -52,3 +79,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
+
+export default MainStackNavigator;
