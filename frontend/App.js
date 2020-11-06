@@ -45,8 +45,6 @@ class MainStackNavigator extends React.Component {
     }
     
     render() {
-        console.log("refresh function: ");
-        console.log(this.refreshLoginState);
         return (
             <NavigationContainer>
                 <Stack.Navigator initialRouteName={this.state.initialRouteName}>

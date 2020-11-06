@@ -24,7 +24,6 @@ export async function getName() {
 /* returns if the token has expired or not */
 export async function isTokenValid() {
     const jwt_token = await getjwt();
-    console.log("jwttoken: ", jwt_token);
     if (jwt_token === null) {
         // user is not logged in, just return false.
         return false;

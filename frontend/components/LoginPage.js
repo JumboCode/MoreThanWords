@@ -39,10 +39,6 @@ export default function LoginPage({ navigation, refresh }) {
         { authorizationEndpoint }
     );
 
-    // Retrieve the redirect URL, add this to the callback URL list
-    // of your Auth0 application.
-    console.log(`Redirect URL: ${redirectUri}`);
-
     React.useEffect(() => {
         if (result) {
             if (result.error) {
