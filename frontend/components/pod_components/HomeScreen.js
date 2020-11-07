@@ -3,6 +3,8 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 
+import ProgressBar from '../ProgressBar.js';
+
 export default function HomeScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
