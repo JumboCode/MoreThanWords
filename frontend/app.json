@@ -25,6 +25,7 @@
     "description": "",
     "android": {
       "package": "com.titapapunne.mtw"
-    }
+    },
+    "scheme": "morethanwords"
   }
 }
