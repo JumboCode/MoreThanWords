@@ -1,47 +1,82 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
+import { Text, View, StyleSheet, Animated } from 'react-native';
 import Constants from 'expo-constants';
 
-import {Container, Content, ProgressBar} from 'native-base';
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
 
-export default class PodProgressBar extends Component {
-    render() {
-        return (
-            <Container>
-                <Content>
-                    <ProgressBar progress={30} />
-                </Content>
-            </Container>
-        ); 
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
     }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
 }
 
+
+const App = () => {
+  let animation = useRef(new Animated.Value(0));
+  const [progress, setProgress] = useState(0);
+  useInterval(() => {
+    if(progress < 100) {
+      setProgress(progress + 5);
+    }
+  }, 1000);
+
+  useEffect(() => {
+    Animated.timing(animation.current, {
+      toValue: progress,
+      duration: 100
+    }).start();
+  },[progress])
+
+  const width = animation.current.interpolate({
+    inputRange: [0, 100],
+    outputRange: ["0%", "100%"],
+    extrapolate: "clamp"
+  })
+  return (
+    <View style={styles.container}>
+      <Text>
+        Loading…..
+      </Text>
+      <View style={styles.progressBar}>
+        <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: 'green', width }}/>
+      </View>
+      <Text>
+        {`${progress}%`}
+      </Text>
+
+    </View>
+  );
+}
+
+export default App;
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 30,
-        marginTop: 20,
-        fontWeight: 'bold',
-    },
-    block: {
-        marginTop: 40,
-        width: 300,
-        height: 180,
-        backgroundColor: '#fae484',
-        borderWidth: 1,
-        borderColor: 'white',
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    blockText: {
-        fontSize: 25,
-        textAlign: 'center',
-    },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 8,
+  },
+  progressBar: {
+    flexDirection: 'row',
+    height: 20,
+    width: '100%',
+    backgroundColor: 'white',
+    borderColor: '#000',
+    borderWidth: 2,
+    borderRadius: 5
+  }
 });
