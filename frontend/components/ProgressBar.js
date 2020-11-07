@@ -39,13 +39,15 @@ const ProgressBar = () => {
     outputRange: ["0%", "100%"],
     extrapolate: "clamp"
   })
+
+  // {backgroundColor: "#8BED4F", width }
   return (
     <View style={styles.container}>
       <Text>
         Loading…..
       </Text>
       <View style={styles.progressBar}>
-        <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: "#8BED4F", width }}/>
+        <Animated.View style={[StyleSheet.absoluteFill]}/>
       </View>
       <Text>
         {`${progress}/${total_task}`}
@@ -60,7 +62,7 @@ export default ProgressBar;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'Column',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
