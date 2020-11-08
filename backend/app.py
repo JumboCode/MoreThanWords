@@ -6,7 +6,7 @@ CORS(app)
 
 @app.route("/")
 def helloWorld():
-    d = dict();
+    d = dict()
     d['data'] = 'hello world!!!! pls work!!'
     d['status'] = 'good'
     return d
