@@ -45,17 +45,14 @@ const App = () => {
     extrapolate: "clamp"
   })
   return (
-    <View style={styles.container}>
-      <Text>
-        Loading…..
-      </Text>
-      <View style={styles.progressBar}>
-        <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: 'green', width }}/>
-      </View>
-      <Text>
+    <View style={styles.container} >
+      <Text style={styles.progressCount}>
         {`${progress}%`}
       </Text>
-
+      
+      <View style={styles.progressBar}>
+        <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27B48F', width }}/>
+      </View>
     </View>
   );
 }
@@ -63,20 +60,27 @@ const App = () => {
 export default App;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
-  },
-  progressBar: {
-    flexDirection: 'row',
-    height: 20,
-    width: '100%',
-    backgroundColor: 'white',
-    borderColor: '#000',
-    borderWidth: 2,
-    borderRadius: 5
-  }
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // padding: 8,
+    },
+    progressBar: {
+        flexDirection: 'row',
+        height: 10,
+        width: '100%',
+        backgroundColor: 'white',
+        shadowOffset: { height: 3 },
+        shadowColor: 'lightgrey',
+        shadowOpacity: 1.0,
+    },
+    progressCount: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginTop: 30,
+        marginBottom: 10,
+        marginLeft: '85%',
+    },
 });
