@@ -21,8 +21,10 @@ export default function HomeScreen({ navigation }) {
                 </Text>
                 
                 <Text>Outcomes Achieved</Text>
+                
+                <ProgressBar />
             </TouchableOpacity>
-            
+          
             <TouchableOpacity 
                 style={styles.block} 
                 onPress={() => navigation.navigate('Associate Pod')}
@@ -31,6 +33,7 @@ export default function HomeScreen({ navigation }) {
                     Associate Pod 
                 </Text>
                 <Text>Outcomes Achieved</Text>
+                <ProgressBar />
             </TouchableOpacity>
         
             <TouchableOpacity 
@@ -41,6 +44,7 @@ export default function HomeScreen({ navigation }) {
                     Partner Pod 
                 </Text>
                 <Text>Outcomes Achieved</Text>
+                <ProgressBar />
             </TouchableOpacity>
         </SafeAreaView>
     );

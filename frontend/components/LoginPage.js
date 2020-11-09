@@ -21,6 +21,7 @@ const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 export default function LoginPage({ navigation, refresh }) {
+    // console.log({redirectUri})
     const [name, setName] = React.useState(null);
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(

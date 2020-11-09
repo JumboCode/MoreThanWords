@@ -24,7 +24,9 @@ function useInterval(callback, delay) {
 
 const ProgressBar = () => {
   let animation = useRef(new Animated.Value(0));
-  let progress = 8;
+  // hard-code for now
+  // TODO: fetch from the backend
+  let progress = 2;
   let total_task = 16;
 
   useEffect(() => {
@@ -43,9 +45,9 @@ const ProgressBar = () => {
   // {backgroundColor: "#8BED4F", width }
   return (
     <View style={styles.container}>
-      <Text>
+      {/* <Text>
         Loading…..
-      </Text>
+      </Text> */}
       <View style={styles.progressBar}>
         <Animated.View style={[StyleSheet.absoluteFill]}/>
       </View>
@@ -60,15 +62,15 @@ const ProgressBar = () => {
 export default ProgressBar;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
-    padding: 8,
-  },
+  // container: {
+  //   flex: 1,
+  //   flexDirection: 'column',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   // paddingTop: Constants.statusBarHeight,
+  //   backgroundColor: '#ecf0f1',
+  //   padding: 8,
+  // },
   progressBar: {
     flexDirection: 'row',
     height: 20,
