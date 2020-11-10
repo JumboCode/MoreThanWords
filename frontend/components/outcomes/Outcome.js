@@ -12,108 +12,107 @@
  */
 
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
-import { Accordion, Container, Text, Content, View, Header } from 'native-base';
-
+import { StyleSheet, Text, View } from 'react-native';
+import { Accordion, Icon } from 'native-base';
 import Task from './Task';
 
 const styles = StyleSheet.create({
     accordion: {
         borderRadius: 2,
-        // borderColor: "rgba(248, 248, 248, 1)",
-        // borderBottomWidth: 2
-        shadowColor: "rgba(248, 248, 248, 1)",
+        shadowColor: "rgba(242, 242, 242, 1)",
         shadowOffset: { width: 1, height: 2 },
-        shadowRadius: 2,
+        shadowRadius: 3,
+        margin: 10
     },
     headerStyle: {
-        flex: 1,
-        // width: "50%",
-        backgroundColor: "rgba(248, 248, 248, 0.5)",
-        fontSize: 20,
-        fontWeight: "bold"
-        // borderColor: "rgba(248, 248, 248, 0.5)"
-        // borderWidth: 0
+        flexDirection: "row",
+        backgroundColor: "rgba(242, 242, 242, 0.5)",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: 10
     },
-    // contentStyle: {
-    //     flex: 1,
-    //     // height: "50%"
-    //     backgroundColor: "#ECECEC"
-    // },
     container: {
-        flexDirection: "column"
+        flexDirection: "column",
+        paddingLeft: 15,
+        paddingRight: 5,
+        backgroundColor: "rgba(242, 242, 242, 0.5)"
+    },
+    titleStyle: {
+        fontSize: 18,
+        fontWeight: "500",
+        color: "#3F3F3F"
+    },
+    arrowStyle: {
+        fontSize: 15,
+        color: "#3F3F3F"
     }
 });
 
 const Outcome = (props) => {
-    const data = [ 
+    const defaultData = [ 
         {
-            title: props.title,
+            title: "Gather Essential Documents",
             content: [
-                {key: "Complete Career Exploration Module", starIsFilled: true, checked: true},
-                {key: "Attend at least one Site Visit / Info Session", starIsFilled: false, checked: true},
-                {key: "Identify a Post MTW Plan", starIsFilled: false, checked: true},
+                {
+                    key: "Complete Career Exploration Module",
+                    starIsFilled: true,
+                    checked: true
+                },
+                {
+                    key: "Attend at least one Site Visit / Info Session",
+                    starIsFilled: false,
+                    checked: true
+                },
+                {
+                    key: "Identify a Post MTW Plan",
+                    starIsFilled: false,
+                    checked: true
+                },
             ]
-        }
+        },
     ];
 
-    // const dataArray = [
-    //     { title: "First Element", content: "Lorem ipsum dolor sit amet" },
-    //     { title: "Second Element", content: "Lorem ipsum dolor sit amet" },
-    //     { title: "Third Element", content: "Lorem ipsum dolor sit amet" }
-    // ];
-
     return (
-        // <View>
-        //     <FlatList 
-        //         data={[
-        //             {key: "Complete Career Exploration Module", starIsFilled: true, checked: true},
-        //             {key: "Attend at least one Site Visit / Info Session", starIsFilled: false, checked: true},
-        //             {key: "Identify a Post MTW Plan", starIsFilled: false, checked: true},
-        //         ]}
-        //         renderItem={({item}) => <Task name={item.key} starIsFilled={item.starIsFilled} checked={item.checked}/>}
-        //     />
-            
-        // </View>
-        <Container>
-            <Content padder>
-                {/* <ScrollView onContentSizeChange={(width, height) => { styles.headerStyle.width = `${width}%` }}>  */}
-                    <Accordion
-                        style={styles.accordion}
-                        dataArray={data}
-                        headerStyle={styles.headerStyle}
-                        // animation={false}
-                        // contentStyle={styles.contentStyle}
-                        // contentStyle={{backgroundColor: "#ECECEC"}}
-                        // expanded={0}
-                        // renderHeader={(item, expanded) => {
-                        //     return (
-                        //         <Container>
-                        //             <Text
-                        //                 style={styles.headerStyle}>
-                        //                 {item.title}
-                        //             </Text>
-                        //         </Container>
-                        //     );
-                        // }}
-                        renderContent={(taskListObject) => {
-                            const itemComponents = taskListObject.content.map((taskObj) => 
-                                <Task name={taskObj.key} starIsFilled={taskObj.starIsFilled} checked={taskObj.checked}/>
-                            );
-                            return (
-                                <Container
-                                    style={{padding: 5,
-                                            backgroundColor: "rgba(248, 248, 248, 0.5)"}}> 
-                                    {/* <Content padder> */}
-                                        {itemComponents}
-                                    {/* </Content> */}
-                                </Container>
-                            );
-                        }}
+        <Accordion
+            style={styles.accordion}
+            dataArray={props.data ? props.data : defaultData}
+            headerStyle={styles.headerStyle}
+            renderHeader={(item, expanded) => {
+                return (
+                    <View style={styles.headerStyle}>
+                        <Text style={styles.titleStyle}>
+                            {item.title}
+                        </Text>
+                        { expanded ? 
+                            <Icon
+                                style={styles.arrowStyle}
+                                name="ios-arrow-up"
+                            /> : 
+                            <Icon
+                                style={styles.arrowStyle}
+                                name="ios-arrow-down"
+                            />
+                        }
+                    </View>
+                );
+            }}
+            renderContent={(taskListObject) => {
+                const itemComponents = taskListObject.content.map(
+                    (taskObj) =>
+                    <Task
+                        name={taskObj.key}
+                        starIsFilled={taskObj.starIsFilled}
+                        checked={taskObj.checked}
                     />
-                {/* </ScrollView> */}
-            </Content>
-        </Container>
+                );
+                return (
+                    <View
+                        style={styles.container}> 
+                        {itemComponents}
+                    </View>
+                );
+            }}
+        />
     );
 };
 
