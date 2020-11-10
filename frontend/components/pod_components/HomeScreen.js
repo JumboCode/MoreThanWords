@@ -8,20 +8,13 @@ import ProgressBar from '../ProgressBar.js';
 export default function HomeScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title} >
-                HOME SCREEN
-            </Text>
-            
             <TouchableOpacity 
                 style={styles.block} 
                 onPress={() => navigation.navigate('Trainee Pod')}
             >
                 <Text style={styles.blockText}>
-                    Trainee Pod 
+                    Trainee 
                 </Text>
-                
-                <Text>Outcomes Achieved</Text>
-                
                 <ProgressBar />
             </TouchableOpacity>
           
@@ -30,9 +23,8 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => navigation.navigate('Associate Pod')}
             >
                 <Text style={styles.blockText}>
-                    Associate Pod 
+                    Associate 
                 </Text>
-                <Text>Outcomes Achieved</Text>
                 <ProgressBar />
             </TouchableOpacity>
         
@@ -41,9 +33,8 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => navigation.navigate('Partner Pod')}
             >                
                 <Text style={styles.blockText}>
-                    Partner Pod 
+                    Partner 
                 </Text>
-                <Text>Outcomes Achieved</Text>
                 <ProgressBar />
             </TouchableOpacity>
         </SafeAreaView>
@@ -57,24 +48,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    title: {
-        fontSize: 30,
-        marginTop: 20,
-        fontWeight: 'bold',
-    },
     block: {
-        marginTop: 40,
-        width: 300,
-        height: 180,
-        backgroundColor: 'dodgerblue',
+        marginTop: 20,
+        width: '100%',
+        height: 220,
+        backgroundColor: '#ececec',
         borderColor: 'white',
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
     blockText: {
-        fontSize: 25,
+        fontSize: 40,
+        fontFamily: 'Roboto',
+        color: '#27b48f',
+        fontWeight: 'bold',
         textAlign: 'center',
     },
 });
