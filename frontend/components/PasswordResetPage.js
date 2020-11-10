@@ -15,34 +15,6 @@ class PasswordResetPage extends React.Component {
      * Alerts the user whether the request is successful or not.
      */
     send_email = async () => {
-
-        try {
-            // CHECK IF EMAIL EXISTS in the SalesForce. Is it needed?
-            // prepare and the request
-            let request_body = {
-                "email": this.state.email
-            }
-
-            let response = await fetch(`${Constants.manifest.extra.apiUrl}reset`, {
-                method: 'POST',
-                body: JSON.stringify(request_body),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            let response_body = await response.json();
-
-            // gives alert based on response
-            if (response.status != 200 || !('status' in response_body) || response_body.status !== 'good') {
-                Alert.alert("Sorry! your request failed.", response_body['data']);
-                return;
-            }
-
-        } catch (e) {
-            Alert.alert("Sorry! your request failed.", "Network connection failed.");
-        }
-
         try {
             // SEND an email request to the Auth0 API.
             // API Doc: https://auth0.com/docs/api/authentication
