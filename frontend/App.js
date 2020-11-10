@@ -52,7 +52,7 @@ class MainStackNavigator extends React.Component {
                         /* Screens for logged in users */
                         <>
                             <Stack.Screen
-                                name="Home"
+                                name="Pods"
                                 component={HomeScreen}
                                 options={{
                                     headerRight: () =>
