@@ -70,11 +70,14 @@ export default function LoginPage({ navigation, refresh }) {
             {name ? (
                 <Text style={styles.title}>You are logged in, {name}!</Text>
             ) : (
-                <Button
-                    disabled={!request}
-                    title="Log in with Auth0"
-                    onPress={() => promptAsync({ useProxy })}
-                />
+                <>
+                    <Button
+                        disabled={!request}
+                        title="Log in with Auth0"
+                        onPress={() => promptAsync({ useProxy })}
+                    />
+                    <Button title="Reset Password" onPress={() => navigation.navigate('Password Reset Screen')}/>
+                </>
             )}
         </View>
     );
