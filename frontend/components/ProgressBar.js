@@ -26,7 +26,7 @@ const ProgressBar = () => {
   let animation = useRef(new Animated.Value(0));
   // hard-code for now
   // TODO: fetch from the backend
-  let progress = 2;
+  let progress = 8;
   let total_task = 16;
 
   useEffect(() => {
@@ -44,15 +44,15 @@ const ProgressBar = () => {
 
   // {backgroundColor: "#8BED4F", width }
   return (
-    <View style={styles.container}>
+    <View style={{alignItems: 'center'}}>
       {/* <Text>
         Loading…..
       </Text> */}
       <View style={styles.progressBar}>
-        <Animated.View style={[StyleSheet.absoluteFill]}/>
+        <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
       </View>
       <Text>
-        {`${progress}/${total_task}`}
+        {`${progress} of ${total_task} outcomes achieved`}
       </Text>
 
     </View>
@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
   progressBar: {
     flexDirection: 'row',
     height: 20,
-    width: '100%',
+    width: 250,
     backgroundColor: 'white',
-    borderColor: '#000',
+    borderColor: '#27b48f',
     borderWidth: 2,
-    borderRadius: 5
+    borderRadius: 10
   }
 });
