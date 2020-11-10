@@ -11,23 +11,83 @@ import HomeScreen from './components/pod_components/HomeScreen.js';
 import TraineePodScreen from './components/pod_components/TraineePod.js';
 import AssociatePodScreen from './components/pod_components/AssociatePod.js';
 import PartnerPodScreen from './components/pod_components/PartnerPod.js';
+
 import PasswordResetPage from './components/PasswordResetPage';
+import LoginScreen from './components/LoginPage.js';
+
+import { getName, isTokenValid, removeToken } from "./utils/auth";
 
 const Stack = createStackNavigator();
 
-export default function MainStackNavigator() {          
-    return (
-       <NavigationContainer>
-           <Stack.Navigator initialRouteName="Home">
-               <Stack.Screen name="Home" component={HomeScreen} />
-               <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
-               <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
-               <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
-               <Stack.Screen name="Random Screen" component={RandomScreen} />
-               <Stack.Screen name="Random Screen" component={RandomScreen} />
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+/* Higher order function that returns the component binded with refresh_func */
+function componentWithRefreshFunc(Component, refresh_func) {
+    return function ({...rest}) {
+        return <Component refresh={refresh_func} {...rest}/>
+    }
+}
+
+class MainStackNavigator extends React.Component {       
+    state = {
+        loggedIn: false
+    };
+
+    // refreshes login state, updating screen being displayed.
+    refreshLoginState = () => {
+        isTokenValid().then(valid => {
+            this.setState({loggedIn: valid});
+        });
+    }
+
+    /* removes the token and refreshes the state */
+    logout = async () => {
+        await removeToken();
+        this.refreshLoginState();
+    }
+
+    componentDidMount() {
+        this.refreshLoginState();
+    }
+    
+    render() {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName={this.state.initialRouteName}>
+                    {this.state.loggedIn ? (
+                        /* Screens for logged in users */
+                        <>
+                        <Stack.Screen 
+                            name="Home" 
+                            component={HomeScreen} 
+                            options={{ 
+                                headerRight: () => 
+                                    <TouchableOpacity onPress={this.logout} style={{marginRight: 16}}>
+                                        <Text>Log Out</Text>
+                                    </TouchableOpacity>,
+                                animationEnabled: false
+                            }}
+                        />
+                        <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
+                        <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
+                        <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
+                        <Stack.Screen name="Random Screen" component={RandomScreen} />
+                        </>
+                    ) : (
+                        /* Screens for signed out users */
+                        <>
+                        <Stack.Screen 
+                            name="Login Screen" 
+                            component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
+                            options={{
+                                animationEnabled: false,
+                            }}
+                        />
+                        <Stack.Screen name="Password Reset Screen" component={PasswordResetPage} />
+                        </>
+                    )}
+                 </Stack.Navigator>
+             </NavigationContainer>
+         );
+    }
 }
 
 function RandomScreen() {
@@ -54,3 +114,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
+
+export default MainStackNavigator;

@@ -1,58 +1,35 @@
 from flask import Flask
 from flask_cors import CORS
-from flask import request
+import os # for environment variables
+from flask import request # imported for parsing arguemnts
+from simple_salesforce import Salesforce, format_soql # import Salesforce
 
-from simple_salesforce import Salesforce, format_soql
-
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
+# global connection to Salesforce so we don't need to connect everytime, CHANGE TO ENV VARIABLE OR take  
+sf = Salesforce(username=os.environ['SALESFORCE_USERNAME'],password=os.environ['SALESFORCE_PASSWORD'],security_token=os.environ['SALESFORCE_SECURITY_TOKEN'])
 app = Flask(__name__)
 CORS(app)
 
-sf = Salesforce(username=os.getenv('SALESFORCE_USERNAME'),
-    password=os.getenv('SALESFORCE_PASSWORD'), 
-    security_token=os.getenv('SALESFORCE_SECURITY_TOKEN'))
+# route to verify sign up and check whether user who wants to register is 
+# allowed to use the app by checking salesforce database
+@app.route("/verifySignUp")
+def verify():
+	# parses arguments that user sent via query string
+	email = request.args.get('email')
+	firstname = request.args.get('firstname')
+	lastname = request.args.get('lastname')
+	name = firstname + " " + lastname
+	print("name: ", name)
 
-@app.route("/")
-def helloWorld():
-    d = dict();
-    d['data'] = 'hello world!!!! pls work!!'
-    d['status'] = 'good'
-    return d
+	# salesforce query based on the email, firstname & lastname
+	result = sf.query(format_soql("SELECT Id, Email FROM Contact WHERE (email = {email_value} AND name={full_name})", email_value=email, full_name=name))
 
+	print(result["totalSize"] == 1)
 
-@app.route("/reset", methods=['POST'])
-def resetPassword():
-    """
-    checks if the user is in the mtw salesforce database, 
-    before sending verification email.
-    """
-    req_data = request.json
-    if 'email' not in req_data:
-        return {'data': 'no email present in the data',
-            'status': 'bad'}
-    
-    email = req_data['email']
-
-    print(email)
-
-    soql_str = """
-    SELECT count() FROM Contact WHERE MTW_Role__c = 'MTW Young Adult' AND Email = {email_value}
-    """
-    query_soql = format_soql(soql_str, email_value=email)
-    result = sf.query(query_soql)
-
-    print(result["totalSize"] >= 1)
-
-    # look up if email exists
-    if result["totalSize"] >= 1:
-        return {'data': 'Your verification email has been successly sent',
-                'status': 'good'}
-    else:
-        return {'data': 'Your Email is not registered in our databased.',
-                'status': 'bad'}, 403
+	if (result["totalSize"] == 1):
+		return {"verified": bool(1)} # true
+	
+	
+	return {"verified": bool(0)} # false
 
 
 if __name__ == '__main__':
