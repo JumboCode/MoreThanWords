@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert, Image, processColor } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert, Image } from 'react-native';
 import Constants from 'expo-constants';
 
 class PasswordResetPage extends React.Component {
@@ -35,9 +34,10 @@ class PasswordResetPage extends React.Component {
             if (!response.ok) {
                 Alert.alert("Error requesting an email to be sent. Please try again soon.")
             } else {
-                Alert.alert("Success!", "Please check your email for a reset link."); 
+                Alert.alert("Success!", "If your email is in our Database, we have just sent you an email."); 
             }
         } catch (e) {
+            console.log(e);
             Alert.alert("Error requesting an email to be sent. Please try again soon.")
         }
     }
