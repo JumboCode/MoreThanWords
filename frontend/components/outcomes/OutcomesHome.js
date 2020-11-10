@@ -94,7 +94,7 @@ class OutcomesHome extends React.Component {
                     <FlatList 
                         style={this.state.styles.listStyle}
                         data={this.state.data}
-                        renderItem={({ item, index }) => {
+                        renderItem={({ item }) => {
                             return (
                                 <Outcome data={[item]}/>
                             );
