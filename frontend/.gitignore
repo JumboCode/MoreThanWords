@@ -12,6 +12,7 @@ web-build/
 app.config.js
 *.log
 auth0-configuration.js
+.env
 
 # macOS
 .DS_Store
