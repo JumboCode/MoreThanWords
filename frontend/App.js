@@ -9,11 +9,14 @@ import HomeScreen from './components/pod_components/HomeScreen.js';
 import TraineePodScreen from './components/pod_components/TraineePod.js';
 import AssociatePodScreen from './components/pod_components/AssociatePod.js';
 import PartnerPodScreen from './components/pod_components/PartnerPod.js';
+import Checkbox from './components/pod_components/checkbox'
 
 const Stack = createStackNavigator();
 
 export default function MainStackNavigator() {          
     return (
+        <div>
+        <Checkbox />
        <NavigationContainer>
            <Stack.Navigator initialRouteName="Home">
                <Stack.Screen name="Home" component={HomeScreen} />
@@ -23,6 +26,7 @@ export default function MainStackNavigator() {
                <Stack.Screen name="Random Screen" component={RandomScreen} />
             </Stack.Navigator>
         </NavigationContainer>
+        </div>
     );
 }
 
