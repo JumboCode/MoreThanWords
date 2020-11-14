@@ -38,11 +38,13 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(242, 242, 242, 0.5)"
     },
     titleStyle: {
+        flex: 35,
         fontSize: 18,
         fontWeight: "500",
         color: "#3F3F3F"
     },
     arrowStyle: {
+        flex: 1,
         fontSize: 15,
         color: "#3F3F3F"
     }

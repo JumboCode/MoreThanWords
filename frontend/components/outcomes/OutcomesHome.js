@@ -14,7 +14,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, FlatList } from 'react-native';
-import { Header, Content, Container, Button, Icon, Left, Body } from 
+import { Header, Content, Container, Button, Icon, Left, Right, Body, Title } from 
     'native-base';
 import Outcome from './Outcome';
 
@@ -34,7 +34,8 @@ class OutcomesHome extends React.Component {
                 titleStyle: {
                     color: "#3F3F3F",
                     fontSize: 20,
-                    fontWeight: "500"
+                    fontWeight: "500",
+                    flex: 1
                 },
                 backButtonStyle: {
                     color: "#3F3F3F"
@@ -83,11 +84,17 @@ class OutcomesHome extends React.Component {
                             />
                         </Button>
                     </Left>
-                    <Body>
-                        <Text style={this.state.styles.titleStyle}>
+                    <Body style={{flex: 1}}>
+                        {/* <Text style={this.state.styles.titleStyle}>
                             Career Pathway
-                        </Text>
+                        </Text> */}
+                        <Title>Career Pathway</Title>
                     </Body>
+                    <Right style={{flex: 1}}>
+                        <Text>
+                            Ex
+                        </Text>
+                    </Right>
                 </Header>
 
                 <Content>
