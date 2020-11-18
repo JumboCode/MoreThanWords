@@ -31,23 +31,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 10
     },
-    container: {
+    contentStyle: {
         flexDirection: "column",
         paddingLeft: 15,
         paddingRight: 5,
         backgroundColor: "rgba(242, 242, 242, 0.5)"
     },
-    titleStyle: {
-        flex: 35,
-        fontSize: 18,
-        fontWeight: "500",
-        color: "#3F3F3F"
-    },
-    arrowStyle: {
-        flex: 1,
-        fontSize: 15,
-        color: "#3F3F3F"
-    }
 });
 
 const Outcome = (props) => {
@@ -77,27 +66,9 @@ const Outcome = (props) => {
     return (
         <Accordion
             style={styles.accordion}
+            expanded={0}
             dataArray={props.data ? props.data : defaultData}
             headerStyle={styles.headerStyle}
-            renderHeader={(item, expanded) => {
-                return (
-                    <View style={styles.headerStyle}>
-                        <Text style={styles.titleStyle}>
-                            {item.title}
-                        </Text>
-                        { expanded ? 
-                            <Icon
-                                style={styles.arrowStyle}
-                                name="ios-arrow-up"
-                            /> : 
-                            <Icon
-                                style={styles.arrowStyle}
-                                name="ios-arrow-down"
-                            />
-                        }
-                    </View>
-                );
-            }}
             renderContent={(taskListObject) => {
                 const itemComponents = taskListObject.content.map(
                     (taskObj) =>
@@ -109,7 +80,7 @@ const Outcome = (props) => {
                 );
                 return (
                     <View
-                        style={styles.container}> 
+                        style={styles.contentStyle}> 
                         {itemComponents}
                     </View>
                 );

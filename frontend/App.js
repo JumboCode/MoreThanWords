@@ -32,6 +32,8 @@ import TraineePodScreen from './components/pod_components/TraineePod.js';
 import AssociatePodScreen from './components/pod_components/AssociatePod.js';
 import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 import LoginScreen from './components/LoginPage.js';
+import OutcomesHome from './components/outcomes/OutcomesHome.js';
+import OutcomesScreen from './components/outcomes/OutcomesScreen.js';
 
 import { getName, isTokenValid, removeToken } from "./utils/auth";
 
@@ -87,7 +89,8 @@ class MainStackNavigator extends React.Component {
                         <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
                         <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
                         <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
-                        <Stack.Screen name="Random Screen" component={RandomScreen} />
+                        <Stack.Screen name="Random Screen" component={OutcomesScreen} />
+                        {/* <Stack.Screen name="Random Screen" component={RandomScreen} /> */}
                         </>
                     ) : (
                         /* Screens for signed out users */
