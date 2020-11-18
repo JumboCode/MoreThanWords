@@ -2,42 +2,22 @@ import React, {useRef, useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Animated } from 'react-native';
 import Constants from 'expo-constants';
 
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
-
-const ProgressBar = () => {
+const ProgressBar = (props) => {
   let animation = useRef(new Animated.Value(0));
   // hard-code for now
   // TODO: fetch from the backend
-  let progress = 8;
-  let total_task = 16;
+  // let progress = 8;
+  // let total_task = 16;
 
   useEffect(() => {
     Animated.timing(animation.current, {
-      toValue: progress,
+      toValue: props.progress,
       duration: 1
     }).start();
   },[progress])
 
   const width = animation.current.interpolate({
-    inputRange: [0, total_task],
+    inputRange: [0, props.total_tasks],
     outputRange: ["0%", "100%"],
     extrapolate: "clamp"
   })
