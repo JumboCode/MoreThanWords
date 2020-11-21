@@ -3,8 +3,7 @@ from flask_cors import CORS
 import os
 from simple_salesforce import Salesforce, format_soql
 
-
-sf = Salesforce(username='titapapunne@gmail.com',password='6Tj4DlqskZSb',security_token='ZXNQA0bvcVWJ0eiulugR9gBej')
+sf = Salesforce(username=os.environ['SALESFORCE_USERNAME'],password=os.environ['SALESFORCE_PASSWORD'],security_token=os.environ['SALESFORCE_SECURITY_TOKEN'])
 
 app = Flask(__name__)
 CORS(app)
