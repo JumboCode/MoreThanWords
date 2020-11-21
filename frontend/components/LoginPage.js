@@ -91,16 +91,21 @@ export default class LoginPage extends React.Component {
         const code_verifier = base64URLEncode(base64String);
         const code_challenge = base64URLEncode(await sha256(code_verifier));
         const redirectUri = AuthSession.makeRedirectUri({ useProxy });
+        console.log(redirectUri);
         const authenticationOptions = {
-            redirectUri,
+            redirectUri: redirectUri,
             responseType: 'code',
             codeChallenge: code_challenge,
             codeChallengeMethod: 'S256',
             clientId: auth0ClientId,
-            redirect_uri: redirectUri,
             scopes: ["openid", "profile"],
             audience: Constants.manifest.extra.api_audience,
             state,
+            extraParams: {
+                // ideally, this will be a random value
+                nonce: "nonce",
+                prompt: "login",
+            },
         };
         const discovery = AuthSession.fetchDiscoveryAsync(auth0_domain);
         const request = await AuthSession.loadAsync(authenticationOptions, discovery);
