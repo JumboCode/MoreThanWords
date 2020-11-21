@@ -15,7 +15,7 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.blockText}>
                     Trainee 
                 </Text>
-                <ProgressBar />
+                <ProgressBar progress={4} total_tasks={7} />
             </TouchableOpacity>
           
             <TouchableOpacity 
@@ -25,7 +25,7 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.blockText}>
                     Associate 
                 </Text>
-                <ProgressBar />
+                <ProgressBar progress={4} total_tasks={11} />
             </TouchableOpacity>
         
             <TouchableOpacity 
@@ -35,7 +35,7 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.blockText}>
                     Partner 
                 </Text>
-                <ProgressBar />
+                <ProgressBar progress={7} total_tasks={9} />
             </TouchableOpacity>
         </SafeAreaView>
     );
