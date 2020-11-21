@@ -23,7 +23,8 @@ def handle_auth_error(ex):
 
 @app.route("/auth-required")
 @requires_auth
-def sample():
+def sample(user):
+    print(user)
     return "OK"
 
 
