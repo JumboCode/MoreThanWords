@@ -107,7 +107,7 @@ export default class LoginPage extends React.Component {
                 prompt: "login",
             },
         };
-        const discovery = AuthSession.fetchDiscoveryAsync(auth0_domain);
+        const discovery = await AuthSession.fetchDiscoveryAsync(auth0_domain);
         const request = await AuthSession.loadAsync(authenticationOptions, discovery);
         this.setState({
             request: request,
@@ -116,6 +116,7 @@ export default class LoginPage extends React.Component {
     }
 
     signIn = async () => {
+        console.log(useProxy);
         this.state.request.promptAsync({ useProxy });
     }
 
