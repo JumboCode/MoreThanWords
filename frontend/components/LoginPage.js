@@ -117,7 +117,7 @@ export default class LoginPage extends React.Component {
 
     signIn = async () => {
         console.log(useProxy);
-        this.state.request.promptAsync({ useProxy });
+        this.state.request.promptAsync(null, { useProxy });
     }
 
     render() {
