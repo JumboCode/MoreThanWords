@@ -2,8 +2,24 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
+import axios from 'axios';
 
 import ProgressBar from '../ProgressBar.js';
+
+// TODO: Optionally the request above could also be done as
+// axios.get('/calculateProgressBar', {
+//     params: {
+//       ID: 12345
+//     }
+//   })
+//   .then(function (response) {
+//     console.log(response);
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
+
+// call this : componentWillMount
 
 export default function HomeScreen({ navigation }) {
     return (

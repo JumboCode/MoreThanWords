@@ -31,7 +31,7 @@ def verify():
 	
 	return {"verified": bool(0)} # false
 
-# @app.route("/calculateProgressBar")
+@app.route("/calculateProgressBar")
 def outcomes():
     email = request.args.get('email')
     firstname = request.args.get('firstname')
@@ -39,10 +39,10 @@ def outcomes():
     name = firstname + " " + lastname 
     print("user name: " + name)
 
-    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c FROM Trainee_POD_Map__c WHERE (email = {email_value} AND name={full_name})", 
+    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c,TR_Competency_Outcomes__c,	TR_LifeEssentials_Outcomes__c  FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})", 
                                            email_value = email, full_name=name))
-
-    print(outcomes_result)
+    print(outcomes_result['records'][0]['TR_CareerExpl_Outcomes__c'])
+    return outcomes_result
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
