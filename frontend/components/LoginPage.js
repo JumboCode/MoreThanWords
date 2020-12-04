@@ -2,7 +2,7 @@
 import * as AuthSession from "expo-auth-session";
 import jwtDecode from "jwt-decode";
 import * as React from "react";
-import { Alert, Button, Platform, StyleSheet, Text, View, Modal, ActivityIndicator } from "react-native";
+import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
 import Constants from 'expo-constants';
 import { setItemAsync } from 'expo-secure-store';
 import LoadingModal from "./LoadingModal";
