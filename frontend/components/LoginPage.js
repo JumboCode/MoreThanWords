@@ -23,38 +23,10 @@ const authorizationEndpoint = auth0_domain + "/authorize";
 
 const useProxy = Platform.select({ web: false, default: true });
 
-/********** BEGIN PKCE Challenge Infrusture **********/
-// ref: https://chrisfrewin.medium.com/auth0-expo-and-react-native-authorization-code-grant-flow-with-pkce-d612d098f5f3
-// function to encode the encrypted thing
-function generateShortUUID() {
-    return Math.random()
-        .toString(36)
-        .substring(2, 15);
-}
-
-function base64URLEncode(str) {
-    return str.toString('base64')
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
-}
-
-async function sha256(buffer) {
-    return await Crypto.digestStringAsync(
-        Crypto.CryptoDigestAlgorithm.SHA256,
-        buffer,
-        { encoding: Crypto.CryptoEncoding.BASE64 }
-    );
-}
-
-
-/********** END PKCE Challenge Infrusture **********/
 
 export default class LoginPage extends React.Component {
     state = {
-        name: null,
-        request: null,
-        result: null
+        name: null,        // user's name
     };
     
     async componentDidUpdate() {
@@ -79,28 +51,22 @@ export default class LoginPage extends React.Component {
                 // stores the token in SecureStore
                 setItemAsync("access_token", id_token).then(() => {
                     refresh();
+                    console.log(this.state.result.params);
                 });
             }
         }
     }
-
-    async componentDidMount() {
-        const state = generateShortUUID();
-        const randomBytes = await Random.getRandomBytesAsync(32);
-        const base64String = Buffer.from(randomBytes).toString('base64');
-        const code_verifier = base64URLEncode(base64String);
-        const code_challenge = base64URLEncode(await sha256(code_verifier));
+    
+    signIn = async () => {
         const redirectUri = AuthSession.makeRedirectUri({ useProxy });
-        console.log(redirectUri);
         const authenticationOptions = {
             redirectUri: redirectUri,
             responseType: 'code',
-            codeChallenge: code_challenge,
+            //codeChallenge: code_challenge,
             codeChallengeMethod: 'S256',
             clientId: auth0ClientId,
-            scopes: ["openid", "profile"],
+            scopes: ["openid", "profile", "offline_access"],
             audience: Constants.manifest.extra.api_audience,
-            state,
             extraParams: {
                 // ideally, this will be a random value
                 nonce: "nonce",
@@ -109,15 +75,29 @@ export default class LoginPage extends React.Component {
         };
         const discovery = await AuthSession.fetchDiscoveryAsync(auth0_domain);
         const request = await AuthSession.loadAsync(authenticationOptions, discovery);
-        this.setState({
-            request: request,
-        });
-        console.log("done!!!!!!!!!");
-    }
+        const code_verifier = request.codeVerifier;
 
-    signIn = async () => {
-        console.log(useProxy);
-        this.state.request.promptAsync(null, { useProxy });
+        const code_response = await request.promptAsync(null, { useProxy });
+        if (!code_response || !code_response.params || !code_response.params.code ) {
+            Alert.alert("Server Error", "Something wrong happened when retrieving your credentials. Please try again soon.");
+            return;
+        } else if (!code_response.params.state || code_response.params.state != request.state) {
+            Alert.alert("Server Error", "Could not verify the authenticity of the login server. Please try again soon.")
+        }
+
+        const access_token_req = {
+            clientId: auth0ClientId,
+            code: code_response.params.code,
+            redirectUri: redirectUri,
+            scopes: ["openid", "profile", "offline_access"],
+            extraParams: {
+                "code_verifier": code_verifier
+            }
+        };
+        const token_response = await AuthSession.exchangeCodeAsync(access_token_req, discovery);
+        console.log(token_response);
+
+
     }
 
     render() {
@@ -127,7 +107,6 @@ export default class LoginPage extends React.Component {
                     <Text style={styles.title}>You are logged in, {this.state.name}!</Text>
                 ) : (
                     <Button
-                        disabled={!this.state.request}
                         title="Log in with Auth0"
                         onPress={this.signIn}
                     />
