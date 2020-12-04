@@ -3,6 +3,7 @@ require('dotenv').config();
 export default {
   name: 'MoreThanWords',
   version: '1.0.0',
+  scheme: "morethanwords",
   extra: {
     apiUrl: 'http://YOUR.LOCAL.IP.ADDRESS:5000/',
     // apiUrl: 'https://more-than-words.herokuapp.com/' // PROD url
