@@ -2,12 +2,10 @@
 import * as AuthSession from "expo-auth-session";
 import jwtDecode from "jwt-decode";
 import * as React from "react";
-import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
+import { Alert, Button, Platform, StyleSheet, Text, View, Modal, ActivityIndicator } from "react-native";
 import Constants from 'expo-constants';
 import { setItemAsync } from 'expo-secure-store';
-import { Buffer } from 'buffer';
-import * as Crypto from 'expo-crypto';
-import * as Random from 'expo-random';
+import LoadingModal from "./LoadingModal";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -27,42 +25,16 @@ const useProxy = Platform.select({ web: false, default: true });
 export default class LoginPage extends React.Component {
     state = {
         name: null,        // user's name
+        loading: false     // decides whether to show the loading modal
     };
-    
-    async componentDidUpdate() {
-        if (this.state.result) {
-            if (this.state.result.error) {
-                Alert.alert(
-                    "Authentication error",
-                    result.params.error_description || "something went wrong"
-                );
-                return;
-            }
-            if (this.state.result.type === "success") {
-                console.log(result);
-                // Retrieve the JWT token and decode it
-                const id_token = this.state.result.params.id_token;
-                const access_token = this.state.result.params.id_token;
-                const decoded = jwtDecode(id_token);
 
-                const { name } = decoded;
-                this.setState({ name });
-
-                // stores the token in SecureStore
-                setItemAsync("access_token", id_token).then(() => {
-                    refresh();
-                    console.log(this.state.result.params);
-                });
-            }
-        }
-    }
-    
     signIn = async () => {
+        // prepares the login request.
+        this.setState({loading: true});
         const redirectUri = AuthSession.makeRedirectUri({ useProxy });
         const authenticationOptions = {
             redirectUri: redirectUri,
             responseType: 'code',
-            //codeChallenge: code_challenge,
             codeChallengeMethod: 'S256',
             clientId: auth0ClientId,
             scopes: ["openid", "profile", "offline_access"],
@@ -77,6 +49,8 @@ export default class LoginPage extends React.Component {
         const request = await AuthSession.loadAsync(authenticationOptions, discovery);
         const code_verifier = request.codeVerifier;
 
+        // prompts the user for login
+        this.setState({loading: false});
         const code_response = await request.promptAsync(null, { useProxy });
         if (!code_response || !code_response.params || !code_response.params.code ) {
             Alert.alert("Server Error", "Something wrong happened when retrieving your credentials. Please try again soon.");
@@ -85,6 +59,8 @@ export default class LoginPage extends React.Component {
             Alert.alert("Server Error", "Could not verify the authenticity of the login server. Please try again soon.")
         }
 
+        // gets token from the server
+        this.setState({loading: true});
         const access_token_req = {
             clientId: auth0ClientId,
             code: code_response.params.code,
@@ -95,14 +71,29 @@ export default class LoginPage extends React.Component {
             }
         };
         const token_response = await AuthSession.exchangeCodeAsync(access_token_req, discovery);
-        console.log(token_response);
+        const {accessToken, idToken, refreshToken, issuedAt, expiresIn} = token_response;
+        
 
+        // Retrieve the JWT token and decode it
+        const decoded = jwtDecode(idToken);
+        const { name } = decoded;
 
+        // stores the token in SecureStore (only supported on mobile devices)
+        if (useProxy) {
+            await setItemAsync("id_token", idToken);
+            await setItemAsync("access_token", accessToken);
+            await setItemAsync("expire_time", (issuedAt + expiresIn).toString());
+            await setItemAsync("refresh_token", refreshToken);
+        };
+
+        this.setState({name, loading: false});
+        this.props.refresh();
     }
 
     render() {
         return (
             <View style={styles.container}>
+                <LoadingModal loading={this.state.loading}/>
                 {this.state.name ? (
                     <Text style={styles.title}>You are logged in, {this.state.name}!</Text>
                 ) : (
