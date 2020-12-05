@@ -17,7 +17,7 @@ export default class HomeScreen extends React.Component{
 
     componentDidMount(){
         axios.get(server_add + 'calculateProgressBar', {
-            params: {
+            params: { // Currently using fake data 
                 firstname : 'Fake',
                 lastname : 'F',
                 email: 'fakef@gmail.com'
@@ -27,6 +27,7 @@ export default class HomeScreen extends React.Component{
             console.log(response.data);
             let data = response.data;
             this.setState({
+                // Currently only have fake data on Trainee
                 Trainee_progress: data.records[0].TR_CareerExpl_Outcomes__c + data.records[0].TR_Competency_Outcomes__c + data.records[0].TR_LifeEssentials_Outcomes__c, 
                 Associate_progress: 0,
                 Partner_progress: 0
