@@ -24,8 +24,7 @@ def handle_auth_error(ex):
 @app.route("/auth-required")
 @requires_auth
 def sample(user):
-    print(user)
-    return "OK"
+    return jsonify(user)
 
 
 # route to verify sign up and check whether user who wants to register is 

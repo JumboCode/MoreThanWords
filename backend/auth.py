@@ -13,6 +13,8 @@ from flask import Flask, request, _request_ctx_stack
 from flask_cors import cross_origin
 from jose import jwt
 
+import requests
+
 # load the environment variables.
 from dotenv import load_dotenv
 ENV_FILE = find_dotenv()
@@ -24,7 +26,7 @@ AUTH0_DOMAIN = env.get("AUTH0_DOMAIN")
 API_IDENTIFIER = env.get("API_IDENTIFIER")
 ALGORITHMS = ["RS256"]
 
-AUTH_HEADER_PREFIX = "jwt"
+AUTH_HEADER_PREFIX = "bearer"
 
 # Format error response and append status code.
 class AuthError(Exception):
@@ -78,19 +80,22 @@ def requires_scope(required_scope):
 
 
 def requires_auth(f):
-    """Determines if the access token is valid
+    """
+    Determines if the access token is valid and sets a user object
+    based on the AUTH0 account.
     """
     @wraps(f)
     def decorated(*args, **kwargs):
         token = get_token_auth_header()
         # request user info from auth0
-        user_info = None
+        headers = {'Authorization': "Bearer " + token}
+        r = requests.get(url = AUTH0_DOMAIN + "/userinfo", headers=headers)
 
+        if r.status_code != 200:
+            raise AuthError({"code": "invalid_token",
+                "description": "Your Authorization code is invalid"}, 401)
+        
+        user_info = r.json()
         return f(user=user_info, *args, **kwargs)
 
-        #raise AuthError({"code": "invalid_header",
-        #                "description": "Unable to find appropriate key"}, 401)
     return decorated
-
-
-
