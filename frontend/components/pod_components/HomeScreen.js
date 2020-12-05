@@ -6,55 +6,71 @@ import axios from 'axios';
 
 import ProgressBar from '../ProgressBar.js';
 
-// TODO: Optionally the request above could also be done as
-// axios.get('/calculateProgressBar', {
-//     params: {
-//       ID: 12345
-//     }
-//   })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
+const server_add = Constants.manifest.extra.apiUrl;
 
-// call this : componentWillMount
+export default class HomeScreen extends React.Component{
+    state = {
+        Trainee_progress: 0, 
+        Associate_progress: 0,
+        Partner_progress: 0
+    };
 
-export default function HomeScreen({ navigation }) {
-    return (
+    componentDidMount(){
+        axios.get(server_add + 'calculateProgressBar', {
+            params: {
+                firstname : 'Fake',
+                lastname : 'F',
+                email: 'fakef@gmail.com'
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            let data = response.data;
+            this.setState({
+                Trainee_progress: data.records[0].TR_CareerExpl_Outcomes__c + data.records[0].TR_Competency_Outcomes__c + data.records[0].TR_LifeEssentials_Outcomes__c, 
+                Associate_progress: 0,
+                Partner_progress: 0
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    render(){
+        return(
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Trainee Pod')}
-            >
-                <Text style={styles.blockText}>
-                    Trainee 
-                </Text>
-                <ProgressBar progress={4} total_tasks={7} />
-            </TouchableOpacity>
-          
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Associate Pod')}
-            >
-                <Text style={styles.blockText}>
-                    Associate 
-                </Text>
-                <ProgressBar progress={4} total_tasks={11} />
-            </TouchableOpacity>
-        
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Partner Pod')}
-            >                
-                <Text style={styles.blockText}>
-                    Partner 
-                </Text>
-                <ProgressBar progress={7} total_tasks={9} />
-            </TouchableOpacity>
-        </SafeAreaView>
-    );
+        <TouchableOpacity 
+            style={styles.block} 
+            onPress={() => this.props.navigation.navigate('Trainee Pod')}
+        >
+            <Text style={styles.blockText}>
+                Trainee 
+            </Text>
+            <ProgressBar progress={this.state.Trainee_progress} total_tasks={7} />
+        </TouchableOpacity>
+      
+        <TouchableOpacity 
+            style={styles.block} 
+            onPress={() => this.props.navigation.navigate('Associate Pod')}
+        >
+            <Text style={styles.blockText}>
+                Associate 
+            </Text>
+            <ProgressBar progress={this.state.Associate_progress} total_tasks={11} />
+        </TouchableOpacity>
+    
+        <TouchableOpacity 
+            style={styles.block} 
+            onPress={() => this.props.navigation.navigate('Partner Pod')}
+        >                
+            <Text style={styles.blockText}>
+                Partner 
+            </Text>
+            <ProgressBar progress={this.state.Partner_progress} total_tasks={9} />
+        </TouchableOpacity>
+    </SafeAreaView>);
+    }
 }
 
 const styles = StyleSheet.create({
