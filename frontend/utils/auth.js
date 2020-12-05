@@ -3,11 +3,14 @@ import Constants from 'expo-constants';
 import { getItemAsync, deleteItemAsync } from 'expo-secure-store';
 import { revokeAsync } from 'expo-auth-session';
 
-const ACCESS_KEY = "access_token";
+const ID_KEY = "id_token";
+const ACCESS_TOKEN_KEY = "access_token";
+const EXPIRE_TIME_KEY = "expire_time";
+const REFRESH_TOKEN_KEY = "refresh_token";
 
 /* returns raw jwt. */
 export async function getjwt() {
-    return await getItemAsync(ACCESS_KEY);
+    return await getItemAsync(ID_KEY);
 }
 
 /* returns the name field of the jwt. */
@@ -44,5 +47,9 @@ export async function isTokenValid() {
 
 /* removed token, effectively logging out */
 export async function removeToken() {
-    await deleteItemAsync(ACCESS_KEY);
+    // TODO revoke
+    await deleteItemAsync(ID_KEY);
+    await deleteItemAsync(EXPIRE_TIME_KEY);
+    await deleteItemAsync(ACCESS_TOKEN_KEY);
+    await deleteItemAsync(REFRESH_TOKEN_KEY);
 }
