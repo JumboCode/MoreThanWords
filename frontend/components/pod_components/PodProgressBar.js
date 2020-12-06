@@ -2,62 +2,36 @@ import React, {useRef, useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Animated } from 'react-native';
 import Constants from 'expo-constants';
 
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
+const PodProgressBar = (props) => {
+    let animation = useRef(new Animated.Value(0));
+    useEffect(() => {
+        Animated.timing(animation.current, {
+            toValue: props.progress,
+            duration: 900,       //progress bar animation speed
+            useNativeDriver: false,
+        }).start();
+    },[props.progress])
 
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
+    const width = animation.current.interpolate({
+        inputRange: [0, props.total_tasks],
+        outputRange: ["0%", "100%"],
+        extrapolate: "clamp"
+    })
 
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
-
-
-const App = () => {
-  let animation = useRef(new Animated.Value(0));
-  const [progress, setProgress] = useState(0);
-  useInterval(() => {
-    if(progress < 100) {
-      setProgress(progress + 5);
-    }
-  }, 1000);
-
-  useEffect(() => {
-    Animated.timing(animation.current, {
-      toValue: progress,
-      duration: 100
-    }).start();
-  },[progress])
-
-  const width = animation.current.interpolate({
-    inputRange: [0, 100],
-    outputRange: ["0%", "100%"],
-    extrapolate: "clamp"
-  })
-  return (
-    <View style={styles.container} >
-      <Text style={styles.progressCount}>
-        {`${progress}%`}
-      </Text>
+    return (
+        <View style={styles.container} >
+            <Text style={styles.progressCount}>
+                {`${props.progress} of ${props.total_tasks}`}
+            </Text>
       
-      <View style={styles.progressBar}>
-        <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27B48F', width }}/>
-      </View>
-    </View>
-  );
+            <View style={styles.progressBar}>
+                <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27B48F', width }}/>
+            </View>
+        </View>
+    );
 }
 
-export default App;
+export default PodProgressBar;
 
 const styles = StyleSheet.create({
     container: {
@@ -79,7 +53,6 @@ const styles = StyleSheet.create({
     progressCount: {
         fontSize: 15,
         fontWeight: 'bold',
-        marginTop: 30,
         marginBottom: 10,
         marginLeft: '85%',
     },

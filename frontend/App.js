@@ -7,8 +7,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './components/pod_components/HomeScreen.js';
 import TraineePodScreen from './components/pod_components/TraineePod.js';
-// import AssociatePodScreen from './components/pod_components/AssociatePod.js';
-// import PartnerPodScreen from './components/pod_components/PartnerPod.js';
+import AssociatePodScreen from './components/pod_components/AssociatePod.js';
+import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 import LoginScreen from './components/LoginPage.js';
 
 import { getName, isTokenValid, removeToken } from "./utils/auth";
@@ -63,8 +63,8 @@ class MainStackNavigator extends React.Component {
                             }}
                         />
                         <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
-                        <Stack.Screen name="Associate Pod" component={TraineePodScreen} />
-                        <Stack.Screen name="Partner Pod" component={TraineePodScreen} />
+                        <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
+                        <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
                         <Stack.Screen name="Random Screen" component={RandomScreen} />
                         </>
                     ) : (

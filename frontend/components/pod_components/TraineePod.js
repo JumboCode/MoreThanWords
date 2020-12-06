@@ -2,43 +2,93 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
+import axios from 'axios';
 
 import PodProgressBar from './PodProgressBar.js';
 
-export default function TraineePodScreen({ navigation }) {
-    return (
-        <SafeAreaView style={styles.container}>
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
-            >
-                <Text style={styles.blockTitle}>
-                    Competencies
-                </Text>   
-                <PodProgressBar />
-            </TouchableOpacity>
+const server_add = Constants.manifest.extra.apiUrl;
+
+export default class TraineePodScreen extends React.Component {
+    /* State variables initalized:
+     * 	  - compet_outcomes: number of completed competency outcomes 
+     * 	  - career_outcomes: number of completed career pathway outcomes
+     * 	  - life_outcomes: number of completed life essential outcomes 
+     */
+    state = {
+        compet_outcomes: 0, 
+        career_outcomes: 0,
+        life_outcomes: 0,
+    };
+
+    /* componentDidMount
+	 * Parameters: none
+	 * Returns: nothing
+	 * Purpose: Get the data from backend and use the info to set states
+     * Note: using fake data for now
+	 */
+    componentDidMount() {
+        axios.get(server_add + '/PodProgressBar', {
+              params: {
+                  firstname: 'Fake',
+                  lastname: 'E',
+                  email: 'fakee@gmail.com',
+              }
+          })
+          .then(response => {
+              console.log(response.data);
+              let data = response.data;
+              this.setState({
+                  compet_outcomes: data.records[0].TR_Competency_Outcomes__c,
+                  career_outcomes: data.records[0].TR_CareerExpl_Outcomes__c,
+                  life_outcomes: data.records[0].TR_LifeEssentials_Outcomes__c,
+              })
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+    }
+    
+    /* render
+	 * Paramaters: none
+	 * Returns: nothing
+	 * Purpose: renders page, which takes backend data from salesforce and 
+     * uses it to calculate progress bars 
+	 */
+    render() {
+        return (
+            <SafeAreaView style={styles.container}>
+                <TouchableOpacity 
+                    style={styles.block} 
+                    onPress={() => this.props.navigation.navigate('Random Screen')}
+                >
+                    <Text style={styles.blockTitle}>
+                        Competencies
+                    </Text>
+                    <PodProgressBar progress={this.state.compet_outcomes} total_tasks={3} />
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                    style={styles.block} 
+                    onPress={() => this.props.navigation.navigate('Random Screen')}
+                >
+                    <Text style={styles.blockTitle}>
+                        Career Pathway
+                    </Text>
+                    <PodProgressBar progress={this.state.career_outcomes} total_tasks={2} />
+                </TouchableOpacity>
             
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
-            >
-                <Text style={styles.blockTitle}>
-                    Career Pathway
-                </Text>
-                <PodProgressBar />
-            </TouchableOpacity>
-        
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
-            >                
-                <Text style={styles.blockTitle}>
-                    Life Essentials / Support Network
-                </Text>
-                <PodProgressBar />
-            </TouchableOpacity>
-        </SafeAreaView>
-    );
+                <TouchableOpacity 
+                    style={styles.block} 
+                    onPress={() => this.props.navigation.navigate('Random Screen')}
+                >                
+                    <Text style={styles.blockTitle}>
+                        Life Essentials / Support Network
+                    </Text>
+                    <PodProgressBar progress={this.state.life_outcomes} total_tasks={2} />
+                </TouchableOpacity>
+            </SafeAreaView>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
