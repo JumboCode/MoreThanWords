@@ -27,7 +27,6 @@ def verify():
     result = sf.query(format_soql("SELECT Id, Email FROM Contact WHERE (email = {email_value} AND name={full_name})", email_value=email, full_name=name))
 
     print(result["totalSize"] == 1)
-    print(result)
 
     if (result["totalSize"] == 1):
         return {"verified": bool(1)} # true
@@ -44,7 +43,7 @@ def trainee_outcomes():
     name = firstname + " " + lastname
     print("name: ", name)
 
-    # salesforce query based on the email, firstname & lastname
+    # salesforce query of each completed outcome # in trainee pod, based on the email and name
     outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c, TR_Competency_Outcomes__c, TR_LifeEssentials_Outcomes__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name = {full_name})",
                     email_value = email, full_name = name))
 

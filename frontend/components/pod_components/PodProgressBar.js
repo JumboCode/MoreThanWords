@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Animated } from 'react-native';
 import Constants from 'expo-constants';
 
 const PodProgressBar = (props) => {
+    //Animates the progress bar
     let animation = useRef(new Animated.Value(0));
     useEffect(() => {
         Animated.timing(animation.current, {
@@ -11,7 +12,8 @@ const PodProgressBar = (props) => {
             useNativeDriver: false,
         }).start();
     },[props.progress])
-
+    
+    //Calculates how far the bar goes
     const width = animation.current.interpolate({
         inputRange: [0, props.total_tasks],
         outputRange: ["0%", "100%"],
