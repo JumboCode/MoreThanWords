@@ -36,7 +36,7 @@ def verify():
     return {"verified": bool(0)} # false
 
 @app.route("/PodProgressBar")
-def progressbar():
+def trainee_outcomes():
     # parses arguments that user sent via query string
     email = request.args.get('email')
     firstname = request.args.get('firstname')
@@ -45,7 +45,7 @@ def progressbar():
     print("name: ", name)
 
     # salesforce query based on the email, firstname & lastname
-    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c,TR_Competency_Outcomes__c,	TR_LifeEssentials_Outcomes__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name = {full_name})",
+    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c, TR_Competency_Outcomes__c, TR_LifeEssentials_Outcomes__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name = {full_name})",
                     email_value = email, full_name = name))
 
     return outcomes_result;
