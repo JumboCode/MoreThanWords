@@ -31,6 +31,15 @@ def sample(user):
 # allowed to use the app by checking salesforce database
 @app.route("/verifySignUp")
 def verify():
+	# secret to check if the client is valid
+	secret = request.args.get('secret')
+	correct_secret = os.environ.get('VERIFY_SIGNUP_SECRET')
+	if (not secret or secret != correct_secret):
+		response = jsonify({"code": "invalid_secret",
+						"description": "Access denied."})
+		response.status_code = 401
+		return response
+
 	# parses arguments that user sent via query string
 	email = request.args.get('email')
 	firstname = request.args.get('firstname')
