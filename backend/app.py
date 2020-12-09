@@ -21,7 +21,7 @@ def handle_auth_error(ex):
     return response
 
 
-@app.route("/auth-required")
+@app.route("/userinfo")
 @requires_auth
 def sample(user):
     return jsonify(user)
