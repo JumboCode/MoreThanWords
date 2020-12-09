@@ -22,7 +22,7 @@ def handle_auth_error(ex):
 
 
 @app.route("/userinfo")
-@requires_auth
+@requires_auth(sf)
 def sample(user):
     return jsonify(user)
 
