@@ -6,6 +6,10 @@ import axios from 'axios';
 
 import ProgressBar from '../ProgressBar.js';
 
+const   TRAINEE_TOTAL_OUTCOMES = 7
+const ASSOCIATE_TOTAL_OUTCOMES = 11
+const   PARTNER_TOTAL_OUTCOMES = 9
+
 const server_add = Constants.manifest.extra.apiUrl;
 
 export default class HomeScreen extends React.Component{
@@ -48,7 +52,7 @@ export default class HomeScreen extends React.Component{
             <Text style={styles.blockText}>
                 Trainee 
             </Text>
-            <ProgressBar progress={this.state.Trainee_progress} total_tasks={7} />
+            <ProgressBar progress={this.state.Trainee_progress} total_outcomes={TRAINEE_TOTAL_OUTCOMES} />
         </TouchableOpacity>
       
         <TouchableOpacity 
@@ -58,7 +62,7 @@ export default class HomeScreen extends React.Component{
             <Text style={styles.blockText}>
                 Associate 
             </Text>
-            <ProgressBar progress={this.state.Associate_progress} total_tasks={11} />
+            <ProgressBar progress={this.state.Associate_progress} total_outcomes={ASSOCIATE_TOTAL_OUTCOMES} />
         </TouchableOpacity>
     
         <TouchableOpacity 
@@ -68,7 +72,7 @@ export default class HomeScreen extends React.Component{
             <Text style={styles.blockText}>
                 Partner 
             </Text>
-            <ProgressBar progress={this.state.Partner_progress} total_tasks={9} />
+            <ProgressBar progress={this.state.Partner_progress} total_outcomes={PARTNER_TOTAL_OUTCOMES} />
         </TouchableOpacity>
     </SafeAreaView>);
     }

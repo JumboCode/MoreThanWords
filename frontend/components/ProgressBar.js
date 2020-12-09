@@ -13,7 +13,7 @@ const ProgressBar = (props) => {
   },[props.progress])
 
   const width = animation.current.interpolate({
-    inputRange: [0, props.total_tasks],
+    inputRange: [0, props.total_outcomes],
     outputRange: ["0%", "100%"],
     extrapolate: "clamp"
   })
@@ -24,7 +24,7 @@ const ProgressBar = (props) => {
         <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
       </View>
       <Text>
-        {`${props.progress} of ${props.total_tasks} outcomes achieved`}
+        {`${props.progress} of ${props.total_outcomes} outcomes achieved`}
       </Text>
 
     </View>
