@@ -13,6 +13,7 @@ const   PARTNER_TOTAL_OUTCOMES = 9
 const server_add = Constants.manifest.extra.apiUrl;
 
 export default class HomeScreen extends React.Component{
+    
     state = {
         Trainee_progress: 0, 
         Associate_progress: 0,
@@ -20,7 +21,7 @@ export default class HomeScreen extends React.Component{
     };
 
     componentDidMount(){
-        axios.get(server_add + 'calculateProgressBar', {
+        axios.get(server_add + '/calculateProgressBar', {
             params: { // Currently using fake data 
                 firstname : 'Fake',
                 lastname : 'F',
