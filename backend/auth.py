@@ -49,6 +49,12 @@ def get_user_info(sf, email):
         print(result)
         user_info = result["records"][0]
         return user_info
+    else:
+        # if the salesforce request did not return any matching user
+        raise AuthError({"code": "not_found_in_salesforce",
+                        "description":
+                            "The current user is not found in the MoreThanWords Database."}, 
+                            401)
 
 
 def get_token_auth_header():
@@ -113,7 +119,8 @@ def requires_auth(sf):
             
             auth_info = r.json()
 
-            # assuming that email is in the 'name' field.
+            # assuming that email is in the 'name' field, due to 
+            # how auth0 handles signup.
             user_info = get_user_info(sf, auth_info['name'])
 
             return f(user=user_info, *args, **kwargs)
