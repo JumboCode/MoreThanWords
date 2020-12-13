@@ -6,6 +6,10 @@ import axios from 'axios';
 
 import PodProgressBar from './PodProgressBar.js';
 
+const COMPET_TOTAL_OUTCOMES = 3
+const CAREER_TOTAL_OUTCOMES = 2
+const LIFE_TOTAL_OUTCOMES = 2
+
 const server_add = Constants.manifest.extra.apiUrl;
 
 export default class TraineePodScreen extends React.Component {
@@ -64,7 +68,7 @@ export default class TraineePodScreen extends React.Component {
                     <Text style={styles.blockTitle}>
                         Competencies
                     </Text>
-                    <PodProgressBar progress={this.state.compet_outcomes} total_tasks={3} />
+                    <PodProgressBar progress={this.state.compet_outcomes} total_tasks={TRAINEE_TOTAL_OUTCOMES} />
                 </TouchableOpacity>
                 
                 <TouchableOpacity 
@@ -74,7 +78,7 @@ export default class TraineePodScreen extends React.Component {
                     <Text style={styles.blockTitle}>
                         Career Pathway
                     </Text>
-                    <PodProgressBar progress={this.state.career_outcomes} total_tasks={2} />
+                    <PodProgressBar progress={this.state.career_outcomes} total_tasks={CAREER_TOTAL_OUTCOMES} />
                 </TouchableOpacity>
             
                 <TouchableOpacity 
@@ -84,7 +88,7 @@ export default class TraineePodScreen extends React.Component {
                     <Text style={styles.blockTitle}>
                         Life Essentials / Support Network
                     </Text>
-                    <PodProgressBar progress={this.state.life_outcomes} total_tasks={2} />
+                    <PodProgressBar progress={this.state.life_outcomes} total_tasks={LIFE_TOTAL_OUTCOMES} />
                 </TouchableOpacity>
             </SafeAreaView>
         );
