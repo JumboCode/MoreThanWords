@@ -1,6 +1,6 @@
 # auth.py
 # Part of: MTW web project
-# ref from 
+# ref from
 # https://github.com/auth0-samples/auth0-python-api-samples/
 
 from functools import wraps
@@ -11,7 +11,6 @@ from six.moves.urllib.request import urlopen
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, request, _request_ctx_stack
 from flask_cors import cross_origin
-from jose import jwt
 
 from simple_salesforce import format_soql
 
@@ -44,7 +43,7 @@ def get_user_info(sf, email):
     result = sf.query(format_soql(
         "SELECT Email,FirstName,LastName FROM Contact WHERE (MTW_Role__c = 'MTW Young Adult' AND email = {email_value})",
         email_value=email))
-    
+
     if (result["totalSize"] == 1 and result["records"]):
         print(result)
         user_info = result["records"][0]
@@ -53,7 +52,7 @@ def get_user_info(sf, email):
         # if the salesforce request did not return any matching user
         raise AuthError({"code": "not_found_in_salesforce",
                         "description":
-                            "The current user is not found in the MoreThanWords Database."}, 
+                            "The current user is not found in the MoreThanWords Database."},
                             401)
 
 
@@ -86,20 +85,6 @@ def get_token_auth_header():
     return token
 
 
-def requires_scope(required_scope):
-    """Determines if the required scope is present in the access token
-    Args:
-        required_scope (str): The scope required to access the resource
-    """
-    token = get_token_auth_header()
-    unverified_claims = jwt.get_unverified_claims(token)
-    if unverified_claims.get("scope"):
-        token_scopes = unverified_claims["scope"].split()
-        for token_scope in token_scopes:
-            if token_scope == required_scope:
-                return True
-    return False
-
 def requires_auth(sf):
     def requires_auth_withfunc(f):
         """
@@ -112,14 +97,14 @@ def requires_auth(sf):
             # request user info from auth0
             headers = {'Authorization': "Bearer " + token}
             r = requests.get(url = AUTH0_DOMAIN + "/userinfo", headers=headers)
-            
+
             if r.status_code != 200:
                 raise AuthError({"code": "invalid_token",
-                    "description": "Your Authorization code is invalid"}, 401)
-            
+                    "description": "Your Authorization token is invalid"}, 401)
+
             auth_info = r.json()
 
-            # assuming that email is in the 'name' field, due to 
+            # assuming that email is in the 'name' field, due to
             # how auth0 handles signup.
             user_info = get_user_info(sf, auth_info['name'])
 
