@@ -58,6 +58,17 @@ def verify():
 	
 	return {"verified": bool(0)} # false
 
+@app.route("/calculateProgressBar")
+def outcomes():
+    email = request.args.get('email')
+    firstname = request.args.get('firstname')
+    lastname = request.args.get('lastname')
+    name = firstname + " " + lastname 
+
+    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c,TR_Competency_Outcomes__c,	TR_LifeEssentials_Outcomes__c  FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})", 
+                                           email_value = email, full_name=name))
+   
+    return outcomes_result
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
