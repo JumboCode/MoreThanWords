@@ -16,3 +16,4 @@ requests==2.23.0
 six==1.12.0
 Werkzeug==0.16.0
 simple_salesforce
+python-dotenv
