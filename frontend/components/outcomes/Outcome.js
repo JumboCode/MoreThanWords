@@ -12,9 +12,12 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, LogBox } from 'react-native';
 import { Accordion, Icon } from 'native-base';
 import Task from './Task';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const styles = StyleSheet.create({
     accordion: {
@@ -66,6 +69,7 @@ const Outcome = (props) => {
     return (
         <Accordion
             style={styles.accordion}
+            useNativeDriver={true}
             expanded={0}
             dataArray={props.data ? props.data : defaultData}
             headerStyle={styles.headerStyle}

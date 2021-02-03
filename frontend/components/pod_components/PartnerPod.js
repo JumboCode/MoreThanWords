@@ -12,7 +12,7 @@ export default function PartnerPodScreen({ navigation }) {
             
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
+                onPress={() => navigation.navigate('Outcomes')}
             >
                 <Text style={styles.blockText}>
                     Competencies
@@ -23,7 +23,7 @@ export default function PartnerPodScreen({ navigation }) {
             
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
+                onPress={() => navigation.navigate('Outcomes')}
             >
                 <Text style={styles.blockText}>
                     Career Pathway
@@ -33,7 +33,7 @@ export default function PartnerPodScreen({ navigation }) {
         
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
+                onPress={() => navigation.navigate('Outcomes')}
             >
                 <Text style={styles.blockText}>
                     Life Essentials/ Support Network
