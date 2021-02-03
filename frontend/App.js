@@ -46,7 +46,7 @@ function componentWithRefreshFunc(Component, refresh_func) {
     }
 }
 
-class MainStackNavigator extends React.Component {       
+class MainStackNavigator extends React.Component {
     state = {
         loggedIn: false
     };
@@ -67,7 +67,7 @@ class MainStackNavigator extends React.Component {
     componentDidMount() {
         this.refreshLoginState();
     }
-    
+
     render() {
         return (
             <NavigationContainer>
@@ -75,48 +75,47 @@ class MainStackNavigator extends React.Component {
                     {this.state.loggedIn ? (
                         /* Screens for logged in users */
                         <>
-                        <Stack.Screen 
-                            name="Home" 
-                            component={HomeScreen} 
-                            options={{ 
-                                headerRight: () => 
-                                    <TouchableOpacity onPress={this.logout} style={{marginRight: 16}}>
-                                        <Text>Log Out</Text>
-                                    </TouchableOpacity>,
-                                animationEnabled: false
-                            }}
-                        />
-                        <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
-                        <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
-                        <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
-                        <Stack.Screen name="Outcomes" component={OutcomesScreen} />
-                        {/* <Stack.Screen name="Random Screen" component={RandomScreen} /> */}
+                            <Stack.Screen
+                                name="Pods"
+                                component={HomeScreen}
+                                options={{
+                                    headerRight: () =>
+                                        <TouchableOpacity onPress={this.logout} style={{marginRight: 16}}>
+                                            <Text>Log Out</Text>
+                                        </TouchableOpacity>,
+                                    animationEnabled: false
+                                }}
+                            />
+                            <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
+                            <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
+                            <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
+                            <Stack.Screen name="Random Screen" component={RandomScreen} />
                         </>
                     ) : (
                         /* Screens for signed out users */
-                        <Stack.Screen 
-                            name="Login Screen" 
+                        <Stack.Screen
+                            name="Login Screen"
                             component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
                             options={{
                                 animationEnabled: false,
                             }}
                         />
                     )}
-                 </Stack.Navigator>
-             </NavigationContainer>
-         );
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
     }
 }
 
 function RandomScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-          When the competencies screen, career pathway screen, and life 
-          essential screens get set up, replace this screen with them.
-      </Text>
-    </View>
-  );
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>
+                When the competencies screen, career pathway screen, and life
+                essential screens get set up, replace this screen with them.
+            </Text>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
