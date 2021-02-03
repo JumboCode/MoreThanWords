@@ -89,7 +89,7 @@ class MainStackNavigator extends React.Component {
                         <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
                         <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
                         <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
-                        <Stack.Screen name="Random Screen" component={OutcomesScreen} />
+                        <Stack.Screen name="Outcomes" component={OutcomesScreen} />
                         {/* <Stack.Screen name="Random Screen" component={RandomScreen} /> */}
                         </>
                     ) : (
