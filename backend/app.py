@@ -8,8 +8,8 @@ from auth import AuthError, requires_auth
 
 
 # global connection to Salesforce so we don't need to connect everytime, CHANGE TO ENV VARIABLE OR take  
-# sf = Salesforce(username=os.environ['SALESFORCE_USERNAME'],password=os.environ['SALESFORCE_PASSWORD'],security_token=os.environ['SALESFORCE_SECURITY_TOKEN'])
-sf = Salesforce(username="titapapunne@gmail.com",password="6Tj4DlqskZSb",security_token="ZXNQA0bvcVWJ0eiulugR9gBej")
+sf = Salesforce(username=os.environ['SALESFORCE_USERNAME'],password=os.environ['SALESFORCE_PASSWORD'],security_token=os.environ['SALESFORCE_SECURITY_TOKEN'])
+
 app = Flask(__name__)
 CORS(app)
 
@@ -17,10 +17,15 @@ CORS(app)
 def youthCheck():
     Id = "0030d00002VUcwSAAT"
     desc = sf.Trainee_POD_Map__c.describe()
-    field_names = [field['name'] for field in desc['fields']]
-    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
-    result = sf.query(format_soql((soql + " WHERE Contact__c={youth_id}"), youth_id=Id))
-    return result
+    field_names = [(field['name'], field['label']) for field in desc['fields']]
+    # label_names = [field['label'] for field in desc['fields']]
+    # field_names = [field['name'] for field in desc['fields']]
+    # print(label_names)
+    # print(dict(field_names))
+    # soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
+    # result = sf.query(format_soql((soql + " WHERE Contact__c={youth_id}"), youth_id=Id))
+    # return result
+    return dict(field_names)
 
 # Error handler for the Auth Error
 @app.errorhandler(AuthError)

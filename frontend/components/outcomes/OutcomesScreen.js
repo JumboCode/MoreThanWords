@@ -40,6 +40,7 @@ const titles = ["Choose a Pathway to Pursue After MTW", ""];
 
 let data = [
     {
+        id: "DEP",
         title: "Set Initial Goals",
         content: [
             {
@@ -55,6 +56,7 @@ let data = [
         ]
     },
     {
+        id: "DEP",
         title: "Choose a Pathway to Pursue After MTW",
         content: [
             {
@@ -75,6 +77,7 @@ let data = [
         ]
     },
     {
+        id: "DEP",
         title: "Dependability",
         content: [
             {
@@ -95,6 +98,7 @@ let data = [
         ]
     },
     {
+        id: "DEP",
         title: "Respect",
         content: [
             {
@@ -129,40 +133,69 @@ export default function OutcomesScreen({ navigation }) {
                     .then(response => response.json())
                     .then(data => {
                         // if not verified tell them
-                        console.log(data);
-                        dataFromBackend = data;
-                        let dataFields = dataFromBackend.records[0];
-                        let trDataFields = {};
-                        for (const key in dataFields) {
-                            console.log(key);
-                            if (key.includes("TR") && !key.includes("Outcome")) {
-                                trDataFields[key] = dataFields[key];
-                            }
-                        }
-                        // update data
-                        console.log("Hello");
-                        console.log(trDataFields);
+                        // console.log(data);
+                        // dataFromBackend = data;
+                        // let dataFields = dataFromBackend.records[0];
+                        // let trDataFields = {};
+                        // for (const key in dataFields) {
+                        //     console.log(key);
+                        //     if (key.includes("TR") && !key.includes("Outcome")) {
+                        //         trDataFields[key] = dataFields[key];
+                        //     }
+                        // }
+                        // // update data
+                        // console.log("Hello");
+                        // console.log(trDataFields);
 
-                        let counter = true;
-                        // Once outcome titles are known, replace this
-                        let newData = [{
-                            title: "Example",
-                            content: []
-                        }];
-                        for (const key in trDataFields) {
-                            if (counter) {
-                                // Must be a YDM attribute
-                                newData[0].content.push({
-                                    key: key,
-                                    starIsFilled: trDataFields[key],
+                        // let counter = true;
+                        // // Once outcome titles are known, replace this
+                        // let newData = [{
+                        //     title: "Example",
+                        //     content: []
+                        // }];
+                        // for (const key in trDataFields) {
+                        //     if (counter) {
+                        //         // Must be a YDM attribute
+                        //         newData[0].content.push({
+                        //             key: key,
+                        //             starIsFilled: trDataFields[key],
+                        //         });
+                        //     } else {
+                        //         newData[0].content[newData[0].content.length - 1].checked = trDataFields[key];
+                        //     }
+                        //     counter = !counter;
+                        // }
+                        // console.log(newData);
+                        // setDataTemp(newData);
+                        console.log(data);
+                        let newData = [];
+                        for (const key in data) {
+                            // console.log(key);
+                            if (key.includes("Outcome") && !key.includes("Outcomes")) {
+                                newData.push({
+                                    id: key.substring(0, 3),
+                                    title: data[key],
+                                    content: []
                                 });
-                            } else {
-                                newData[0].content[newData[0].content.length - 1].checked = trDataFields[key];
                             }
-                            counter = !counter;
                         }
+
+                        // console.log(newData);
+
+                        for (const key in data) {
+                            let key_id = key.substring(0, 3);
+                            let index = newData.findIndex(x => x.id === key_id);
+                            if (key.includes("Youth")) {
+                                newData[index].content.push({
+                                    id: key.split("_")[3],
+                                    key: data[key],
+                                    starIsFilled: true, // change later
+                                    checked: true // change later
+                                });
+                            }
+                        }
+
                         console.log(newData);
-                        setDataTemp(newData);
                     })
                     .catch((error) => {
                         console.log(Constants.manifest.extra.apiUrl);
@@ -183,7 +216,7 @@ export default function OutcomesScreen({ navigation }) {
             </Text> */}
             <FlatList 
                 style={styles.listStyle}
-                data={dataTemp}
+                data={data}
                 renderItem={({ item }) => {
                     return (
                         <Outcome data={[item]}/>
