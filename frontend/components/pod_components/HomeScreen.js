@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import axios from 'axios';
+import { getAccessToken } from '../../utils/auth';
 
 import ProgressBar from '../ProgressBar.js';
 

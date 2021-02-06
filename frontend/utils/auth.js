@@ -1,12 +1,14 @@
 import jwtDecode from "jwt-decode";
 import Constants from 'expo-constants';
-import { getItemAsync, deleteItemAsync } from 'expo-secure-store';
-import { revokeAsync } from 'expo-auth-session';
+import { getItemAsync, deleteItemAsync, setItemAsync } from 'expo-secure-store';
+import { revokeAsync, refreshAsync, fetchDiscoveryAsync } from 'expo-auth-session';
 
 const ID_KEY = "id_token";
 const ACCESS_TOKEN_KEY = "access_token";
 const EXPIRE_TIME_KEY = "expire_time";
 const REFRESH_TOKEN_KEY = "refresh_token";
+const auth0ClientId = Constants.manifest.extra.auth0_client_id;
+const auth0_domain = Constants.manifest.extra.auth0_domain;
 
 /* returns raw jwt. */
 export async function getjwt() {
@@ -43,6 +45,29 @@ export async function isTokenValid() {
         const currtime = Date.now().valueOf() / 1000;
         return currtime < expire_time;
     }
+}
+
+/* renews the id and access token using the refresh token, 
+ * and returns the new access token */
+export async function renewAccessToken() {
+    const discovery = await fetchDiscoveryAsync(auth0_domain);
+    const refresh_req = {
+        refreshToken: await getItemAsync(REFRESH_TOKEN_KEY),
+        clientId: auth0ClientId,
+        scopes: ["openid", "profile"]
+    };
+    const refresh_res = await refreshAsync(refresh_req, discovery);
+    await setItemAsync(ACCESS_TOKEN_KEY, refresh_res.accessToken);
+    await setItemAsync(EXPIRE_TIME_KEY, (refresh_res.issuedAt + refresh_res.expiresIn).toString());
+    await setItemAsync(ID_KEY, refresh_res.idToken);
+    return refresh_res.accessToken;
+}
+
+export async function getAccessToken() {
+    const expire_timestamp = parseInt(await getItemAsync(EXPIRE_TIME_KEY));
+    const date_now = Date.now();
+    if (date_now > expire_timestamp) await renewAccessToken();
+    return await getItemAsync(ACCESS_TOKEN_KEY);
 }
 
 /* removed token, effectively logging out */
