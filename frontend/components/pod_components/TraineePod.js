@@ -31,7 +31,7 @@ export default class TraineePodScreen extends React.Component {
      * Note: using fake data for now
 	 */
     componentDidMount() {
-        axios.get(server_add + '/PodProgressBar', {
+        axios.get(server_add + '/calculateProgressBar', {
               params: {
                   firstname: 'Fake',
                   lastname: 'E',
@@ -68,7 +68,7 @@ export default class TraineePodScreen extends React.Component {
                     <Text style={styles.blockTitle}>
                         Competencies
                     </Text>
-                    <PodProgressBar progress={this.state.compet_outcomes} total_tasks={TRAINEE_TOTAL_OUTCOMES} />
+                    <PodProgressBar progress={this.state.compet_outcomes} total_tasks={COMPET_TOTAL_OUTCOMES} />
                 </TouchableOpacity>
                 
                 <TouchableOpacity 

@@ -1,6 +1,7 @@
 
 # MoreThanWords
 A Tufts JumboCode 2020-2021 project for More than Words.
+
 ## Welcome
 Welcome to the More than Words projects, a project run through [Tufts JumboCode](https://www.jumbocode.org). Here are some steps to get you started.
 
@@ -30,7 +31,8 @@ your Local IP Address which can be found in System Preference > Network
 3. Terminal window 3: `sh startFrontend.sh`
 
 ## Building the Project 
-- React Native (frontend)
+- React Native (frontend, JavaScript)
+
 - Flask (backend, Python)
 - Salesforce
 
@@ -83,7 +85,7 @@ Think your code is good to go? Great! Let's just get someone to take a look at i
  - If you don't see your recently updated branch, go to the `branches` tab and find your branch.
  - Click on `compare and make pull request`
  - Here, you can compare the branches -- your branch vs a specified branch (usually `staging`)
- - If you're good to go, title the PR (Pull Request) with the ticket # and name it the same name as the ticket name.
+ - If you're good to go, title the PR (Pull Request) "mtw-#: ", where # is the ticket number, and the colon is followed by the ticket name. An example PR title/name: "mtw-03: Updated README"
  - Enter in corresponding information, including what you did and what your reviewer can do to test it
  - `Create Pull Request`
  - Select who you want to review your code!
