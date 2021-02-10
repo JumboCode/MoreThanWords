@@ -1,6 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Animated } from 'react-native';
-import Constants from 'expo-constants';
 
 const PodProgressBar = (props) => {
     //Animates the progress bar

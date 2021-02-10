@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
@@ -39,7 +38,6 @@ export default class TraineePodScreen extends React.Component {
               }
           })
           .then(response => {
-              console.log(response.data);
               let data = response.data;
               this.setState({
                   compet_outcomes: data.records[0].TR_Competency_Outcomes__c,
