@@ -33,7 +33,6 @@ const authorizationEndpoint = auth0_domain + "/authorize";
 
 const useProxy = Platform.select({ web: false, default: true });
 
-
 export default class LoginPage extends React.Component {
     state = {
         name: null,        // user's name
