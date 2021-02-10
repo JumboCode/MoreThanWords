@@ -89,7 +89,7 @@ export default class LoginPage extends React.Component {
         // Retrieve the JWT token and decode it
         const decoded = jwtDecode(idToken);
         const { name, nonce } = decoded;
-        if (nonce != nonce_generated + "12") {
+        if (nonce != nonce_generated) {
             Alert.alert("Server Error", "Could not securely login. Please Try again.");
             this.setState({loading: false});
             return;
