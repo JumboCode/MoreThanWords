@@ -85,4 +85,4 @@ def outcomes():
     return outcomes_result
 
 if __name__ == '__main__':
-    app.run(debug=True, host='192.168.1.251')
+    app.run(debug=True, host=os.environ['LOCAL_IPV4'])
