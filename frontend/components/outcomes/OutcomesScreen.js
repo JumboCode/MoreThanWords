@@ -122,7 +122,7 @@ let data = [
 
 export default function OutcomesScreen({ navigation }) {
 
-    const [dataTemp, setDataTemp] = useState(data);
+    const [dataTemp, setDataTemp] = useState([]);
 
     useEffect(() => {
             async function fetchData() {
@@ -169,36 +169,60 @@ export default function OutcomesScreen({ navigation }) {
                         // setDataTemp(newData);
                         console.log(data);
                         let newData = [];
-                        for (const key in data) {
-                            // console.log(key);
-                            if (key.includes("Outcome") && !key.includes("Outcomes")) {
+
+                        // Extract all outcome titles for later use
+                        for (const api_name in data) {
+                            if (api_name.includes("Outcome") && !api_name.includes("Outcomes")) {
                                 newData.push({
-                                    id: key.substring(0, 3),
-                                    title: data[key],
+                                    id: api_name.substring(0, 3),
+                                    title: data[api_name]["name"],
                                     content: []
                                 });
                             }
                         }
-
-                        // console.log(newData);
-
+                        
+                        console.log(newData);
+                        
+                        // Create all content objects based on the youth fields
                         for (const key in data) {
                             let key_id = key.substring(0, 3);
                             let index = newData.findIndex(x => x.id === key_id);
                             if (key.includes("Youth")) {
+                                let words_in_key = key.split("_");
                                 newData[index].content.push({
-                                    id: key.split("_")[3],
-                                    key: data[key],
+                                    id: words_in_key[words_in_key.length - 3].toLowerCase(),
+                                    key: data[key]["name"],
                                     starIsFilled: true, // change later
-                                    checked: true // change later
+                                    checked: data[key]["value"]
                                 });
                             }
                         }
 
+                        // Update all starIsFilled values based on YDM fields
+                        for (const key in data) {
+                            let key_id = key.substring(0, 3);
+                            let index = newData.findIndex(x => x.id === key_id);
+                            if (key.includes("YDM")) {
+                                // Get ID of the current key so we can match with existing entry
+                                let words_in_key = key.split("_");
+                                console.log(words_in_key);
+                                let curr_id = words_in_key[words_in_key.length - 3].toLowerCase();
+                                // Finds index of object in content array to update
+                                let content_index = newData[index].content.findIndex(x => {
+                                    console.log(x.id);
+                                    return x.id === curr_id;
+                                });
+                                console.log(content_index);
+                                // Update starIsFilled field in existing entry
+                                newData[index].content[content_index].starIsFilled = data[key]["value"];
+                            }
+                        }
+
                         console.log(newData);
+                        setDataTemp(newData);
                     })
                     .catch((error) => {
-                        console.log(Constants.manifest.extra.apiUrl);
+                        // console.log(Constants.manifest.extra.apiUrl);
                         console.log("An error occurred.");
                         console.log(error);
                     });
@@ -216,7 +240,7 @@ export default function OutcomesScreen({ navigation }) {
             </Text> */}
             <FlatList 
                 style={styles.listStyle}
-                data={data}
+                data={dataTemp}
                 renderItem={({ item }) => {
                     return (
                         <Outcome data={[item]}/>

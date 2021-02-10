@@ -17,15 +17,34 @@ CORS(app)
 def youthCheck():
     Id = "0030d00002VUcwSAAT"
     desc = sf.Trainee_POD_Map__c.describe()
-    field_names = [(field['name'], field['label']) for field in desc['fields']]
-    # label_names = [field['label'] for field in desc['fields']]
-    # field_names = [field['name'] for field in desc['fields']]
-    # print(label_names)
-    # print(dict(field_names))
-    # soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
-    # result = sf.query(format_soql((soql + " WHERE Contact__c={youth_id}"), youth_id=Id))
-    # return result
-    return dict(field_names)
+    field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+    field_names = [field['name'] for field in desc['fields']]
+
+    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
+    sf_result = sf.query(format_soql((soql + " WHERE Contact__c={youth_id}"), youth_id=Id))
+
+    response = {}
+    for name_and_label in field_names_and_labels:
+        response[name_and_label[0]] = {
+            "name": name_and_label[1],
+            "value": None
+        }
+
+    # print(response)
+    # print(sf_result["records"][0].items())
+
+    for name, value in sf_result["records"][0].items():
+        if name in response.keys():
+            response[name]["value"] = value
+
+    print(response)
+    
+    return response
+
+    # return (result, field_names)
+    # return dict(field_names_and_labels) 
+    # { key => name }
+    # { key => { name => "", value => bool } }
 
 # Error handler for the Auth Error
 @app.errorhandler(AuthError)
