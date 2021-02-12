@@ -29,7 +29,6 @@ export default class HomeScreen extends React.Component{
             }
         })
         .then(response => {
-            console.log(response.data);
             let data = response.data;
             this.setState({
                 // Currently only have fake data on Trainee

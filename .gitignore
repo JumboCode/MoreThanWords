@@ -6,3 +6,4 @@ frontend/app.config.js
 .DS_Store
 frontend/.expo/*
 *.log
+startBackend.sh
