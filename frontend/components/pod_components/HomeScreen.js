@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     },
     blockText: {
         fontSize: 40,
-        fontFamily: 'Roboto',
+        // fontFamily: 'Roboto',
         color: '#27b48f',
         fontWeight: 'bold',
         textAlign: 'center',
