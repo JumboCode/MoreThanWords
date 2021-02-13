@@ -61,7 +61,9 @@ export default class TraineePodScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <TouchableOpacity 
                     style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Outcomes')}
+                    onPress={() => this.props.navigation.navigate('Outcomes', {
+                        focus_area: "COM"
+                    })}
                 >
                     <Text style={styles.blockTitle}>
                         Competencies
@@ -71,7 +73,9 @@ export default class TraineePodScreen extends React.Component {
                 
                 <TouchableOpacity 
                     style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Outcomes')}
+                    onPress={() => this.props.navigation.navigate('Outcomes', {
+                        focus_area: "CAR"
+                    })}
                 >
                     <Text style={styles.blockTitle}>
                         Career Pathway
@@ -81,7 +85,9 @@ export default class TraineePodScreen extends React.Component {
             
                 <TouchableOpacity 
                     style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Outcomes')}
+                    onPress={() => this.props.navigation.navigate('Outcomes', {
+                        focus_area: "LIF"
+                    })}
                 >                
                     <Text style={styles.blockTitle}>
                         Life Essentials / Support Network

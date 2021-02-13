@@ -14,8 +14,12 @@
 
 import React from 'react';
 import { StyleSheet, Text, View} from 'react-native';
-// import { Icon } from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Constants from 'expo-constants';
+import axios from 'axios';
+
+
+const server_add = Constants.manifest.extra.apiUrl;
 
 class Task extends React.Component {
     constructor(props) {
@@ -47,9 +51,24 @@ class Task extends React.Component {
             },
             checkboxContainer: {
                 paddingRight: 0,
-                // paddingLeft: 0
             }
         });
+    }
+
+    async updateSalesforce() {
+        let updated_value = !this.state.checked
+        if (updated_value === true) {
+            updated_value = "True"
+        } else {
+            updated_value = "False"
+        }
+        axios.get(server_add + "/updateCheckbox", {
+            params: { // Currently using fake data - update later
+                tr_pod_id: 'a1M0d000004i9IREAY',
+                task_title: this.props.backendID,
+                new_value: updated_value
+            }
+        })
     }
 
     render() {
@@ -77,6 +96,7 @@ class Task extends React.Component {
                     backgroundColor='transparent'
                     underlayColor='transparent'
                     onPress={this.state.starIsFilled ? null : () => {
+                        this.updateSalesforce();
                         this.setState({checked: !this.state.checked});
                     }}
                 />

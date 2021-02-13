@@ -12,12 +12,13 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text, View, LogBox } from 'react-native';
-import { Accordion, Icon } from 'native-base';
+import { StyleSheet, View, LogBox } from 'react-native';
+import { Accordion } from 'native-base';
 import Task from './Task';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
+LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
 
 const styles = StyleSheet.create({
     accordion: {
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
 });
 
 const Outcome = (props) => {
+
     const defaultData = [ 
         {
             title: "Gather Essential Documents",
@@ -77,9 +79,11 @@ const Outcome = (props) => {
                 const itemComponents = taskListObject.content.map(
                     (taskObj) =>
                     <Task
+                        key={taskObj.key}
                         name={taskObj.key}
                         starIsFilled={taskObj.starIsFilled}
                         checked={taskObj.checked}
+                        backendID={taskObj.api_key}
                     />
                 );
                 return (

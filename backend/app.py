@@ -18,6 +18,7 @@ CORS(app)
 @app.route("/youthCheckbox")
 def youthCheck():
     Id = "0030d00002VUcwSAAT"
+
     desc = sf.Trainee_POD_Map__c.describe()
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
     field_names = [field['name'] for field in desc['fields']]
@@ -32,21 +33,23 @@ def youthCheck():
             "value": None
         }
 
-    # print(response)
-    # print(sf_result["records"][0].items())
-
     for name, value in sf_result["records"][0].items():
         if name in response.keys():
             response[name]["value"] = value
-
-    print(response)
     
     return response
 
-    # return (result, field_names)
-    # return dict(field_names_and_labels) 
-    # { key => name }
-    # { key => { name => "", value => bool } }
+@app.route("/updateCheckbox")
+def updateSalesforce():
+    tr_pod_id = request.args.get('tr_pod_id')
+    task_title = request.args.get('task_title')
+    new_value = request.args.get('new_value')
+    if (new_value == 'True'):
+        new_value = True
+    else:
+        new_value = False
+    sf.Trainee_POD_Map__c.update(tr_pod_id, {task_title: new_value})
+    return ""
 
 # Error handler for the Auth Error
 @app.errorhandler(AuthError)
