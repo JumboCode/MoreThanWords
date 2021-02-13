@@ -29,7 +29,6 @@ export default class HomeScreen extends React.Component{
             }
         })
         .then(response => {
-            console.log(response.data);
             let data = response.data;
             this.setState({
                 // Currently only have fake data on Trainee
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     },
     blockText: {
         fontSize: 40,
-        fontFamily: 'Roboto',
+        // fontFamily: 'Roboto',
         color: '#27b48f',
         fontWeight: 'bold',
         textAlign: 'center',
