@@ -1,29 +1,6 @@
-// import React from 'react';
-// import OutcomesHome from './components/outcomes/OutcomesHome';
 
-// class App extends React.Component {  
-//     render() {
-//         return (
-//             <OutcomesHome
-//                 titles={[
-//                             "Gather Essential Documents for Career Readiness",
-//                             "Choose a Pathway to Pursue After MTW",
-//                             "Example Title 1",
-//                             "Example Title 2",
-//                             "Example Title 3",
-//                             "Example Title 4",
-//                         ]}
-//             />
-//         );
-//     }        
-// }
-
-// export default App;
-
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -32,10 +9,9 @@ import TraineePodScreen from './components/pod_components/TraineePod.js';
 import AssociatePodScreen from './components/pod_components/AssociatePod.js';
 import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 import LoginScreen from './components/LoginPage.js';
-import OutcomesHome from './components/outcomes/OutcomesHome.js';
 import OutcomesScreen from './components/outcomes/OutcomesScreen.js';
 
-import { getName, isTokenValid, removeToken } from "./utils/auth";
+import { isTokenValid, removeToken } from "./utils/auth";
 
 const Stack = createStackNavigator();
 
