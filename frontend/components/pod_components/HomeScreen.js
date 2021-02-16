@@ -44,36 +44,47 @@ export default class HomeScreen extends React.Component{
     }
 
     render(){
+        // Currently only have fake data, need to compare between real data
+        const iscompleted = true;
+        let displayBlock;
+        let displayBlockText;
+        let ProgressBarDisplay;
+        let ProgressBarText;
+        let ProgressBarFill;
+            if (iscompleted) {
+                displayBlock = styles.completedBlock;
+                displayBlockText = styles.completedBlockText;
+                ProgressBarDisplay = styles.completedBlockProgressBar;
+                ProgressBarDisplayText = styles.completedBlockProgressBarText;
+                ProgressBarFill = styles.completedBlockProgressBarFill;
+            } else{
+                displayBlock = styles.block;
+            }
+           
         return(
         <SafeAreaView style={styles.container}>
         <TouchableOpacity 
-            style={styles.block} 
+            style={displayBlock} 
             onPress={() => this.props.navigation.navigate('Trainee Pod')}
         >
-            <Text style={styles.blockText}>
-                Trainee 
-            </Text>
-            <ProgressBar progress={this.state.Trainee_progress} total_outcomes={TRAINEE_TOTAL_OUTCOMES} />
+                <Text style={displayBlockText}> Trainee </Text>
+            <ProgressBar style={ProgressBarDisplay} Textstyle={ProgressBarText} fill={ProgressBarFill} progress={this.state.Trainee_progress} total_outcomes={TRAINEE_TOTAL_OUTCOMES} />
         </TouchableOpacity>
       
         <TouchableOpacity 
-            style={styles.block} 
+            style={displayBlock} 
             onPress={() => this.props.navigation.navigate('Associate Pod')}
         >
-            <Text style={styles.blockText}>
-                Associate 
-            </Text>
-            <ProgressBar progress={this.state.Associate_progress} total_outcomes={ASSOCIATE_TOTAL_OUTCOMES} />
+            <Text style={displayBlockText}> Associate </Text>
+            <ProgressBar style={ProgressBarDisplay} Textstyle={ProgressBarText} fill={ProgressBarFill} progress={this.state.Associate_progress} total_outcomes={ASSOCIATE_TOTAL_OUTCOMES} />
         </TouchableOpacity>
     
         <TouchableOpacity 
-            style={styles.block} 
+            style={displayBlock} 
             onPress={() => this.props.navigation.navigate('Partner Pod')}
         >                
-            <Text style={styles.blockText}>
-                Partner 
-            </Text>
-            <ProgressBar progress={this.state.Partner_progress} total_outcomes={PARTNER_TOTAL_OUTCOMES} />
+            <Text style={displayBlockText}> Partner </Text>
+            <ProgressBar style={ProgressBarDisplay} Textstyle={ProgressBarText} fill={ProgressBarFill} progress={this.state.Partner_progress} total_outcomes={PARTNER_TOTAL_OUTCOMES} />
         </TouchableOpacity>
     </SafeAreaView>);
     }
@@ -86,7 +97,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    block: {
+    completedBlock: {
         marginTop: 20,
         width: '100%',
         height: 220,
@@ -97,11 +108,68 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    blockText: {
+    completedBlockText: {
         fontSize: 40,
         fontFamily: 'Roboto',
         color: '#27b48f',
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    completedBlockProgressBar: {
+        flexDirection: 'row',
+        height: 20,
+        width: 250,
+        backgroundColor: 'white',
+        borderColor: '#27b48f', 
+        borderWidth: 2,
+        borderRadius: 10,
+    },
+    completedBlockProgressBarText: {
+        color: '#27b48f',
+        fontFamily: 'Roboto',
+    },
+    completedBlockProgressBarFill: {
+        color: '#27b48f',
+        fontFamily: 'Roboto',
+    },
+
+    // ONGOING Block
+    ongoingBlock: {
+        marginTop: 20,
+        width: '100%',
+        height: 220,
+        backgroundColor: '#27b48f',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    ongoingBlockText: {
+        fontSize: 40,
+        fontFamily: 'Roboto',
+        color: '#ffffff',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    // TODO Block
+    todoBlock: {
+        marginTop: 20,
+        width: '100%',
+        height: 220,
+        backgroundColor: '#ececec',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    todoBlockText: {
+        fontSize: 40,
+        fontFamily: 'Roboto',
+        color: '#9e9e9e',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },  
 });
