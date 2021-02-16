@@ -7,6 +7,18 @@ import Constants from 'expo-constants';
 import { setItemAsync } from 'expo-secure-store';
 import LoadingModal from "./LoadingModal";
 
+import * as Random from 'expo-random';
+
+/* converts random bytes into string. Taken from expo-auth-session */
+const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function convertBufferToString(buffer) {
+    const state = [];
+    for (let i = 0; i < buffer.byteLength; i += 1) {
+        const index = buffer[i] % CHARSET.length;
+        state.push(CHARSET[index]);
+    }
+    return state.join('');
+}
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
 //
@@ -28,6 +40,8 @@ export default class LoginPage extends React.Component {
     };
 
     signIn = async () => {
+        const random_bytes = Random.getRandomBytes(20);
+        const nonce_generated = convertBufferToString(random_bytes);
         // prepares the login request.
         this.setState({loading: true});
         const redirectUri = AuthSession.makeRedirectUri({ useProxy });
@@ -39,8 +53,7 @@ export default class LoginPage extends React.Component {
             scopes: ["openid", "profile", "offline_access"],
             audience: Constants.manifest.extra.api_audience,
             extraParams: {
-                // ideally, this will be a random value
-                nonce: "nonce",
+                nonce: nonce_generated,
                 prompt: "login",
             },
         };
@@ -75,7 +88,12 @@ export default class LoginPage extends React.Component {
 
         // Retrieve the JWT token and decode it
         const decoded = jwtDecode(idToken);
-        const { name } = decoded;
+        const { name, nonce } = decoded;
+        if (nonce != nonce_generated) {
+            Alert.alert("Server Error", "Could not securely login. Please Try again.");
+            this.setState({loading: false});
+            return;
+        } 
 
         // stores the token in SecureStore (only supported on mobile devices)
         if (useProxy) {
