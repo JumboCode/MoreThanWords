@@ -44,36 +44,12 @@ const styles = StyleSheet.create({
 });
 
 const Outcome = (props) => {
-
-    const defaultData = [ 
-        {
-            title: "Gather Essential Documents",
-            content: [
-                {
-                    key: "Complete Career Exploration Module",
-                    starIsFilled: true,
-                    checked: true
-                },
-                {
-                    key: "Attend at least one Site Visit / Info Session",
-                    starIsFilled: false,
-                    checked: true
-                },
-                {
-                    key: "Identify a Post MTW Plan",
-                    starIsFilled: false,
-                    checked: true
-                },
-            ]
-        },
-    ];
-
     return (
         <Accordion
             style={styles.accordion}
             useNativeDriver={true}
             expanded={0}
-            dataArray={props.data ? props.data : defaultData}
+            dataArray={props.data}
             headerStyle={styles.headerStyle}
             renderContent={(taskListObject) => {
                 const itemComponents = taskListObject.content.map(
@@ -81,7 +57,7 @@ const Outcome = (props) => {
                     <Task
                         key={taskObj.key}
                         name={taskObj.key}
-                        starIsFilled={taskObj.starIsFilled}
+                        ydmApproved={taskObj.ydmApproved}
                         checked={taskObj.checked}
                         backendID={taskObj.api_key}
                     />

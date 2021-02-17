@@ -39,15 +39,11 @@ def youthCheck():
     
     return response
 
-@app.route("/updateCheckbox")
+@app.route("/updateCheckbox", methods=['POST'])
 def updateSalesforce():
-    tr_pod_id = request.args.get('tr_pod_id')
-    task_title = request.args.get('task_title')
-    new_value = request.args.get('new_value')
-    if (new_value == 'True'):
-        new_value = True
-    else:
-        new_value = False
+    tr_pod_id = request.json.get('tr_pod_id')
+    task_title = request.json.get('task_title')
+    new_value = request.json.get('new_value')
     sf.Trainee_POD_Map__c.update(tr_pod_id, {task_title: new_value})
     return ""
 

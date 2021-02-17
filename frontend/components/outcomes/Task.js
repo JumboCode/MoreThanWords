@@ -26,15 +26,22 @@ class Task extends React.Component {
         super(props);
         this.state = {
             checked: props.checked,
-            starIsFilled: props.starIsFilled,
+            ydmApproved: props.ydmApproved,
+            starIsFilled: props.ydmApproved ? false : true, // change second value later based on local storage
         };
     }
 
     styles() {
         return StyleSheet.create({
+            starContainer: {
+                paddingRight: 0,
+                paddingLeft: 0,
+            },
             star: {
                 width: 30,
                 margin: 0,
+                marginRight: 0,
+                marginLeft: 0,
             },
             taskContainer: {
                 flexDirection: 'row',
@@ -47,7 +54,7 @@ class Task extends React.Component {
             text: {
                 flex: 1,
                 textAlign: 'left',
-                color: this.state.starIsFilled ? "#C4C4C4" : "#3F3F3F",
+                color: this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F",
             },
             checkboxContainer: {
                 paddingRight: 0,
@@ -57,18 +64,13 @@ class Task extends React.Component {
 
     async updateSalesforce() {
         let updated_value = !this.state.checked
-        if (updated_value === true) {
-            updated_value = "True"
-        } else {
-            updated_value = "False"
-        }
-        axios.get(server_add + "/updateCheckbox", {
-            params: { // Currently using fake data - update later
-                tr_pod_id: 'a1M0d000004i9IREAY',
-                task_title: this.props.backendID,
-                new_value: updated_value
-            }
-        })
+        axios.post(server_add + "/updateCheckbox", {
+            tr_pod_id: 'a1M0d000004i9IREAY', // Need to change this later
+            task_title: this.props.backendID,
+            new_value: updated_value
+        }).catch(error => {
+            console.error(error);
+        });
     }
 
     render() {
@@ -76,11 +78,19 @@ class Task extends React.Component {
 
         return (
             <View style={this.styles().taskContainer}>
-                <Icon
+                <Icon.Button
+                    style={this.styles().starContainer}
                     name={this.state.starIsFilled ? "star" : "star-border"}
-                    color={this.state.starIsFilled ? "#C4C4C4" : "#FF4646"}
+                    iconStyle={this.styles().star}
+                    color={this.state.ydmApproved ? "#C4C4C4" : "#FF4646"}
+                    backgroundColor='transparent'
+                    underlayColor='transparent'
                     size={20}
-                    style={this.styles().star}
+                    onPress={this.state.ydmApproved ? null : () => {
+                        this.setState({starIsFilled: !this.state.starIsFilled});
+                        // Add functionality for keeping the state (local or Salesforce)
+                        // If the star is now filled, add the current task to the "Favorites" section
+                    }}
                 />
 
                 <Text style={this.styles().text}>
@@ -92,10 +102,10 @@ class Task extends React.Component {
                     name={this.state.checked ? 'check-box' : 
                           'check-box-outline-blank'}
                     iconStyle={this.styles().checkbox}
-                    color={this.state.starIsFilled ? "#C4C4C4" : "#3F3F3F"}
+                    color={this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F"}
                     backgroundColor='transparent'
                     underlayColor='transparent'
-                    onPress={this.state.starIsFilled ? null : () => {
+                    onPress={this.state.ydmApproved ? null : () => {
                         this.updateSalesforce();
                         this.setState({checked: !this.state.checked});
                     }}

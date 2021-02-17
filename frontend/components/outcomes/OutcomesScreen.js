@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, SafeAreaView, FlatList, LogBox } from 'react-native';
+import { StyleSheet, SafeAreaView, FlatList, LogBox, Text, View } from 'react-native';
 import Outcome from './Outcome';
 import Constants from 'expo-constants';
 
@@ -10,6 +10,13 @@ const styles = StyleSheet.create({
     },
     listStyle: {
         paddingTop: 10
+    },
+    error_parent: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    error_message: {
+        textAlign: 'center',
     }
 });
 
@@ -23,15 +30,20 @@ export default function OutcomesScreen({ navigation, route }) {
         LogBox.ignoreLogs(['Warning: ']); // Ignore 'componentWillMount' warning
         LogBox.ignoreAllLogs(); //Ignore all log notifications
 
+        const { focus_area, title } = route.params;
+
+        navigation.setOptions({
+            headerTitle: title
+        });
+
         async function fetchData() {
             // call endpoint
             await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox`)
                 .then(response => response.json())
                 .then(data => {
+                    // throw "Purposeful exception";
                     let newData = [];
-
                     // Extract all outcome titles for later use
-                    const { focus_area } = route.params;
                     for (const api_name in data) {
                         if (api_name.includes("Outcome") && api_name.includes(focus_area) && !api_name.includes("Outcomes")) {
                             newData.push({
@@ -52,13 +64,13 @@ export default function OutcomesScreen({ navigation, route }) {
                                 api_key: key,
                                 id: words_in_key[words_in_key.length - 3].toLowerCase(),
                                 key: data[key]["name"],
-                                starIsFilled: true,
+                                ydmApproved: true,
                                 checked: data[key]["value"]
                             });
                         }
                     }
 
-                    // Update all starIsFilled values based on YDM fields
+                    // Update all ydmApproved values based on YDM fields
                     for (const key in data) {
                         let key_id = key.substring(0, 3);
                         let index = newData.findIndex(x => x.id === key_id);
@@ -70,15 +82,16 @@ export default function OutcomesScreen({ navigation, route }) {
                             let content_index = newData[index].content.findIndex(x => {
                                 return x.id === curr_id;
                             });
-                            // Update starIsFilled field in existing entry
-                            newData[index].content[content_index].starIsFilled = data[key]["value"];
+                            // Update ydmApproved field in existing entry
+                            newData[index].content[content_index].ydmApproved = data[key]["value"];
                         }
                     }
                     setDataTemp(newData);
                 })
                 .catch((error) => {
-                    console.error("An error occurred.");
+                    // console.log("An error occurred.");
                     console.error(error);
+                    setDataTemp(false);
                 });
         }
         fetchData();
@@ -86,16 +99,26 @@ export default function OutcomesScreen({ navigation, route }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <FlatList 
-                style={styles.listStyle}
-                data={dataTemp}
-                renderItem={({ item }) => {
-                    return (
-                        <Outcome data={[item]}/>
-                    );
-                }}
-                keyExtractor={item => item.title}
-            />
+            {dataTemp ?
+                <FlatList 
+                    style={styles.listStyle}
+                    data={dataTemp}
+                    renderItem={({ item }) => {
+                        return (
+                            <Outcome data={[item]}/>
+                        );
+                    }}
+                    keyExtractor={item => item.title}
+                />
+            :
+                <SafeAreaView style={styles.error_parent}>
+                    <Text style={styles.error_message}> 
+                        There are no outcomes to display.{"\n"}Please contact your manager or More Than Words{"\n"}administrator if you think this is an error.
+                    </Text>
+                </SafeAreaView>
+                
+            }
+            
         </SafeAreaView>
     );
 }
