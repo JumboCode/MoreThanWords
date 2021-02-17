@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     },
     completedBlockText: {
         fontSize: 40,
-        fontFamily: 'Roboto',
+        // fontFamily: 'Roboto',
         color: '#27b48f',
         fontWeight: 'bold',
         textAlign: 'center',

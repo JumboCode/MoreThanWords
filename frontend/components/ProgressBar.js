@@ -8,6 +8,7 @@ const ProgressBar = (props) => {
   useEffect(() => {
     Animated.timing(animation.current, {
       toValue: props.progress,
+      useNativeDriver: false,
       duration: 1
     }).start();
   },[props.progress])
