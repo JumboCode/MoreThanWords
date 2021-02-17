@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
 import axios from 'axios';
+import { getAccessToken } from '../../utils/auth.js';
 
 import PodProgressBar from './PodProgressBar.js';
 
@@ -27,27 +28,26 @@ export default class TraineePodScreen extends React.Component {
 	 * Parameters: none
 	 * Returns: nothing
 	 * Purpose: Get the data from backend and use the info to set states
-     * Note: using fake data for now
 	 */
     componentDidMount() {
-        axios.get(server_add + '/calculateProgressBar', {
-              params: {
-                  firstname: 'Fake',
-                  lastname: 'E',
-                  email: 'fakee@gmail.com',
-              }
-          })
-          .then(response => {
-              let data = response.data;
-              this.setState({
-                  compet_outcomes: data.records[0].TR_Competency_Outcomes__c,
-                  career_outcomes: data.records[0].TR_CareerExpl_Outcomes__c,
-                  life_outcomes: data.records[0].TR_LifeEssentials_Outcomes__c,
-              })
-          })
-          .catch(function (error) {
-              console.log(error);
-          });
+        getAccessToken().then(accessToken => 
+            fetch(server_add + '/calculateProgressBar', {
+                headers: {
+                    "Authorization": "Bearer " + accessToken
+                }
+            })
+        )
+        .then(async response => {
+            let data = await response.json();
+            this.setState({
+                compet_outcomes: data.records[0].TR_Competency_Outcomes__c,
+                career_outcomes: data.records[0].TR_CareerExpl_Outcomes__c,
+                life_outcomes: data.records[0].TR_LifeEssentials_Outcomes__c,
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
     
     /* render
