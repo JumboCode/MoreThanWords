@@ -9,3 +9,4 @@ frontend/app.config.js
 frontend/.expo/*
 *.log
 startBackend.sh
+startBackendWindows.sh
