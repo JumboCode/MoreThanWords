@@ -16,7 +16,13 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route("/youthCheckbox")
-def youthCheck():
+@requires_auth(sf)
+def youthCheck(user):
+    email = user.get('email')
+    firstname = user.get('firstname')
+    lastname = user.get('lastname')
+
+    print(email, firstname, lastname)
     Id = "0030d00002VUcwSAAT"
 
     desc = sf.Trainee_POD_Map__c.describe()

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, SafeAreaView, FlatList, LogBox, Text, View } from 'react-native';
 import Outcome from './Outcome';
 import Constants from 'expo-constants';
+import getAccessToken from '../../utils/auth.js'
 
 const styles = StyleSheet.create({
     container: {
@@ -26,9 +27,9 @@ export default function OutcomesScreen({ navigation, route }) {
 
     useEffect(() => {
 
-        LogBox.ignoreLogs(['Animated: `useNativeDriver`']); // Ignore 'useNativeDriver' warning
-        LogBox.ignoreLogs(['Warning: ']); // Ignore 'componentWillMount' warning
-        LogBox.ignoreAllLogs(); //Ignore all log notifications
+        // LogBox.ignoreLogs(['Animated: `useNativeDriver`']); // Ignore 'useNativeDriver' warning
+        // LogBox.ignoreLogs(['Warning: ']); // Ignore 'componentWillMount' warning
+        // LogBox.ignoreAllLogs(); //Ignore all log notifications
 
         const { focus_area, title } = route.params;
 
@@ -38,7 +39,11 @@ export default function OutcomesScreen({ navigation, route }) {
 
         async function fetchData() {
             // call endpoint
-            await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox`)
+            await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox`, {
+                "headers": {
+                    "Authentication": "bearer" + await getAccessToken()
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     // throw "Purposeful exception";
@@ -91,6 +96,7 @@ export default function OutcomesScreen({ navigation, route }) {
                 .catch((error) => {
                     // console.log("An error occurred.");
                     console.error(error);
+                    console.log(error);
                     setDataTemp(false);
                 });
         }
