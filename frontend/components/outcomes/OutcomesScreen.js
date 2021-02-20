@@ -27,9 +27,9 @@ export default function OutcomesScreen({ navigation, route }) {
 
     useEffect(() => {
 
-        // LogBox.ignoreLogs(['Animated: `useNativeDriver`']); // Ignore 'useNativeDriver' warning
-        // LogBox.ignoreLogs(['Warning: ']); // Ignore 'componentWillMount' warning
-        // LogBox.ignoreAllLogs(); //Ignore all log notifications
+        LogBox.ignoreLogs(['Animated: `useNativeDriver`']); // Ignore 'useNativeDriver' warning
+        LogBox.ignoreLogs(['Warning: ']); // Ignore 'componentWillMount' warning
+        LogBox.ignoreAllLogs(); //Ignore all log notifications
 
         const { focus_area, title } = route.params;
 
@@ -38,7 +38,7 @@ export default function OutcomesScreen({ navigation, route }) {
         });
 
         async function fetchData() {
-            // call endpoint
+            // Call checkbox endpoint
             await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox`, {
                 method: 'GET',
                 headers: {
@@ -47,8 +47,6 @@ export default function OutcomesScreen({ navigation, route }) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-                    // throw "Purposeful exception";
                     let newData = [];
                     // Extract all outcome titles for later use
                     for (const api_name in data) {
@@ -96,9 +94,7 @@ export default function OutcomesScreen({ navigation, route }) {
                     setDataTemp(newData);
                 })
                 .catch((error) => {
-                    // console.log("An error occurred.");
                     console.error(error);
-                    console.log(error);
                     setDataTemp(false);
                 });
         }
@@ -124,9 +120,7 @@ export default function OutcomesScreen({ navigation, route }) {
                         There are no outcomes to display.{"\n"}Please contact your manager or More Than Words{"\n"}administrator if you think this is an error.
                     </Text>
                 </SafeAreaView>
-                
             }
-            
         </SafeAreaView>
     );
 }

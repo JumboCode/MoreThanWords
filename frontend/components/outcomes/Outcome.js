@@ -13,12 +13,11 @@
 
 import React from 'react';
 import { StyleSheet, View, LogBox } from 'react-native';
-// import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Accordion } from 'native-base';
 import Task from './Task';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
 
 const styles = StyleSheet.create({
@@ -52,7 +51,6 @@ const Outcome = (props) => {
             expanded={0}
             dataArray={props.data}
             headerStyle={styles.headerStyle}
-            // icon={ios-chevron-up}
             renderContent={(taskListObject) => {
                 const itemComponents = taskListObject.content.map(
                     (taskObj) =>
