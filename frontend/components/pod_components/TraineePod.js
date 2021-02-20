@@ -6,10 +6,6 @@ import { getAccessToken } from '../../utils/auth.js';
 
 import PodProgressBar from './PodProgressBar.js';
 
-const COMPET_TOTAL_OUTCOMES = 3
-const CAREER_TOTAL_OUTCOMES = 2
-const LIFE_TOTAL_OUTCOMES = 2
-
 const server_add = Constants.manifest.extra.apiUrl;
 
 export default class TraineePodScreen extends React.Component {
@@ -17,11 +13,17 @@ export default class TraineePodScreen extends React.Component {
      * 	  - compet_outcomes: number of completed competency outcomes 
      * 	  - career_outcomes: number of completed career pathway outcomes
      * 	  - life_outcomes: number of completed life essential outcomes 
+     *    - compet_total_outcomes: total number of competency outcomes
+     *    - career_total_outcomes: total number of career outcomes
+     *    - life_total_outcomes: total number of life outcomes
      */
     state = {
         compet_outcomes: 0, 
         career_outcomes: 0,
         life_outcomes: 0,
+        compet_total_outcomes: 0,
+        career_total_outcomes: 0,
+        life_total_outcomes: 0,
     };
 
     /* componentDidMount
@@ -43,6 +45,9 @@ export default class TraineePodScreen extends React.Component {
                 compet_outcomes: data.records[0].TR_Competency_Outcomes__c,
                 career_outcomes: data.records[0].TR_CareerExpl_Outcomes__c,
                 life_outcomes: data.records[0].TR_LifeEssentials_Outcomes__c,
+                compet_total_outcomes: data.COMPET_COUNT,
+                career_total_outcomes: data.CAR_COUNT,
+                life_total_outcomes: data.LIFE_COUNT,
             })
         })
         .catch(function (error) {
@@ -66,7 +71,7 @@ export default class TraineePodScreen extends React.Component {
                     <Text style={styles.blockTitle}>
                         Competencies
                     </Text>
-                    <PodProgressBar progress={this.state.compet_outcomes} total_tasks={COMPET_TOTAL_OUTCOMES} />
+                    <PodProgressBar progress={this.state.compet_outcomes} total_tasks={this.state.compet_total_outcomes} />
                 </TouchableOpacity>
                 
                 <TouchableOpacity 
@@ -76,7 +81,7 @@ export default class TraineePodScreen extends React.Component {
                     <Text style={styles.blockTitle}>
                         Career Pathway
                     </Text>
-                    <PodProgressBar progress={this.state.career_outcomes} total_tasks={CAREER_TOTAL_OUTCOMES} />
+                    <PodProgressBar progress={this.state.career_outcomes} total_tasks={this.state.career_total_outcomes} />
                 </TouchableOpacity>
             
                 <TouchableOpacity 
@@ -86,7 +91,7 @@ export default class TraineePodScreen extends React.Component {
                     <Text style={styles.blockTitle}>
                         Life Essentials / Support Network
                     </Text>
-                    <PodProgressBar progress={this.state.life_outcomes} total_tasks={LIFE_TOTAL_OUTCOMES} />
+                    <PodProgressBar progress={this.state.life_outcomes} total_tasks={this.state.life_total_outcomes} />
                 </TouchableOpacity>
             </SafeAreaView>
         );

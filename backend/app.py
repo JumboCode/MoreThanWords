@@ -70,12 +70,31 @@ def outcomes(user):
     lastname = user['LastName']
     name = firstname + " " + lastname 
 
-    # salesforce query of each completed outcome # in trainee pod, based on the email and name
-    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c, TR_Competency_Outcomes__c, TR_LifeEssentials_Outcomes__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})",
-                email_value = email, full_name=name))
-    # print("RECORDS", outcomes_result['records'][0][''])
+    # salesforce query to calculate total outcomes
+    desc = sf.Trainee_POD_Map__c.describe()
+    field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+    field_names = [field['name'] for field in desc['fields']]
+    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
     
-    return outcomes_result
+    compet_count = life_count = car_count = 0
+    for name_and_label in field_names_and_labels:
+        if "Outcome_COM" in name_and_label[0]: 
+            compet_count += 1
+        elif "Outcome_LIF" in name_and_label[0]: 
+            life_count += 1
+        elif "Outcome_CAR" in name_and_label[0]:
+            car_count += 1
+    
+    # salesforce query of each completed outcome # in trainee pod, based on the email and name    
+    total_and_completed_outcomes = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c, TR_Competency_Outcomes__c, TR_LifeEssentials_Outcomes__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})",
+                email_value = email, full_name=name))
+    
+    #add outcome totals to dictionary 
+    total_and_completed_outcomes["COMPET_COUNT"] = compet_count;
+    total_and_completed_outcomes["LIFE_COUNT"] = life_count;
+    total_and_completed_outcomes["CAR_COUNT"] = car_count;
+    
+    return total_and_completed_outcomes
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
