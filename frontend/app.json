@@ -24,7 +24,8 @@
     },
     "description": "",
     "android": {
-      "package": "com.titapapunne.mtw"
+      "package": "com.titapapunne.mtw",
+      "orientation": "portrait"
     },
     "scheme": "morethanwords"
   }
