@@ -55,24 +55,16 @@ def updateSalesforce(user):
     lastname = user.get('LastName')
     fullname = firstname + " " + lastname
 
-    print(user)
-    print(email, fullname)
+    soql = "SELECT Contact__c FROM Trainee_POD_Map__c"
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
 
-    # desc = sf.Trainee_POD_Map__c.describe()
-    # field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
-    # field_names = [field['name'] for field in desc['fields']]
+    tr_pod_id = sf_result['records'][0]['attributes']['url'].split('/')[-1]
+    task_title = request.json.get('task_title')
+    new_value = request.json.get('new_value')
 
-    # soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
-    # sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+    sf.Trainee_POD_Map__c.update(tr_pod_id, {task_title: new_value})
 
-    # # # tr_pod_id = request.json.get('tr_pod_id')
-    # task_title = user.get('body').task_title
-    # new_value = user.get('body').new_value
-
-    # print(task_title, new_value)
-    # # sf.Trainee_POD_Map__c.update(tr_pod_id, {task_title: new_value})
-    response = {}
-    return response
+    return {}
 
 # Error handler for the Auth Error
 @app.errorhandler(AuthError)
