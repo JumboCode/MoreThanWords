@@ -18,19 +18,21 @@ CORS(app)
 @app.route("/youthCheckbox")
 @requires_auth(sf)
 def youthCheck(user):
-    email = user.get('email')
-    firstname = user.get('firstname')
-    lastname = user.get('lastname')
+    email = user.get('Email')
+    firstname = user.get('FirstName')
+    lastname = user.get('LastName')
+    fullname = firstname + " " + lastname
 
-    print(email, firstname, lastname)
-    Id = "0030d00002VUcwSAAT"
+    # print(email, firstname, lastname)
 
     desc = sf.Trainee_POD_Map__c.describe()
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
     field_names = [field['name'] for field in desc['fields']]
 
     soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
-    sf_result = sf.query(format_soql((soql + " WHERE Contact__c={youth_id}"), youth_id=Id))
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+
+    # print(sf_result)
 
     response = {}
     for name_and_label in field_names_and_labels:
@@ -46,12 +48,31 @@ def youthCheck(user):
     return response
 
 @app.route("/updateCheckbox", methods=['POST'])
-def updateSalesforce():
-    tr_pod_id = request.json.get('tr_pod_id')
-    task_title = request.json.get('task_title')
-    new_value = request.json.get('new_value')
-    sf.Trainee_POD_Map__c.update(tr_pod_id, {task_title: new_value})
-    return ""
+@requires_auth(sf)
+def updateSalesforce(user):
+    email = user.get('Email')
+    firstname = user.get('FirstName')
+    lastname = user.get('LastName')
+    fullname = firstname + " " + lastname
+
+    print(user)
+    print(email, fullname)
+
+    # desc = sf.Trainee_POD_Map__c.describe()
+    # field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+    # field_names = [field['name'] for field in desc['fields']]
+
+    # soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
+    # sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+
+    # # # tr_pod_id = request.json.get('tr_pod_id')
+    # task_title = user.get('body').task_title
+    # new_value = user.get('body').new_value
+
+    # print(task_title, new_value)
+    # # sf.Trainee_POD_Map__c.update(tr_pod_id, {task_title: new_value})
+    response = {}
+    return response
 
 # Error handler for the Auth Error
 @app.errorhandler(AuthError)

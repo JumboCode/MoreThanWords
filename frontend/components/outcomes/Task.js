@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Constants from 'expo-constants';
 import axios from 'axios';
 
+import { getAccessToken } from '../../utils/auth.js'
 
 const server_add = Constants.manifest.extra.apiUrl;
 
@@ -64,13 +65,34 @@ class Task extends React.Component {
 
     async updateSalesforce() {
         let updated_value = !this.state.checked
-        axios.post(server_add + "/updateCheckbox", {
-            tr_pod_id: 'a1M0d000004i9IREAY', // Need to change this later
-            task_title: this.props.backendID,
-            new_value: updated_value
-        }).catch(error => {
+
+        console.log(JSON.stringify(data));
+
+        await fetch(`${Constants.manifest.extra.apiUrl}/updateCheckbox`, {
+            method: 'POST',
+            headers: {
+                'Authorization': "Bearer " + await getAccessToken()
+            },
+            body: {
+                task_title: this.props.backendID,
+                new_value: updated_value,
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
             console.error(error);
         });
+
+        // axios.post(server_add + "/updateCheckbox", {
+        //     tr_pod_id: 'a1M0d000004i9IREAY', // Need to change this later
+        //     task_title: this.props.backendID,
+        //     new_value: updated_value
+        // }).catch(error => {
+        //     console.error(error);
+        // });
     }
 
     render() {

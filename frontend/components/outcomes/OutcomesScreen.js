@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, SafeAreaView, FlatList, LogBox, Text, View } from 'react-native';
 import Outcome from './Outcome';
 import Constants from 'expo-constants';
-import getAccessToken from '../../utils/auth.js'
+import { getAccessToken } from '../../utils/auth.js'
 
 const styles = StyleSheet.create({
     container: {
@@ -40,12 +40,14 @@ export default function OutcomesScreen({ navigation, route }) {
         async function fetchData() {
             // call endpoint
             await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox`, {
-                "headers": {
-                    "Authentication": "bearer" + await getAccessToken()
+                method: 'GET',
+                headers: {
+                    'Authorization': "Bearer " + await getAccessToken()
                 }
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     // throw "Purposeful exception";
                     let newData = [];
                     // Extract all outcome titles for later use
