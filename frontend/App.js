@@ -10,6 +10,7 @@ import TraineePodScreen from './components/pod_components/TraineePod.js';
 import AssociatePodScreen from './components/pod_components/AssociatePod.js';
 import PartnerPodScreen from './components/pod_components/PartnerPod.js';
 import LoginScreen from './components/LoginPage.js';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 import { getName, isTokenValid, removeToken } from "./utils/auth";
 
@@ -26,7 +27,7 @@ class MainStackNavigator extends React.Component {
     state = {
         loggedIn: false
     };
-
+    
     // refreshes login state, updating screen being displayed.
     refreshLoginState = () => {
         isTokenValid().then(valid => {
@@ -45,6 +46,7 @@ class MainStackNavigator extends React.Component {
     }
 
     render() {
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
         return (
             <NavigationContainer>
                 <Stack.Navigator initialRouteName={this.state.initialRouteName}>
