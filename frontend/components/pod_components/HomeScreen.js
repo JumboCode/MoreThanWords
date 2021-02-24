@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity} from 'react-native';
 import Constants from 'expo-constants';
-import axios from 'axios';
+import { getAccessToken } from '../../utils/auth.js';
+// import axios from 'axios';
 
 import ProgressBar from '../ProgressBar.js';
+import Axios from 'axios';
 
 const   TRAINEE_TOTAL_OUTCOMES = 7
 const ASSOCIATE_TOTAL_OUTCOMES = 11
@@ -21,23 +23,28 @@ export default class HomeScreen extends React.Component{
     };
 
     componentDidMount(){
-        axios.get(server_add + '/calculateProgressBar', {
-            params: { // Currently using fake data 
-                firstname : 'Fake',
-                lastname : 'F',
-                email: 'fakef@gmail.com'
-            }
-        })
-        .then(response => {
-            let data = response.data;
+        getAccessToken().then(accessToken => 
+            fetch(server_add + '/calculateProgressBar', {
+                "headers": {
+                    "Authorization": "Bearer " + accessToken
+                }
+        }))
+        .then(async response => {
+            let data = await response.json();
+            console.log(data);
             this.setState({
-                // Currently only have fake data on Trainee
-                Trainee_progress: data.records[0].TR_CareerExpl_Outcomes__c + data.records[0].TR_Competency_Outcomes__c + data.records[0].TR_LifeEssentials_Outcomes__c, 
+                Trainee_progress: data.Trainee_sum,
+                // should change to *data.Associate_sum*
                 Associate_progress: 0,
+                // should change to *data.Partner_sum*
                 Partner_progress: 0
+                
             })
         })
         .catch(function (error) {
+            // TODO: error message 
+            // no progress to display, if you think it's an error
+            // component
             console.log(error);
         });
     }
