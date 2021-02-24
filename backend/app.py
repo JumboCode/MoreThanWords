@@ -3,7 +3,6 @@ from flask_cors import CORS
 import os # for environment variables
 from flask import request, jsonify # imported for parsing arguemnts
 from simple_salesforce import Salesforce, format_soql # import Salesforce
-
 from auth import AuthError, requires_auth
 
 
@@ -58,21 +57,45 @@ def verify():
     if (result["totalSize"] == 1):
         return {"verified": bool(1)} # true
 	
-	
     return {"verified": bool(0)} # false
 
 @app.route("/calculateProgressBar")
-def outcomes():
+@requires_auth(sf)
+def outcomes(user):
     # parses arguments that user sent via query string
-    email = request.args.get('email')
-    firstname = request.args.get('firstname')
-    lastname = request.args.get('lastname')
+    email = user['Email']
+    firstname = user['FirstName']
+    lastname = user['LastName']
     name = firstname + " " + lastname 
 
+    # Trainee Pod
+    desc = sf.Trainee_POD_Map__c.describe()
+    field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+    filtered_field_names = [field for field in field_names_and_labels if "Outcomes__c" in field[0]]
+    Trainee_field_names = [field[0] for field in filtered_field_names]
+
     # salesforce query of each completed outcome # in trainee pod, based on the email and name
-    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c, TR_Competency_Outcomes__c, TR_LifeEssentials_Outcomes__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})",
-                email_value = email, full_name=name))   
-    return outcomes_result
+    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(Trainee_field_names))
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
+
+    # transform into a python dictionary
+    vars(sf_result)
+
+    # calculate *Trainee* outcomes based on all related fields
+    Trainee_outcome_sum = 0
+    for outcome in Trainee_field_names:
+        Trainee_outcome_sum += sf_result['records'][0][outcome]
+
+
+    # TODO: Associate Pod & Partner Pod
+    sum_pod_outcome = {
+        'Trainee_sum': Trainee_outcome_sum
+        # 'Associate_sum': Associate_outcome_sum,
+        # 'Partner_sum': Partner_outcome_sum
+    }
+
+    return sum_pod_outcome
+    
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
