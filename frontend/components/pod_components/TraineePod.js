@@ -45,9 +45,9 @@ export default class TraineePodScreen extends React.Component {
                 compet_outcomes: data.records[0].TR_Competency_Outcomes__c,
                 career_outcomes: data.records[0].TR_CareerExpl_Outcomes__c,
                 life_outcomes: data.records[0].TR_LifeEssentials_Outcomes__c,
-                compet_total_outcomes: data.COMPET_COUNT,
-                career_total_outcomes: data.CAR_COUNT,
-                life_total_outcomes: data.LIFE_COUNT,
+                compet_total_outcomes: data.COM_totalcount,
+                career_total_outcomes: data.CAR_totalcount,
+                life_total_outcomes: data.LIF_totalcount,
             })
         })
         .catch(function (error) {
