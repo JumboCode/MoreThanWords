@@ -70,7 +70,7 @@ def outcomes():
     name = firstname + " " + lastname 
 
     # salesforce query of each completed outcome # in trainee pod, based on the email and name
-    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Outcomes__c, TR_Competency_Outcomes__c, TR_LifeEssentials_Outcomes__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})",
+    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Completed__c, TR_Competency_Outcomes__c, TR_LifeEssentials_Outcomes__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})",
                 email_value = email, full_name=name))   
     return outcomes_result
 
