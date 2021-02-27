@@ -23,13 +23,17 @@ def youthCheck(user):
     lastname = user.get('LastName')
     fullname = firstname + " " + lastname
     pod = request.args.get('pod')
+    pod_map_name = pod + '_POD_Map__c'
 
-    desc = sf.Trainee_POD_Map__c.describe()
+    desc = getattr(sf, pod_map_name).describe()
+    # desc = sf.Trainee_POD_Map__c.describe()
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
     field_names = [field['name'] for field in desc['fields']]
 
-    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(field_names))
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+    
+    soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
+    # Youth should be changed to Contact once fixed in salesforce
+    sf_result = sf.query(format_soql((soql + " WHERE (Youth__r.email = {email_value} AND Youth__r.name={full_name})"), email_value=email, full_name=fullname))
 
     response = {}
     for name_and_label in field_names_and_labels:
@@ -54,6 +58,8 @@ def updateSalesforce(user):
 
     soql = "SELECT Contact__c FROM Trainee_POD_Map__c"
     sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+
+    print(sf_result)
 
     tr_pod_id = sf_result['records'][0]['attributes']['url'].split('/')[-1]
     task_title = request.json.get('task_title')

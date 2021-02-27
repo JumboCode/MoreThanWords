@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
 
-export default function AssociatePodScreen({ navigation }) {
+export default function AssociatePodScreen(props, { navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>
@@ -12,7 +12,14 @@ export default function AssociatePodScreen({ navigation }) {
             
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Outcomes')}
+                onPress={() => {
+                    const { pod } = props.route.params;
+                    props.navigation.navigate('Outcomes', {
+                        pod: pod,
+                        focus_area: "COM",
+                        title: "Competencies"
+                    });
+                }}
             >
                 <Text style={styles.blockText}>
                     Competencies
@@ -23,7 +30,14 @@ export default function AssociatePodScreen({ navigation }) {
             
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Outcomes')}
+                onPress={() => {
+                    const { pod } = props.route.params;
+                    props.navigation.navigate('Outcomes', {
+                        pod: pod,
+                        focus_area: "CAR",
+                        title: "Career Pathway"
+                    });
+                }}
             >
                 <Text style={styles.blockText}>
                     Career Pathway
@@ -33,7 +47,14 @@ export default function AssociatePodScreen({ navigation }) {
         
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Outcomes')}
+                onPress={() => {
+                    const { pod } = props.route.params;
+                    props.navigation.navigate('Outcomes', {
+                        pod: pod,
+                        focus_area: "LIF",
+                        title: "Life Essentials / Support Network"
+                    });
+                }}
             >
                 <Text style={styles.blockText}>
                     Life Essentials/ Support Network

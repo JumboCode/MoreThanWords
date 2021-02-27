@@ -52,7 +52,7 @@ export default function OutcomesScreen({ navigation, route }) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    // console.log(pod);
+                    // console.log(data);
                     let newData = [];
                     // Extract all outcome titles for later use
                     for (const api_name in data) {
@@ -64,6 +64,8 @@ export default function OutcomesScreen({ navigation, route }) {
                             });
                         }
                     }
+
+                    // console.log(newData);
                     
                     // Create all content objects based on the youth fields
                     for (const key in data) {
@@ -94,8 +96,11 @@ export default function OutcomesScreen({ navigation, route }) {
                             let content_index = newData[index].content.findIndex(x => {
                                 return x.id === curr_id;
                             });
-                            // Update ydmApproved field in existing entry
-                            newData[index].content[content_index].ydmApproved = data[key]["value"];
+                            // If the corresponding youth exists for the YDM field, update the value
+                            if (content_index >= 0) {
+                                // Update ydmApproved field in existing entry
+                                newData[index].content[content_index].ydmApproved = data[key]["value"];
+                            }
                         }
                     }
                     setDataTemp(newData);

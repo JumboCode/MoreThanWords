@@ -28,6 +28,7 @@ class Task extends React.Component {
             checked: props.checked,
             ydmApproved: props.ydmApproved,
             starIsFilled: props.ydmApproved ? false : props.starIsFilled, // change second value later based on local storage
+            clickable: true
         };
     }
 
@@ -60,6 +61,10 @@ class Task extends React.Component {
                 paddingRight: 0,
             }
         });
+    }
+
+    setClickable(newValue) {
+        this.setState({clickable: newValue});
     }
 
     async updateSalesforce() {
@@ -115,11 +120,13 @@ class Task extends React.Component {
                     color={this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F"}
                     backgroundColor='transparent'
                     underlayColor='transparent'
-                    onPress={this.state.ydmApproved ? null : () => {
+                    onPress={this.state.ydmApproved || !this.state.clickable ? null : () => {
+                        this.setClickable(false);
                         this.updateSalesforce();
                         this.props.handleSetOutcomeData(this.props.backendID, !this.state.checked, this.state.starIsFilled);
-                        this.setState({checked: !this.state.checked});
-                        
+                        this.setState({checked: !this.state.checked}, () => {
+                            setTimeout(() => { this.setClickable(true); }, 1000);
+                        });
                     }}
                 />
             </View>
