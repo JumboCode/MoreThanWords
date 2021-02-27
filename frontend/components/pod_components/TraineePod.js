@@ -42,9 +42,9 @@ export default class TraineePodScreen extends React.Component {
         .then(async response => {
             let data = await response.json();
             this.setState({
-                compet_outcomes: data.records[0].TR_Competency_Outcomes__c,
-                career_outcomes: data.records[0].TR_CareerExpl_Outcomes__c,
-                life_outcomes: data.records[0].TR_LifeEssentials_Outcomes__c,
+                compet_outcomes: data.records[0].TR_Competency_Completed__c,
+                career_outcomes: data.records[0].TR_CareerExpl_Completed__c,
+                life_outcomes: data.records[0].TR_LifeEssentials_Completed__c,
                 compet_total_outcomes: data.COM_totalcount,
                 career_total_outcomes: data.CAR_totalcount,
                 life_total_outcomes: data.LIF_totalcount,
