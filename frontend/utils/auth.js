@@ -72,7 +72,6 @@ export async function getAccessToken() {
 
 /* removed token, effectively logging out */
 export async function removeToken() {
-    // TODO revoke
     const refresh_token = await getItemAsync(REFRESH_TOKEN_KEY);
     const discovery = await fetchDiscoveryAsync(auth0_domain);
     await deleteItemAsync(ID_KEY);
