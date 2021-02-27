@@ -22,6 +22,7 @@ def youthCheck(user):
     firstname = user.get('FirstName')
     lastname = user.get('LastName')
     fullname = firstname + " " + lastname
+    pod = request.args.get('pod')
 
     desc = sf.Trainee_POD_Map__c.describe()
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]

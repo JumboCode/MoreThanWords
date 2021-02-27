@@ -47,7 +47,9 @@ export default class HomeScreen extends React.Component{
         <SafeAreaView style={styles.container}>
         <TouchableOpacity 
             style={styles.block} 
-            onPress={() => this.props.navigation.navigate('Trainee Pod')}
+            onPress={() => this.props.navigation.navigate('Trainee Pod', {
+                pod: 'Trainee'
+            })}
         >
             <Text style={styles.blockText}>
                 Trainee 
@@ -57,7 +59,9 @@ export default class HomeScreen extends React.Component{
       
         <TouchableOpacity 
             style={styles.block} 
-            onPress={() => this.props.navigation.navigate('Associate Pod')}
+            onPress={() => this.props.navigation.navigate('Associate Pod', {
+                pod: 'Associate'
+            })}
         >
             <Text style={styles.blockText}>
                 Associate 
@@ -67,7 +71,9 @@ export default class HomeScreen extends React.Component{
     
         <TouchableOpacity 
             style={styles.block} 
-            onPress={() => this.props.navigation.navigate('Partner Pod')}
+            onPress={() => this.props.navigation.navigate('Partner Pod', {
+                pod: 'Partner'
+            })}
         >                
             <Text style={styles.blockText}>
                 Partner 

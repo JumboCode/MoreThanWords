@@ -27,7 +27,7 @@ class Task extends React.Component {
         this.state = {
             checked: props.checked,
             ydmApproved: props.ydmApproved,
-            starIsFilled: props.ydmApproved ? false : true, // change second value later based on local storage
+            starIsFilled: props.ydmApproved ? false : props.starIsFilled, // change second value later based on local storage
         };
     }
 
@@ -96,6 +96,7 @@ class Task extends React.Component {
                     underlayColor='transparent'
                     size={20}
                     onPress={this.state.ydmApproved ? null : () => {
+                        this.props.handleSetOutcomeData(this.props.backendID, this.state.checked, !this.state.starIsFilled);
                         this.setState({starIsFilled: !this.state.starIsFilled});
                         // Add functionality for keeping the state (local or Salesforce)
                         // If the star is now filled, add the current task to the "Favorites" section
@@ -116,7 +117,9 @@ class Task extends React.Component {
                     underlayColor='transparent'
                     onPress={this.state.ydmApproved ? null : () => {
                         this.updateSalesforce();
+                        this.props.handleSetOutcomeData(this.props.backendID, !this.state.checked, this.state.starIsFilled);
                         this.setState({checked: !this.state.checked});
+                        
                     }}
                 />
             </View>

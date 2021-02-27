@@ -31,7 +31,7 @@ export default function OutcomesScreen({ navigation, route }) {
         LogBox.ignoreLogs(['Warning: ']); // Ignore 'componentWillMount' warning
         LogBox.ignoreAllLogs(); //Ignore all log notifications
 
-        const { focus_area, title } = route.params;
+        const { pod, focus_area, title } = route.params;
 
         navigation.setOptions({
             headerTitle: title
@@ -39,14 +39,20 @@ export default function OutcomesScreen({ navigation, route }) {
 
         async function fetchData() {
             // Call checkbox endpoint
-            await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox`, {
+            await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox?pod=${pod}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': "Bearer " + await getAccessToken()
-                }
+                    'Authorization': "Bearer " + await getAccessToken(),
+                    // 'Accept': 'application/json',
+                    // 'Content-Type': 'application/json'
+                },
+                // body: JSON.stringify({
+                //     pod: pod
+                // })
             })
                 .then(response => response.json())
                 .then(data => {
+                    // console.log(pod);
                     let newData = [];
                     // Extract all outcome titles for later use
                     for (const api_name in data) {
@@ -70,7 +76,8 @@ export default function OutcomesScreen({ navigation, route }) {
                                 id: words_in_key[words_in_key.length - 3].toLowerCase(),
                                 key: data[key]["name"],
                                 ydmApproved: true,
-                                checked: data[key]["value"]
+                                checked: data[key]["value"],
+                                starIsFilled: true // Change later based on salesforce data
                             });
                         }
                     }

@@ -11,7 +11,7 @@
  *     3) A list of Tasks corresponding to the goals of the outcome group.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, LogBox } from 'react-native';
 import { Accordion } from 'native-base';
 import Task from './Task';
@@ -44,12 +44,23 @@ const styles = StyleSheet.create({
 });
 
 const Outcome = (props) => {
+
+    const [outcomeData, setOutcomeData] = useState(props.data);
+
+    handleSetOutcomeData = (backendID, updatedCheckboxValue, updatedStarValue) => {
+        let dataTemp = outcomeData;
+        let index = outcomeData[0].content.findIndex(x => x.api_key === backendID);
+        dataTemp[0].content[index].checked = updatedCheckboxValue;
+        dataTemp[0].content[index].starIsFilled = updatedStarValue;
+        setOutcomeData(dataTemp);
+    };
+
     return (
         <Accordion
             style={styles.accordion}
             useNativeDriver={true}
             expanded={0}
-            dataArray={props.data}
+            dataArray={outcomeData}
             headerStyle={styles.headerStyle}
             renderContent={(taskListObject) => {
                 const itemComponents = taskListObject.content.map(
@@ -60,6 +71,8 @@ const Outcome = (props) => {
                         ydmApproved={taskObj.ydmApproved}
                         checked={taskObj.checked}
                         backendID={taskObj.api_key}
+                        handleSetOutcomeData={handleSetOutcomeData}
+                        starIsFilled={taskObj.starIsFilled}
                     />
                 );
                 return (
