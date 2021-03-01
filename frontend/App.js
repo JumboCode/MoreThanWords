@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -85,12 +85,14 @@ class MainStackNavigator extends React.Component {
 
 function RandomScreen() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>
-                When the competencies screen, career pathway screen, and life
-                essential screens get set up, replace this screen with them.
-            </Text>
-        </View>
+        <ScrollView style={styles.scrollView}>
+            <View style={styles.container}>
+                <Text style={styles.title}>
+                    When the competencies screen, career pathway screen, and life
+                    essential screens get set up, replace this screen with them.
+                </Text>
+            </View>
+        </ScrollView>
     );
 }
 
@@ -106,6 +108,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
         fontWeight: 'bold',
     },
+    scrollView: {
+        backgroundColor: 'white'
+    }
 });
 
 export default MainStackNavigator;

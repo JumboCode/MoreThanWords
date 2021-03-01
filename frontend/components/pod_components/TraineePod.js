@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import { getAccessToken } from '../../utils/auth.js';
@@ -63,6 +63,7 @@ export default class TraineePodScreen extends React.Component {
 	 */
     render() {
         return (
+            <ScrollView style={styles.scrollView}>
             <SafeAreaView style={styles.container}>
                 <TouchableOpacity 
                     style={styles.block} 
@@ -94,6 +95,7 @@ export default class TraineePodScreen extends React.Component {
                     <PodProgressBar progress={this.state.life_outcomes} total_tasks={this.state.life_total_outcomes} />
                 </TouchableOpacity>
             </SafeAreaView>
+            </ScrollView>
         );
     }
 }
@@ -122,4 +124,7 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 50,
     },
+    scrollView: {
+        backgroundColor: 'white'
+    }
 });
