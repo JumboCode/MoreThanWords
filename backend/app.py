@@ -7,7 +7,7 @@ from simple_salesforce import Salesforce, format_soql # import Salesforce
 from auth import AuthError, requires_auth
 
 
-# global connection to Salesforce so we don't need to connect everytime, CHANGE TO ENV VARIABLE OR take  
+# global connection to Salesforce so we don't need to connect everytime
 sf = Salesforce(
     username=os.environ['SALESFORCE_USERNAME'],
     password=os.environ['SALESFORCE_PASSWORD'],
@@ -72,7 +72,7 @@ def updateSalesforce(user):
     task_title = request.json.get('task_title')
     new_value = request.json.get('new_value')
 
-    # Update value of that task in Salesforce
+    # Update value of specific task in Salesforce
     getattr(sf, pod_map_name).update(tr_pod_id, {task_title: new_value})
 
     return {}

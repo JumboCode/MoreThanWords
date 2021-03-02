@@ -16,10 +16,7 @@ import React from 'react';
 import { StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Constants from 'expo-constants';
-
 import { getAccessToken } from '../../utils/auth.js'
-
-const server_add = Constants.manifest.extra.apiUrl;
 
 class Task extends React.Component {
     constructor(props) {

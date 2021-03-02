@@ -38,7 +38,7 @@ export default function OutcomesScreen({ navigation, route }) {
         });
 
         async function fetchData() {
-            // Call checkbox endpoint
+            // Call checkbox endpoint with specific pod as argument
             await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox?pod=${pod}`, {
                 method: 'GET',
                 headers: {
