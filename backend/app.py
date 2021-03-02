@@ -64,6 +64,8 @@ def verify():
 @app.route("/calculateProgressBar")
 @requires_auth(sf)
 def outcomes(user):
+    import json
+    
     # parses arguments that user sent via query string
     email = user['Email']
     firstname = user['FirstName']
@@ -84,14 +86,20 @@ def outcomes(user):
     sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
 
     # count the *total* outcomes for each field 
+    outcome_dict = {}
     for field in Trainee_field_names:
         field_type = field[3:6].upper()
-        sf_result[field_type + "_totalcount"] = 0; #create new value in sf_result dict that will store field's total outcomes 
+        outcome_dict[field_type] = {}
+        outcome_dict[field_type]['completed_outcomes'] = sf_result["records"][0][field]
+        outcome_dict[field_type]['total_outcomes'] = 0; #create new value in sf_result dict that will store field's total outcomes 
+
         for name_and_label in field_names_and_labels:
             if "_Outcome_" + field_type in name_and_label[0]: 
-                sf_result[field_type + "_totalcount"] += 1
+                outcome_dict[field_type]['total_outcomes'] += 1
     
-    return sf_result
+    print(json.dumps(outcome_dict, indent=4))
+    
+    return outcome_dict
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
