@@ -43,17 +43,12 @@ export default function OutcomesScreen({ navigation, route }) {
                 method: 'GET',
                 headers: {
                     'Authorization': "Bearer " + await getAccessToken(),
-                    // 'Accept': 'application/json',
-                    // 'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify({
-                //     pod: pod
-                // })
             })
                 .then(response => response.json())
                 .then(data => {
-                    // console.log(data);
                     let newData = [];
+
                     // Extract all outcome titles for later use
                     for (const api_name in data) {
                         if (api_name.includes("Outcome") && api_name.includes(focus_area) && !api_name.includes("Outcomes")) {
@@ -65,8 +60,6 @@ export default function OutcomesScreen({ navigation, route }) {
                         }
                     }
 
-                    // console.log(newData);
-                    
                     // Create all content objects based on the youth fields
                     for (const key in data) {
                         let key_id = key.substring(0, 3);
@@ -79,7 +72,8 @@ export default function OutcomesScreen({ navigation, route }) {
                                 key: data[key]["name"],
                                 ydmApproved: true,
                                 checked: data[key]["value"],
-                                starIsFilled: true // Change later based on salesforce data
+                                starIsFilled: false, // Change later based on salesforce data
+                                pod: pod
                             });
                         }
                     }
@@ -103,10 +97,13 @@ export default function OutcomesScreen({ navigation, route }) {
                             }
                         }
                     }
+
+                    // Update the dataTemp variable with the newly parsed data
                     setDataTemp(newData);
                 })
                 .catch((error) => {
                     console.error(error);
+                    // Set dataTemp to false to display error message to user
                     setDataTemp(false);
                 });
         }

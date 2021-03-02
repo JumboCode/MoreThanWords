@@ -70,6 +70,7 @@ class Task extends React.Component {
     async updateSalesforce() {
         let updated_value = !this.state.checked
 
+        // Make request to update checkbox
         await fetch(`${Constants.manifest.extra.apiUrl}/updateCheckbox`, {
             method: 'POST',
             headers: {
@@ -80,6 +81,7 @@ class Task extends React.Component {
             body: JSON.stringify({
                 task_title: this.props.backendID,
                 new_value: updated_value,
+                pod: this.props.pod
             })
         })
         .catch(error => {
@@ -120,10 +122,12 @@ class Task extends React.Component {
                     color={this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F"}
                     backgroundColor='transparent'
                     underlayColor='transparent'
+                    // KNOWN ISSUE: 401 error from multiple requests made in a short amount of time
                     onPress={this.state.ydmApproved || !this.state.clickable ? null : () => {
                         this.setClickable(false);
                         this.updateSalesforce();
                         this.props.handleSetOutcomeData(this.props.backendID, !this.state.checked, this.state.starIsFilled);
+                        // Prevent user from clicking again until a second has passed
                         this.setState({checked: !this.state.checked}, () => {
                             setTimeout(() => { this.setClickable(true); }, 1000);
                         });

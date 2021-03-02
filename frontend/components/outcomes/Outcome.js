@@ -18,7 +18,7 @@ import Task from './Task';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
-LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+LogBox.ignoreLogs(['Animated: `useNativeDriver`']); // Ignore 'useNativeDriver' warning
 
 const styles = StyleSheet.create({
     accordion: {
@@ -73,6 +73,7 @@ const Outcome = (props) => {
                         backendID={taskObj.api_key}
                         handleSetOutcomeData={handleSetOutcomeData}
                         starIsFilled={taskObj.starIsFilled}
+                        pod={taskObj.pod}
                     />
                 );
                 return (
