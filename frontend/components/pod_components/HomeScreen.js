@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import axios from 'axios';
 
@@ -43,44 +43,47 @@ export default class HomeScreen extends React.Component{
     }
 
     render(){
-        return(
-        <SafeAreaView style={styles.container}>
-        <TouchableOpacity 
-            style={styles.block} 
-            onPress={() => this.props.navigation.navigate('Trainee Pod', {
-                pod: 'Trainee'
-            })}
-        >
-            <Text style={styles.blockText}>
-                Trainee 
-            </Text>
-            <ProgressBar progress={this.state.Trainee_progress} total_outcomes={TRAINEE_TOTAL_OUTCOMES} />
-        </TouchableOpacity>
+        return (
+        <ScrollView style={styles.scrollView}>
+            <SafeAreaView style={styles.container}>
+            <TouchableOpacity 
+                style={styles.block} 
+                onPress={() => this.props.navigation.navigate('Trainee Pod', {
+                    pod: 'Trainee'
+                })}
+            >
+                <Text style={styles.blockText}>
+                    Trainee 
+                </Text>
+                <ProgressBar progress={this.state.Trainee_progress} total_outcomes={TRAINEE_TOTAL_OUTCOMES} />
+            </TouchableOpacity>
       
-        <TouchableOpacity 
-            style={styles.block} 
-            onPress={() => this.props.navigation.navigate('Associate Pod', {
-                pod: 'Associate'
-            })}
-        >
-            <Text style={styles.blockText}>
-                Associate 
-            </Text>
-            <ProgressBar progress={this.state.Associate_progress} total_outcomes={ASSOCIATE_TOTAL_OUTCOMES} />
-        </TouchableOpacity>
+            <TouchableOpacity 
+                style={styles.block} 
+                onPress={() => this.props.navigation.navigate('Associate Pod', {
+                    pod: 'Associate'
+                })}
+            >
+                <Text style={styles.blockText}>
+                    Associate 
+                </Text>
+                <ProgressBar progress={this.state.Associate_progress} total_outcomes={ASSOCIATE_TOTAL_OUTCOMES} />
+            </TouchableOpacity>
     
-        <TouchableOpacity 
-            style={styles.block} 
-            onPress={() => this.props.navigation.navigate('Partner Pod', {
-                pod: 'Partner'
-            })}
-        >                
-            <Text style={styles.blockText}>
-                Partner 
-            </Text>
-            <ProgressBar progress={this.state.Partner_progress} total_outcomes={PARTNER_TOTAL_OUTCOMES} />
-        </TouchableOpacity>
-    </SafeAreaView>);
+            <TouchableOpacity 
+                style={styles.block} 
+                onPress={() => this.props.navigation.navigate('Partner Pod', {
+                    pod: 'Partner'
+                })}
+            >                
+                <Text style={styles.blockText}>
+                    Partner 
+                </Text>
+                <ProgressBar progress={this.state.Partner_progress} total_outcomes={PARTNER_TOTAL_OUTCOMES} />
+            </TouchableOpacity>
+            </SafeAreaView>
+        </ScrollView>
+        )
     }
 }
 
@@ -109,4 +112,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    scrollView: {
+        backgroundColor: 'white'
+    }
 });

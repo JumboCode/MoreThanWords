@@ -10,3 +10,4 @@ frontend/.expo/*
 *.log
 startBackend.sh
 startBackendWindows.sh
+frontend/node_modules/*

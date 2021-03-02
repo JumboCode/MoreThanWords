@@ -123,17 +123,36 @@ def verify():
     return {"verified": bool(0)} # false
 
 @app.route("/calculateProgressBar")
-def outcomes():
+@requires_auth(sf)
+def outcomes(user):
     # parses arguments that user sent via query string
-    email = request.args.get('email')
-    firstname = request.args.get('firstname')
-    lastname = request.args.get('lastname')
+    email = user['Email']
+    firstname = user['FirstName']
+    lastname = user['LastName']
     name = firstname + " " + lastname 
 
-    # salesforce query of each completed outcome # in trainee pod, based on the email and name
-    outcomes_result = sf.query(format_soql("SELECT TR_CareerExpl_Completed__c, TR_Competency_Completed__c, TR_LifeEssentials_Completed__c FROM Trainee_POD_Map__c WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})",
-                email_value = email, full_name=name))   
-    return outcomes_result
+    # Trainee Pod
+    # salesforce query for all the field names and labels in the trainee pod 
+    desc = sf.Trainee_POD_Map__c.describe()
+    field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+    
+    # filter to get only the trainee outcome field names 
+    filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
+    Trainee_field_names = [field[0] for field in filtered_field_names]
+
+    # salesforce query of each *completed* outcome # in trainee pod, based on the email and name
+    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(Trainee_field_names))
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
+
+    # count the *total* outcomes for each field 
+    for field in Trainee_field_names:
+        field_type = field[3:6].upper()
+        sf_result[field_type + "_totalcount"] = 0; #create new value in sf_result dict that will store field's total outcomes 
+        for name_and_label in field_names_and_labels:
+            if "_Outcome_" + field_type in name_and_label[0]: 
+                sf_result[field_type + "_totalcount"] += 1
+    
+    return sf_result
 
 if __name__ == '__main__':
     app.run(debug=True, host=os.environ['LOCAL_IPV4'])
