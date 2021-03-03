@@ -15,7 +15,11 @@ export default class TraineePodScreen extends React.Component {
      *      respective name, completed_outcomes count, total_outcomes count
      */
     state = {
+<<<<<<< HEAD
         outcomes_list: {},
+=======
+        outcomes_list: {}, 
+>>>>>>> 9392deb7a6200e395ef46cfe93cf2f166f8ef74b
     };
 
     /* componentDidMount
