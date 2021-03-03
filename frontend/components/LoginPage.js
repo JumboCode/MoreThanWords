@@ -115,7 +115,7 @@ export default class LoginPage extends React.Component {
                     <Text style={styles.title}>You are logged in, {this.state.name}!</Text>
                 ) : (
 
-                    <View style={styles.container}>
+                    <View style={styles.imageContainer}>
                         <Image
                             style={styles.logo}
                             source={require("./logo.png")}
@@ -141,6 +141,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    imageContainer: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: -250,
+    },
     title: {
         fontSize: 40,
         textAlign: "center",
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#ff4646",
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 30,
+        marginTop: 10,
         borderRadius: 10,
         shadowOpacity: 0.2,
         shadowRadius: 5,
@@ -160,7 +167,6 @@ const styles = StyleSheet.create({
             width: 0,
             height: 4,
         },
-        // shadowColor: 'rgba(255, 56, 56, 0.25)',
         shadowColor: 'red',
     },
     buttonText: {
@@ -171,9 +177,7 @@ const styles = StyleSheet.create({
     logo: {
         justifyContent: "center",
         alignItems: "center",
-        height: 230,
-        // width: 230,
-        marginTop: -300,
+        height: 250,
         resizeMode: "contain",
     }
 });
