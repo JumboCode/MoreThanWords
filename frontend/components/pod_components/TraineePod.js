@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
-import axios from 'axios';
 import { getAccessToken } from '../../utils/auth.js';
 
 import PodProgressBar from './PodProgressBar.js';
@@ -127,4 +126,7 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 50,
     },
+    scrollView: {
+        backgroundColor: 'white'
+    }
 });

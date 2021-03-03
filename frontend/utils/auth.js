@@ -66,15 +66,23 @@ export async function renewAccessToken() {
 export async function getAccessToken() {
     const expire_timestamp = parseInt(await getItemAsync(EXPIRE_TIME_KEY));
     const date_now = Date.now();
-    if (date_now > expire_timestamp) await renewAccessToken();
+    if (date_now > expire_timestamp * 1000) await renewAccessToken();
     return await getItemAsync(ACCESS_TOKEN_KEY);
 }
 
 /* removed token, effectively logging out */
 export async function removeToken() {
-    // TODO revoke
+    const refresh_token = await getItemAsync(REFRESH_TOKEN_KEY);
+    const discovery = await fetchDiscoveryAsync(auth0_domain);
     await deleteItemAsync(ID_KEY);
     await deleteItemAsync(EXPIRE_TIME_KEY);
     await deleteItemAsync(ACCESS_TOKEN_KEY);
     await deleteItemAsync(REFRESH_TOKEN_KEY);
+
+    // revoke the token
+    await revokeAsync({
+            token: refresh_token,
+            clientId: auth0ClientId,
+        }, discovery);
+    
 }
