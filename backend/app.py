@@ -47,7 +47,7 @@ def youthCheck(user):
     for name, value in sf_result["records"][0].items():
         if name in response.keys():
             response[name]["value"] = value
-    
+    print(response)
     return response
 
 @app.route("/updateCheckbox", methods=['POST'])
@@ -155,4 +155,4 @@ def outcomes(user):
     return sf_result
 
 if __name__ == '__main__':
-    app.run(debug=True, host=os.environ['LOCAL_IPV4'])
+    app.run(debug=True, host='0.0.0.0')
