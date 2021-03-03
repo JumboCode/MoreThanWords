@@ -19,23 +19,6 @@ export default class TraineePodScreen extends React.Component {
      */
     state = {
         outcomes_list: {}, 
-        array: [
-            {
-              key: '1',
-              title: 'example title 1',
-              subtitle: 'example subtitle 1',
-            },
-            {
-              key: '2',
-              title: 'example title 2',
-              subtitle: 'example subtitle 2',
-            },
-            {
-              key: '3',
-              title: 'example title 3',
-              subtitle: 'example subtitle 3',
-            },
-          ],
     };
 
     /* componentDidMount
