@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 export default function PartnerPodScreen({ navigation }) {
     return (
+        <ScrollView style={styles.scrollView}>
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>
                 PARTNER POD
@@ -43,6 +44,7 @@ export default function PartnerPodScreen({ navigation }) {
                 <Text>Outcomes Achieved</Text>
             </TouchableOpacity>
         </SafeAreaView>
+        </ScrollView>
     );
 }
 
@@ -73,4 +75,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         textAlign: 'center',
     },
+    scrollView: {
+        backgroundColor: 'white'
+    }
 });

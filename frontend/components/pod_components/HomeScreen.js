@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { getAccessToken } from '../../utils/auth.js';
+
 import ProgressBar from '../ProgressBar.js';
 
 const server_add = Constants.manifest.extra.apiUrl;
@@ -134,4 +135,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    scrollView: {
+        backgroundColor: 'white'
+    }
 });

@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 
 export default function AssociatePodScreen({ navigation }) {
     return (
+        <ScrollView style={styles.scrollView}>
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>
                 ASSOCIATE POD
@@ -41,6 +42,7 @@ export default function AssociatePodScreen({ navigation }) {
                 <Text>Outcomes Achieved</Text>
             </TouchableOpacity>
         </SafeAreaView>
+        </ScrollView>
     );
 }
 
@@ -71,4 +73,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         textAlign: 'center',
     },
+    scrollView: {
+        backgroundColor: 'white'
+    }
 });
