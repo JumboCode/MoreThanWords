@@ -15,11 +15,9 @@ export default class FocusAreaBlock extends React.Component {
     }
     
     render() {
-        const outcomes = this.props.outcomes;
-        // const total_outcomes = this.props.outcomes['completed_outcomes'];
-        
-        console.log("focusarea block console: ", this.props.outcomes);
-        
+        const completed_outcomes = this.props.completed_outcomes;
+        const total_outcomes = this.props.total_outcomes;
+
         return (     
             <TouchableOpacity 
                 style={styles.block} 
@@ -28,7 +26,7 @@ export default class FocusAreaBlock extends React.Component {
                 <Text style={styles.blockTitle}>
                     {this.props.name} 
                 </Text>
-                <PodProgressBar progress={2} total_tasks={3} />
+                <PodProgressBar progress={completed_outcomes} total_tasks={total_outcomes} />
             </TouchableOpacity>
         );
     }

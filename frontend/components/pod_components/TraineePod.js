@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import { getAccessToken } from '../../utils/auth.js';
@@ -20,6 +20,23 @@ export default class TraineePodScreen extends React.Component {
      */
     state = {
         outcomes_list: {}, 
+        array: [
+            {
+              key: '1',
+              title: 'example title 1',
+              subtitle: 'example subtitle 1',
+            },
+            {
+              key: '2',
+              title: 'example title 2',
+              subtitle: 'example subtitle 2',
+            },
+            {
+              key: '3',
+              title: 'example title 3',
+              subtitle: 'example subtitle 3',
+            },
+          ],
     };
 
     /* componentDidMount
@@ -41,14 +58,16 @@ export default class TraineePodScreen extends React.Component {
             this.setState({
                 outcomes_list: data,
             })
-            console.log("raw data: ", data);
-            console.log("traineepod console: ", this.state.outcomes_list[Object.keys(this.state.outcomes_list)[0]]);
+            console.log("START! raw data: ", data);
+            // if (this.state.outcomes_list && this.state.outcomes_list['CAR']) {
+                console.log("completed_outcomes: ", this.state.outcomes_list['CAR']['completed_outcomes']);
+            // }
         })
         .catch(function (error) {
             console.log(error);
         });
     }
-    
+
     /* render
 	 * Paramaters: none
 	 * Returns: nothing
@@ -57,43 +76,29 @@ export default class TraineePodScreen extends React.Component {
 	 */
     render() {
         return (
-            <SafeAreaView style={styles.container}>
-                <FocusAreaBlock 
-                    name='hello'
-                    outcomes={this.state.outcomes_list["COM"]}
-                    onPress={() => this.props.navigation.navigate('Random Screen')} 
-                />
-                
-                <TouchableOpacity 
-                    style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Random Screen')}
-                >
-                    <Text style={styles.blockTitle}>
-                        Competencies
-                    </Text>
-                    <PodProgressBar progress={2} total_tasks={3} />
-                </TouchableOpacity>
-                
-                <TouchableOpacity 
-                    style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Random Screen')}
-                >
-                    <Text style={styles.blockTitle}>
-                        Career Pathway
-                    </Text>
-                    <PodProgressBar progress={1} total_tasks={3} />
-                </TouchableOpacity>
-            
-                <TouchableOpacity 
-                    style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Random Screen')}
-                >                
-                    <Text style={styles.blockTitle}>
-                        Life Essentials / Support Network
-                    </Text>
-                    <PodProgressBar progress={1} total_tasks={3} />
-                </TouchableOpacity>
-            </SafeAreaView>
+            <ScrollView>
+                <SafeAreaView style={styles.container}>     
+                    {Object.entries(this.state.outcomes_list).map(([key, value]) => {
+                        return (
+                            <FocusAreaBlock 
+                                name={this.state.outcomes_list[key]['name']}
+                                completed_outcomes={this.state.outcomes_list[key]['completed_outcomes']}
+                                total_outcomes={this.state.outcomes_list[key]['total_outcomes']}
+                            />
+                        )
+                    })}
+
+                    <TouchableOpacity 
+                        style={styles.block} 
+                        onPress={() => this.props.navigation.navigate('Random Screen')}
+                    >
+                        <Text style={styles.blockTitle}>
+                            Competencies
+                        </Text>
+                        <PodProgressBar progress={2} total_tasks={3} />
+                    </TouchableOpacity>
+                </SafeAreaView>
+            </ScrollView>
         );
     }
 }
