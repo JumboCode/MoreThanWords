@@ -1,19 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
-import axios from 'axios';
-import { getAccessToken } from '../../utils/auth.js';
 
 import PodProgressBar from './PodProgressBar.js';
-
-const server_add = Constants.manifest.extra.apiUrl;
-
 
 export default class FocusAreaBlock extends React.Component {    
     constructor(props) {
         super(props);
     }
     
+    /* render
+	 * Paramaters: none
+	 * Returns: nothing
+	 * Purpose: renders a touchable opacity component on the pod pages, 
+     * including the progress bars with completed and total outcomes
+	 */
     render() {
         const completed_outcomes = this.props.completed_outcomes;
         const total_outcomes = this.props.total_outcomes;
@@ -32,19 +33,7 @@ export default class FocusAreaBlock extends React.Component {
     }
 }
 
-
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginTop: 20,
-    },
     block: {
         width: '100%',
         height: 180,

@@ -10,32 +10,12 @@ const server_add = Constants.manifest.extra.apiUrl;
 
 export default class TraineePodScreen extends React.Component {
     /* State variables initalized:
-     * 	  - compet_outcomes: number of completed competency outcomes 
-     * 	  - career_outcomes: number of completed career pathway outcomes
-     * 	  - life_outcomes: number of completed life essential outcomes 
-     *    - compet_total_outcomes: total number of competency outcomes
-     *    - career_total_outcomes: total number of career outcomes
-     *    - life_total_outcomes: total number of life outcomes
+     * 	  - outcomes_list: a dictionary of dictionaries. values are field 
+     *      names (ex. COM, CAR) that each map to another dictionary with 
+     *      respective name, completed_outcomes count, total_outcomes count
      */
     state = {
-        outcomes_list: {}, 
-        array: [
-            {
-              key: '1',
-              title: 'example title 1',
-              subtitle: 'example subtitle 1',
-            },
-            {
-              key: '2',
-              title: 'example title 2',
-              subtitle: 'example subtitle 2',
-            },
-            {
-              key: '3',
-              title: 'example title 3',
-              subtitle: 'example subtitle 3',
-            },
-          ],
+        outcomes_list: {},
     };
 
     /* componentDidMount
@@ -43,7 +23,6 @@ export default class TraineePodScreen extends React.Component {
 	 * Returns: nothing
 	 * Purpose: Get the data from backend and use the info to set states
 	 */
-    
     componentDidMount() {
         getAccessToken().then(accessToken => 
             fetch(server_add + '/calculateProgressBar', {
@@ -58,9 +37,6 @@ export default class TraineePodScreen extends React.Component {
                 outcomes_list: data,
             })
             console.log("START! raw data: ", data);
-            // if (this.state.outcomes_list && this.state.outcomes_list['CAR']) {
-                console.log("completed_outcomes: ", this.state.outcomes_list['CAR']['completed_outcomes']);
-            // }
         })
         .catch(function (error) {
             console.log(error);
@@ -107,24 +83,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginTop: 20,
-    },
-    block: {
-        width: '100%',
-        height: 180,
-        backgroundColor: '#fcfcfc',
-        marginTop: 40,
-    },
-    blockTitle: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginTop: 30,
-        marginLeft: 30,
-        marginRight: 50,
     },
     scrollView: {
         backgroundColor: 'white'
