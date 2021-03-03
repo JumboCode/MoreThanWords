@@ -138,13 +138,14 @@ def HomeScreenoutcomes(user):
     # salesforce query of each completed outcome # in trainee pod, based on the email and name
     soql = "SELECT {} FROM Partner_POD_Map__c".format(','.join(Partner_field_names))
     Partner_sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
-
-    # NOAH NEED TO CHANGE THE DATA TYPE
   
-    # # transform into a python dictionary
+    print('_________________________________________________')
+    print(Partner_sf_result)
+
+    # transform into a python dictionary
     # vars(Partner_sf_result)
 
-    # # calculate *Partner* outcomes based on all related fields
+    # calculate *Partner* outcomes based on all related fields
     # Partner_outcome_sum = 0
     # for outcome in Partner_field_names:
     #     Partner_outcome_sum += Partner_sf_result['records'][0][outcome]
@@ -155,9 +156,9 @@ def HomeScreenoutcomes(user):
     sum_pod_outcome = {
         'Trainee_complete': Trainee_outcome_sum,
         'Trainee_total': Trainee_total_count,
-        'Associate_outcome': Associate_outcome_sum,
+        'Associate_complete': Associate_outcome_sum,
         'Associate_total': Associate_total_count,
-        # 'Partner_sum': Partner_outcome_sum,
+        # 'Partner_complete': Partner_outcome_sum,
         'Partner_total': Partner_total_count
     }    
 
