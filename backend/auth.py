@@ -45,7 +45,6 @@ def get_user_info(sf, email):
         email_value=email))
 
     if (result["totalSize"] == 1 and result["records"]):
-        print(result)
         user_info = result["records"][0]
         return user_info
     else:
