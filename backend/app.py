@@ -61,7 +61,7 @@ def verify():
 
 @app.route("/calcProgressHomeScreen")
 @requires_auth(sf)
-def outcomes(user):
+def HomeScreenoutcomes(user):
     # parses arguments that user sent via query string
     email = user['Email']
     firstname = user['FirstName']
