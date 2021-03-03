@@ -30,9 +30,9 @@ export default class HomeScreen extends React.Component{
             this.setState({
                 Trainee_progress: data.Trainee_complete,
                 Trainee_total: data.Trainee_total,
-                Associate_progress: data.Associate_outcome,
+                Associate_progress: data.Associate_complete,
                 Associate_total: data.Associate_total,
-                Partner_progress: 1, // should change to *data.Partner_sum* data.Associate_sum
+                Partner_progress: 1, // should change to *data.Partner_complete*
                 Partner_total: data.Partner_total,
             })
         })
