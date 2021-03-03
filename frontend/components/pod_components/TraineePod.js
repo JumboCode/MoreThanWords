@@ -3,9 +3,7 @@ import { ScrollView, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } fr
 import Constants from 'expo-constants';
 import { getAccessToken } from '../../utils/auth.js';
 
-import PodProgressBar from './PodProgressBar.js';
 import FocusAreaBlock from './FocusAreaBlock.js';
-
 const server_add = Constants.manifest.extra.apiUrl;
 
 export default class TraineePodScreen extends React.Component {
@@ -70,7 +68,6 @@ export default class TraineePodScreen extends React.Component {
                         <Text style={styles.blockTitle}>
                             Competencies
                         </Text>
-                        <PodProgressBar progress={2} total_tasks={3} />
                     </TouchableOpacity>
                 </SafeAreaView>
             </ScrollView>
