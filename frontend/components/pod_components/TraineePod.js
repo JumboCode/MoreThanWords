@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
-import axios from 'axios';
 import { getAccessToken } from '../../utils/auth.js';
 
 import PodProgressBar from './PodProgressBar.js';
