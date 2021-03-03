@@ -8,22 +8,26 @@ import PodProgressBar from './PodProgressBar.js';
 const server_add = Constants.manifest.extra.apiUrl;
 
 export default class TraineePodScreen extends React.Component {
-    /* State variables initalized:
-     * 	  - compet_outcomes: number of completed competency outcomes 
-     * 	  - career_outcomes: number of completed career pathway outcomes
-     * 	  - life_outcomes: number of completed life essential outcomes 
-     *    - compet_total_outcomes: total number of competency outcomes
-     *    - career_total_outcomes: total number of career outcomes
-     *    - life_total_outcomes: total number of life outcomes
-     */
-    state = {
-        compet_outcomes: 0, 
-        career_outcomes: 0,
-        life_outcomes: 0,
-        compet_total_outcomes: 0,
-        career_total_outcomes: 0,
-        life_total_outcomes: 0,
-    };
+    constructor(props) {
+        super(props);
+
+        /* State variables initalized:
+        *    - compet_outcomes: number of completed competency outcomes 
+        *    - career_outcomes: number of completed career pathway outcomes
+        *    - life_outcomes: number of completed life essential outcomes 
+        *    - compet_total_outcomes: total number of competency outcomes
+        *    - career_total_outcomes: total number of career outcomes
+        *    - life_total_outcomes: total number of life outcomes
+        */
+        this.state = {
+            compet_outcomes: 0, 
+            career_outcomes: 0,
+            life_outcomes: 0,
+            compet_total_outcomes: 0,
+            career_total_outcomes: 0,
+            life_total_outcomes: 0,
+        };
+    }
 
     /* componentDidMount
 	 * Parameters: none
@@ -66,7 +70,14 @@ export default class TraineePodScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <TouchableOpacity 
                     style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Random Screen')}
+                    onPress={() => {
+                        const { pod } = this.props.route.params;
+                        this.props.navigation.navigate('Outcomes', {
+                            pod: pod,
+                            focus_area: "COM",
+                            title: "Competencies"
+                        });
+                    }}
                 >
                     <Text style={styles.blockTitle}>
                         Competencies
@@ -76,7 +87,14 @@ export default class TraineePodScreen extends React.Component {
                 
                 <TouchableOpacity 
                     style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Random Screen')}
+                    onPress={() => {
+                        const { pod } = this.props.route.params;
+                        this.props.navigation.navigate('Outcomes', {
+                            pod: pod,
+                            focus_area: "CAR",
+                            title: "Career Pathway"
+                        });
+                    }}
                 >
                     <Text style={styles.blockTitle}>
                         Career Pathway
@@ -85,8 +103,15 @@ export default class TraineePodScreen extends React.Component {
                 </TouchableOpacity>
             
                 <TouchableOpacity 
-                    style={styles.block} 
-                    onPress={() => this.props.navigation.navigate('Random Screen')}
+                    style={styles.block}
+                    onPress={() => {
+                        const { pod } = this.props.route.params;
+                        this.props.navigation.navigate('Outcomes', {
+                            pod: pod,
+                            focus_area: "LIF",
+                            title: "Life Essentials / Support Network"
+                        });
+                    }}
                 >                
                     <Text style={styles.blockTitle}>
                         Life Essentials / Support Network
