@@ -7,3 +7,4 @@ frontend/app.config.js
 frontend/.expo/*
 *.log
 startBackend.sh
+frontend/node_modules/*
