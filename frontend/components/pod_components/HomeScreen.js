@@ -36,11 +36,8 @@ export default class HomeScreen extends React.Component{
                 Partner_total: data.Partner_total,
             })
         })
-        .catch(function (error) {
-            // TODO: error message 
-            // no progress to display, 
-            // component
-            console.log(error);
+        .catch(function (error){
+            print("There is no pod data to display. Please contact your manager or More Than Words administrator if you think this is an error.")
         });
     }
 
