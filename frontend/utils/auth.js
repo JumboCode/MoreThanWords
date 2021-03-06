@@ -64,7 +64,7 @@ export async function renewAccessToken() {
 }
 
 export async function getAccessToken() {
-    const expire_timestamp = parseInt(await getItemAsync(EXPIRE_TIME_KEY));
+    const expire_timestamp = 1000 * parseInt(await getItemAsync(EXPIRE_TIME_KEY));
     const date_now = Date.now();
     if (date_now > expire_timestamp) await renewAccessToken();
     return await getItemAsync(ACCESS_TOKEN_KEY);

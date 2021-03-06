@@ -74,7 +74,6 @@ def updateSalesforce(user):
 
     # Update value of specific task in Salesforce
     getattr(sf, pod_map_name).update(tr_pod_id, {task_title: new_value})
-
     return {}
 
 # Error handler for the Auth Error

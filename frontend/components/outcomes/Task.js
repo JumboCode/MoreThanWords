@@ -16,7 +16,7 @@ import React from 'react';
 import { StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Constants from 'expo-constants';
-import { getAccessToken } from '../../utils/auth.js'
+import { getAccessToken, isTokenValid } from '../../utils/auth.js'
 
 class Task extends React.Component {
     constructor(props) {
@@ -25,7 +25,8 @@ class Task extends React.Component {
             checked: props.checked,
             ydmApproved: props.ydmApproved,
             starIsFilled: props.ydmApproved ? false : props.starIsFilled, // change second value later based on local storage
-            clickable: true
+            clickable: true,
+            // accessToken: null
         };
     }
 
@@ -60,14 +61,25 @@ class Task extends React.Component {
         });
     }
 
+    // async updateAccessToken() {
+    //     this.setState({
+    //         accessToken: await getAccessToken()
+    //     });
+    //     return this.state.accessToken
+    // }
+
+    // async componentDidMount() {
+    //     await this.updateAccessToken()
+    // }
+
     setClickable(newValue) {
         this.setState({clickable: newValue});
     }
 
-    async updateSalesforce() {
-        let updated_value = !this.state.checked
-
+    async updateSalesforce(updated_value) {
+        success = false;
         // Make request to update checkbox
+        // KNOWN ISSUE: 401 error occurring for several (but not all) tasks in the Associate pod.
         await fetch(`${Constants.manifest.extra.apiUrl}/updateCheckbox`, {
             method: 'POST',
             headers: {
@@ -81,9 +93,19 @@ class Task extends React.Component {
                 pod: this.props.pod
             })
         })
+        .then(response => {
+            // console.log("status code:", response.status);
+            if (response.status != 200) {
+                success = false;
+            } else {
+                success = true;
+            }
+        })
         .catch(error => {
             console.error(error);
+            success = false;
         });
+        return success;
     }
 
     render() {
@@ -99,6 +121,8 @@ class Task extends React.Component {
                     backgroundColor='transparent'
                     underlayColor='transparent'
                     size={20}
+                    // KNOWN ISSUE: Clicking the star in the "Complete Getting Started Module"
+                    // of the Life Essentials/Support Network Outcome causes issues, or sometimes isn't clickable.
                     onPress={this.state.ydmApproved ? null : () => {
                         this.props.handleSetOutcomeData(this.props.backendID, this.state.checked, !this.state.starIsFilled);
                         this.setState({starIsFilled: !this.state.starIsFilled});
@@ -120,14 +144,20 @@ class Task extends React.Component {
                     backgroundColor='transparent'
                     underlayColor='transparent'
                     // KNOWN ISSUE: 401 error from multiple requests made in a short amount of time
-                    onPress={this.state.ydmApproved || !this.state.clickable ? null : () => {
+                    onPress={this.state.ydmApproved || !this.state.clickable ? null : async () => {
+                        let updated_value = !this.state.checked;
                         this.setClickable(false);
-                        this.updateSalesforce();
-                        this.props.handleSetOutcomeData(this.props.backendID, !this.state.checked, this.state.starIsFilled);
-                        // Prevent user from clicking again until a second has passed
-                        this.setState({checked: !this.state.checked}, () => {
+                        let success = await this.updateSalesforce(updated_value);
+                        // console.log(success);
+                        if (success) {
+                            this.props.handleSetOutcomeData(this.props.backendID, updated_value, this.state.starIsFilled);
+                            // Prevent user from clicking again until a second has passed
+                            this.setState({checked: updated_value}, () => {
+                                setTimeout(() => { this.setClickable(true); }, 1000);
+                            });
+                        } else {
                             setTimeout(() => { this.setClickable(true); }, 1000);
-                        });
+                        }
                     }}
                 />
             </View>
