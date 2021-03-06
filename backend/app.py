@@ -46,7 +46,7 @@ def youthCheck(user):
     for name, value in sf_result["records"][0].items():
         if name in response.keys():
             response[name]["value"] = value
-    print(response)
+
     return response
 
 @app.route("/updateCheckbox", methods=['POST'])
