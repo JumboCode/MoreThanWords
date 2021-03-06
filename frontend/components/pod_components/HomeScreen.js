@@ -63,7 +63,9 @@ export default class HomeScreen extends React.Component{
         <SafeAreaView style={styles.container}>
         <TouchableOpacity 
             style={T_displayBlock} 
-            onPress={() => this.props.navigation.navigate('Trainee Pod')}
+            onPress={() => this.props.navigation.navigate('Trainee Pod', {
+                pod: 'Trainee'
+            })}
         >
                 <Text style={T_displayBlockText}> Trainee </Text>
             <ProgressBar   progress={this.state.Trainee_progress} total_outcomes={this.state.Trainee_total} />
@@ -71,7 +73,9 @@ export default class HomeScreen extends React.Component{
       
         <TouchableOpacity className="sidebar"
             style={A_displayBlock} 
-            onPress={() => this.props.navigation.navigate('Associate Pod')}
+            onPress={() => this.props.navigation.navigate('Associate Pod', {
+                pod: 'Associate'
+            })}
         >
             <Text style={A_displayBlockText}> Associate </Text>
             <ProgressBar progress={this.state.Associate_progress} total_outcomes={this.state.Associate_total} />
@@ -79,7 +83,9 @@ export default class HomeScreen extends React.Component{
     
         <TouchableOpacity 
             style={P_displayBlock} 
-            onPress={() => this.props.navigation.navigate('Partner Pod')}
+            onPress={() => this.props.navigation.navigate('Partner Pod', {
+                pod: 'Partner'
+            })}
         >                
             <Text style={P_displayBlockText}> Partner </Text>
             <ProgressBar  progress={this.state.Partner_progress} total_outcomes={this.state.Partner_total} />
