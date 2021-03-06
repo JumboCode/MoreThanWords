@@ -13,7 +13,8 @@ export default class FocusAreaBlock extends React.Component {
 	 * Paramaters: none
 	 * Returns: nothing
 	 * Purpose: renders a touchable opacity component on the pod pages, 
-     * including the progress bars with completed and total outcomes
+     * including the progress bars with completed and total outcomes, that 
+     * navigate to the outcomes screen when pressed 
 	 */
     render() {
         const completed_outcomes = this.props.completed_outcomes;
@@ -22,7 +23,14 @@ export default class FocusAreaBlock extends React.Component {
         return (     
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => this.props.navigation.navigate('Random Screen')}
+                onPress={() => {
+                    const { pod } = this.props.route.params;
+                    this.props.navigation.navigate('Outcomes', {
+                        pod: pod,
+                        focus_area: "CAR",
+                        title: "Career Pathway"
+                    });
+                }}
             >
                 <Text style={styles.blockTitle}>
                     {this.props.name} 

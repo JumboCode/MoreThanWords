@@ -34,7 +34,6 @@ export default class TraineePodScreen extends React.Component {
             this.setState({
                 outcomes_list: data,
             })
-            console.log("raw data: ", data);
         })
         .catch(function (error) {
             console.log(error);
@@ -46,32 +45,27 @@ export default class TraineePodScreen extends React.Component {
 	 * Returns: nothing
 	 * Purpose: renders page, which takes backend data from salesforce and 
      * uses it to calculate progress bars 
+     * Note: map function needs a specific numbered ID key for each list item 
 	 */
     render() {
-        const numbers = [1, 2, 3, 4, 5];
+        let IDkey = 0;
         return (
             <ScrollView>
-                <SafeAreaView style={styles.container}>     
-                    {Object.entries(this.state.outcomes_list).map(([key, value], numbers) => {
+                <SafeAreaView style={styles.container}>
+                    {Object.entries(this.state.outcomes_list).map(([key, value]) => {
                         const dict = this.state.outcomes_list;
+                        IDkey++;
                         return (
                             <FocusAreaBlock 
                                 name={dict[key]['name']}
                                 completed_outcomes={dict[key]['completed_outcomes']}
                                 total_outcomes={dict[key]['total_outcomes']}
-                                key={numbers}
+                                key={IDkey}
+                                route={this.props.route}
+                                navigation={this.props.navigation}
                             />
                         )
                     })}
-
-                    <TouchableOpacity 
-                        style={styles.block} 
-                        onPress={() => this.props.navigation.navigate('Random Screen')}
-                    >
-                        <Text style={styles.blockTitle}>
-                            Competencies
-                        </Text>
-                    </TouchableOpacity>
                 </SafeAreaView>
             </ScrollView>
         );
