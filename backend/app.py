@@ -122,7 +122,7 @@ def verify():
 	
     return {"verified": bool(0)} # false
 
-@app.route("/calculateProgressBar")
+@app.route("/calcProgressPodScreen")
 @requires_auth(sf)
 def outcomes(user):
     # parses arguments that user sent via query string
@@ -163,9 +163,6 @@ def outcomes(user):
             if field in name_and_label[0]:
                 name = name_and_label[1].partition("Outcomes")[0]  #only grab part in label up to the word "Outcomes"
                 outcome_dict[field_type]['name'] = name
-    
-    import json         
-    print(json.dumps(outcome_dict, indent=4))
     
     return outcome_dict
 

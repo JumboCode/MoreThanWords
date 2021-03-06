@@ -23,7 +23,7 @@ export default class TraineePodScreen extends React.Component {
 	 */
     componentDidMount() {
         getAccessToken().then(accessToken => 
-            fetch(server_add + '/calculateProgressBar', {
+            fetch(server_add + '/calcProgressPodScreen', {
                 headers: {
                     "Authorization": "Bearer " + accessToken
                 }
@@ -34,7 +34,7 @@ export default class TraineePodScreen extends React.Component {
             this.setState({
                 outcomes_list: data,
             })
-            console.log("START! raw data: ", data);
+            console.log("raw data: ", data);
         })
         .catch(function (error) {
             console.log(error);
@@ -48,15 +48,18 @@ export default class TraineePodScreen extends React.Component {
      * uses it to calculate progress bars 
 	 */
     render() {
+        const numbers = [1, 2, 3, 4, 5];
         return (
             <ScrollView>
                 <SafeAreaView style={styles.container}>     
-                    {Object.entries(this.state.outcomes_list).map(([key, value]) => {
+                    {Object.entries(this.state.outcomes_list).map(([key, value], numbers) => {
+                        const dict = this.state.outcomes_list;
                         return (
                             <FocusAreaBlock 
-                                name={this.state.outcomes_list[key]['name']}
-                                completed_outcomes={this.state.outcomes_list[key]['completed_outcomes']}
-                                total_outcomes={this.state.outcomes_list[key]['total_outcomes']}
+                                name={dict[key]['name']}
+                                completed_outcomes={dict[key]['completed_outcomes']}
+                                total_outcomes={dict[key]['total_outcomes']}
+                                key={numbers}
                             />
                         )
                     })}
