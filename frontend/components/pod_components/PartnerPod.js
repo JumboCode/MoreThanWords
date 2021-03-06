@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 
-export default class TraineePodScreen extends React.Component {
+export default class PartnerPodScreen extends React.Component {
     constructor(props) {
         super(props);
 
