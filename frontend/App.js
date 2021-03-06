@@ -74,7 +74,8 @@ class MainStackNavigator extends React.Component {
                             name="Login Screen"
                             component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
                             options={{
-                                animationEnabled: false,
+                                headerShown: false,
+                                animationEnabled: false
                             }}
                         />
                     )}
