@@ -200,8 +200,8 @@ def HomeScreenoutcomes(user):
     soql = "SELECT {} FROM Partner_POD_Map__c".format(','.join(Partner_field_names))
     Partner_sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
   
-    print('_________________________________________________')
-    print(Partner_sf_result)
+    # print('_________________________________________________')
+    # print(Partner_sf_result)
 
     # transform into a python dictionary
     # vars(Partner_sf_result)
@@ -222,7 +222,7 @@ def HomeScreenoutcomes(user):
         # 'Partner_complete': Partner_outcome_sum,
         'Partner_total': Partner_total_count
     }    
-
+    
     return sum_pod_outcome
     
 @app.route("/calculateProgressBar")

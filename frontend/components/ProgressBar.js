@@ -45,6 +45,5 @@ const styles = StyleSheet.create({
   },
   ProgressBarText: {
     color: '#3F3F3F',
-    fontFamily: 'Roboto',
 },
 });
