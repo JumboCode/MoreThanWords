@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-export default function PartnerPodScreen({ navigation }) {
+export default function PartnerPodScreen(props, { navigation }) {
     return (
         <ScrollView style={styles.scrollView}>
         <SafeAreaView style={styles.container}>
@@ -15,7 +15,14 @@ export default function PartnerPodScreen({ navigation }) {
             
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
+                onPress={() => {
+                    const { pod } = props.route.params;
+                    props.navigation.navigate('Outcomes', {
+                        pod: pod,
+                        focus_area: "COM",
+                        title: "Competencies"
+                    });
+                }}
             >
                 <Text style={styles.blockText}>
                     Competencies
@@ -26,7 +33,14 @@ export default function PartnerPodScreen({ navigation }) {
             
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
+                onPress={() => {
+                    const { pod } = props.route.params;
+                    props.navigation.navigate('Outcomes', {
+                        pod: pod,
+                        focus_area: "CAR",
+                        title: "Career Pathway"
+                    });
+                }}
             >
                 <Text style={styles.blockText}>
                     Career Pathway
@@ -36,7 +50,14 @@ export default function PartnerPodScreen({ navigation }) {
         
             <TouchableOpacity 
                 style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
+                onPress={() => {
+                    const { pod } = props.route.params;
+                    props.navigation.navigate('Outcomes', {
+                        pod: pod,
+                        focus_area: "LIF",
+                        title: "Life Essentials / Support Network"
+                    });
+                }}
             >
                 <Text style={styles.blockText}>
                     Life Essentials/ Support Network

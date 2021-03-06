@@ -11,6 +11,7 @@
     "@babel/runtime": "^7.12.1",
     "@expo/webpack-config": "^0.12.40",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/native": "^5.8.5",
     "@react-navigation/stack": "^5.9.3",
     "axios": "^0.21.0",

@@ -34,16 +34,22 @@ export default class TraineePodScreen extends React.Component {
 	 * Returns: nothing
 	 * Purpose: Get the data from backend and use the info to set states
 	 */
-    componentDidMount() {
-        getAccessToken().then(accessToken => 
-            fetch(server_add + '/calculateProgressBar', {
-                headers: {
-                    "Authorization": "Bearer " + accessToken
-                }
-            })
-        )
-        .then(async response => {
-            let data = await response.json();
+    async componentDidMount() {
+        // getAccessToken().then(accessToken => 
+        //     fetch(server_add + '/calculateProgressBar', {
+        //         headers: {
+        //             "Authorization": "Bearer " + accessToken
+        //         }
+        //     })
+        // )
+        fetch(server_add + '/calculateProgressBar', {
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + await getAccessToken(),
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
             this.setState({
                 compet_outcomes: data.records[0].TR_Competency_Completed__c,
                 career_outcomes: data.records[0].TR_CareerExpl_Completed__c,
