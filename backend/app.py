@@ -113,8 +113,6 @@ def verify():
     # salesforce query based on the email, firstname & lastname
     result = sf.query(format_soql("SELECT Id, Email FROM Contact WHERE (email = {email_value} AND name={full_name})", email_value=email, full_name=name))
 
-    # print(result["totalSize"] == 1)
-
     if (result["totalSize"] == 1):
         return {"verified": bool(1)} # true
 	
