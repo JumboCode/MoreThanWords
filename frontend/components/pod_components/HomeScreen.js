@@ -6,83 +6,91 @@ import { getAccessToken } from '../../utils/auth.js';
 
 import ProgressBar from '../ProgressBar.js';
 
-const   TRAINEE_TOTAL_OUTCOMES = 7
-const ASSOCIATE_TOTAL_OUTCOMES = 11
-const   PARTNER_TOTAL_OUTCOMES = 9
-
 const server_add = Constants.manifest.extra.apiUrl;
 
 export default class HomeScreen extends React.Component{
-    
     state = {
         Trainee_progress: 0, 
+        Trainee_total: 0,
         Associate_progress: 0,
-        Partner_progress: 0
+        Associate_total: 0,
+        Partner_progress: 0,
+        Partner_total: 0,
     };
-
     componentDidMount(){
         getAccessToken().then(accessToken => 
-            fetch(server_add + '/calculateProgressBar', {
-                headers: {
+            fetch(server_add + '/calcProgressHomeScreen', {
+                "headers": {
                     "Authorization": "Bearer " + accessToken
                 }
-            })
-        )
+        }))
         .then(async response => {
             let data = await response.json();
+            console.log(data);
             this.setState({
-                Trainee_progress: data.records[0].TR_Competency_Completed__c + data.records[0].TR_CareerExpl_Completed__c + data.records[0].TR_LifeEssentials_Completed__c,
-                Associate_progress: 0,
-                Partner_progress: 0
+                Trainee_progress: data.Trainee_complete,
+                Trainee_total: data.Trainee_total,
+                Associate_progress: data.Associate_complete,
+                Associate_total: data.Associate_total,
+                Partner_progress: 1, // should change to *data.Partner_complete*
+                Partner_total: data.Partner_total,
             })
         })
-        .catch(function (error) {
-            console.log(error);
+        .catch(function (error){
+            print("There is no pod data to display. Please contact your manager or More Than Words administrator if you think this is an error.")
         });
     }
 
     render(){
-        return (
-        <ScrollView style={styles.scrollView}>
-            <SafeAreaView style={styles.container}>
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => this.props.navigation.navigate('Trainee Pod', {
-                    pod: 'Trainee'
-                })}
-            >
-                <Text style={styles.blockText}>
-                    Trainee 
-                </Text>
-                <ProgressBar progress={this.state.Trainee_progress} total_outcomes={TRAINEE_TOTAL_OUTCOMES} />
-            </TouchableOpacity>
+        let T_displayBlock = styles.Block;
+        let A_displayBlock = styles.Block;
+        let P_displayBlock = styles.Block;
+        let T_displayBlockText = styles.BlockText;
+        let A_displayBlockText = styles.BlockText;
+        let P_displayBlockText = styles.BlockText;
+        if (this.state.Trainee_progress < this.state.Trainee_total){ // highlight Trainee
+            T_displayBlock = styles.highlightBlock;
+            T_displayBlockText = styles.highlightBlockText;
+        } else if(this.state.Associate_progress < this.state.Associate_total){ // highlight Associate
+            A_displayBlock = styles.highlightBlock;
+            A_displayBlockText = styles.highlightBlockText;
+        } else { // highlight Partner
+            P_displayBlock = styles.highlightBlock;
+            P_displayBlockText = styles.highlightBlockText;
+        }
+           
+        return(
+        <SafeAreaView style={styles.container}>
+        <TouchableOpacity 
+            style={T_displayBlock} 
+            onPress={() => this.props.navigation.navigate('Trainee Pod', {
+                pod: 'Trainee'
+            })}
+        >
+                <Text style={T_displayBlockText}> Trainee </Text>
+            <ProgressBar   progress={this.state.Trainee_progress} total_outcomes={this.state.Trainee_total} />
+        </TouchableOpacity>
       
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => this.props.navigation.navigate('Associate Pod', {
-                    pod: 'Associate'
-                })}
-            >
-                <Text style={styles.blockText}>
-                    Associate 
-                </Text>
-                <ProgressBar progress={this.state.Associate_progress} total_outcomes={ASSOCIATE_TOTAL_OUTCOMES} />
-            </TouchableOpacity>
+        <TouchableOpacity className="sidebar"
+            style={A_displayBlock} 
+            onPress={() => this.props.navigation.navigate('Associate Pod', {
+                pod: 'Associate'
+            })}
+        >
+            <Text style={A_displayBlockText}> Associate </Text>
+            <ProgressBar progress={this.state.Associate_progress} total_outcomes={this.state.Associate_total} />
+        </TouchableOpacity>
     
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => this.props.navigation.navigate('Partner Pod', {
-                    pod: 'Partner'
-                })}
-            >                
-                <Text style={styles.blockText}>
-                    Partner 
-                </Text>
-                <ProgressBar progress={this.state.Partner_progress} total_outcomes={PARTNER_TOTAL_OUTCOMES} />
-            </TouchableOpacity>
-            </SafeAreaView>
-        </ScrollView>
-        )
+        <TouchableOpacity 
+            style={P_displayBlock} 
+            onPress={() => this.props.navigation.navigate('Partner Pod', {
+                pod: 'Partner'
+            })}
+        >                
+            <Text style={P_displayBlockText}> Partner </Text>
+            <ProgressBar  progress={this.state.Partner_progress} total_outcomes={this.state.Partner_total} />
+        </TouchableOpacity>
+    </SafeAreaView>);
     }
 }
 
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    block: {
+    Block: {
         marginTop: 20,
         width: '100%',
         height: 220,
@@ -104,10 +112,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    blockText: {
+    BlockText: {
         fontSize: 40,
         // fontFamily: 'Roboto',
         color: '#27b48f',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    // ONGOING Block
+    highlightBlock: {
+        marginTop: 20,
+        width: '100%',
+        height: 220,
+        backgroundColor: '#27b48f',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    highlightBlockText: {
+        fontSize: 40,
+        // fontFamily: 'Roboto',
+        color: '#ffffff',
         fontWeight: 'bold',
         textAlign: 'center',
     },
