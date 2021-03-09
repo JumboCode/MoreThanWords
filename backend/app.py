@@ -112,7 +112,11 @@ def verify():
     print("name: ", name)
 
     # salesforce query based on the email, firstname & lastname
-    result = sf.query(format_soql("SELECT Id, Email FROM Contact WHERE (email = {email_value} AND name={full_name})", email_value=email, full_name=name))
+    result = sf.query(
+        format_soql(
+            "SELECT Id, Email FROM Contact WHERE (MTW_Role__c = 'MTW Young Adult' AND email = {email_value} AND name={full_name})", 
+            email_value=email, 
+            full_name=name))
 
     print(result["totalSize"] == 1)
 
