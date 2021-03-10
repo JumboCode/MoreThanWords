@@ -19,6 +19,7 @@ export default class FocusAreaBlock extends React.Component {
     render() {
         const completed_outcomes = this.props.completed_outcomes;
         const total_outcomes = this.props.total_outcomes;
+        const pod_name = this.props.name;
 
         return (     
             <TouchableOpacity 
@@ -27,13 +28,13 @@ export default class FocusAreaBlock extends React.Component {
                     const { pod } = this.props.route.params;
                     this.props.navigation.navigate('Outcomes', {
                         pod: pod,
-                        focus_area: "CAR",
-                        title: "Career Pathway"
+                        focus_area: this.props.pod,
+                        title: pod_name,
                     });
                 }}
             >
                 <Text style={styles.blockTitle}>
-                    {this.props.name} 
+                    {pod_name} 
                 </Text>
                 <PodProgressBar progress={completed_outcomes} total_tasks={total_outcomes} />
             </TouchableOpacity>

@@ -57,6 +57,7 @@ export default class TraineePodScreen extends React.Component {
                         IDkey++;
                         return (
                             <FocusAreaBlock 
+                                pod={key}
                                 name={dict[key]['name']}
                                 completed_outcomes={dict[key]['completed_outcomes']}
                                 total_outcomes={dict[key]['total_outcomes']}
