@@ -15,15 +15,16 @@ export default class TraineePodScreen extends React.Component {
     state = {
         outcomes_list: {},
     };
-
+    
     /* componentDidMount
 	 * Parameters: none
 	 * Returns: nothing
 	 * Purpose: Get the data from backend and use the info to set states
 	 */
     componentDidMount() {
+        let pod = this.props.route.params.pod;
         getAccessToken().then(accessToken => 
-            fetch(server_add + '/calcProgressPodScreen', {
+            fetch(server_add + `/calcProgressPodScreen?pod=${pod}`, {
                 headers: {
                     "Authorization": "Bearer " + accessToken
                 }
