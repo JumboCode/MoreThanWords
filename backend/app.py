@@ -131,6 +131,40 @@ def sample(user):
     return jsonify(user)
 
 
+@app.route("/finishSignUp", methods=['POST'])
+def finishSignup():
+    """
+    After sign up, to be called by auth0 to checkoff the box in salesforce
+    to indicate that the account has been registered.
+    """
+    secret = request.headers.get('Authorization')
+    email = request.json.get('email')
+    correct_secret = os.environ.get('VERIFY_SIGNUP_SECRET')
+    # exit when the wrong secret is provided
+    if (not secret or secret != "Secret " + correct_secret):
+        response = jsonify({"code": "invalid_secret",
+                            "description": "Access denied."})
+        response.status_code = 401
+        return response
+    
+    # get the object
+    response = sf.query(
+        format_soql("SELECT Id, Has_Youth_App_Account__c FROM Contact WHERE (email = {email})", 
+                    email=email))
+    if response.get("totalSize") is None or response.get("totalSize") < 0:
+        response = jsonify({
+            "code": "user_not_found", 
+            "description": "The User is not found in the database."
+        })
+        response.status_code = 401
+        return response
+    
+    # update the contact
+    sf.Contact.update(response["records"][0]["Id"], {"Has_Youth_App_Account__c": True})
+
+    return jsonify({"result": "success"})
+
+
 # route to verify sign up and check whether user who wants to register is 
 # allowed to use the app by checking salesforce database
 @app.route("/verifySignUp")
@@ -179,7 +213,7 @@ def outcomes(user):
     # salesforce query for all the field names and labels in the trainee pod 
     desc = sf.Trainee_POD_Map__c.describe()
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
-    
+
     # filter to get only the trainee outcome field names 
     filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
     Trainee_field_names = [field[0] for field in filtered_field_names]
@@ -195,8 +229,52 @@ def outcomes(user):
         for name_and_label in field_names_and_labels:
             if "_Outcome_" + field_type in name_and_label[0]: 
                 sf_result[field_type + "_totalcount"] += 1
-    
+
     return sf_result
+
+@app.route("/calcProgressPodScreen")
+@requires_auth(sf)
+def podoutcomes(user):
+    # parses arguments that user sent via query string
+    email = user['Email']
+    firstname = user['FirstName']
+    lastname = user['LastName']
+    name = firstname + " " + lastname 
+
+    # Trainee Pod
+    # salesforce query for all the field names and labels in the trainee pod 
+    desc = sf.Trainee_POD_Map__c.describe()
+    field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+        
+    # filter to get only the trainee outcome field names 
+    filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
+    Trainee_field_names = [field[0] for field in filtered_field_names]
+    
+    # salesforce query of each *completed* outcome # in trainee pod, based on the email and name
+    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(Trainee_field_names))
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
+
+    # organizing and putting data into dictionary outcome_dict
+    outcome_dict = {}
+    for field in Trainee_field_names:
+        field_type = field[3:6].upper()
+        outcome_dict[field_type] = {}
+        
+        # count the *completed* outcomes for each field:
+        outcome_dict[field_type]['completed_outcomes'] = sf_result["records"][0][field]  
+        
+        # count the *total* outcomes for each field:
+        outcome_dict[field_type]['total_outcomes'] = 0;
+        for name_and_label in field_names_and_labels:
+            if "_Outcome_" + field_type in name_and_label[0]:
+                outcome_dict[field_type]['total_outcomes'] += 1
+            
+            #putting in the name of each field into dictionary
+            if field in name_and_label[0]:
+                name = name_and_label[1].partition("Outcomes")[0]  #only grab part in label up to the word "Outcomes"
+                outcome_dict[field_type]['name'] = name
+    
+    return outcome_dict
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
