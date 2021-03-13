@@ -76,6 +76,47 @@ def updateSalesforce(user):
     getattr(sf, pod_map_name).update(tr_pod_id, {task_title: new_value})
     return {}
 
+@app.route("/getMainGoals")
+@requires_auth(sf)
+def getMainGoals(user):
+    email = user.get('Email')
+    firstname = user.get('FirstName')
+    lastname = user.get('LastName')
+    fullname = firstname + " " + lastname
+
+    # Extract current pod to update from request arguments
+    # pod = request.args.get('pod')
+    pod_names = ['Trainee_POD_Map__c', 'Associate_POD_Map__c', 'Partner_POD_Map__c']
+    # for pod_name in pod:
+
+    # pod_map_name = pod + '_POD_Map__c'
+    final_response = {}
+    # Obtain all field names for the query
+    for pod_map_name in pod_names:
+        desc = getattr(sf, pod_map_name).describe()
+        field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+        field_names = [field['name'] for field in desc['fields']]
+
+        # Query for all fields for this user
+        soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
+        sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+
+        # Format response
+        pod_response = {}
+        for name_and_label in field_names_and_labels:
+            pod_response[name_and_label[0]] = {
+                "name": name_and_label[1],
+                "value": None
+            }
+        
+        for name, value in sf_result["records"][0].items():
+            if name in pod_response.keys():
+                pod_response[name]["value"] = value
+
+        final_response[pod_map_name] = pod_response
+
+    return final_response
+
 # Error handler for the Auth Error
 @app.errorhandler(AuthError)
 def handle_auth_error(ex):

@@ -14,8 +14,9 @@ import LoginScreen from './components/LoginPage.js';
 import OutcomesScreen from './components/outcomes/OutcomesScreen.js';
 import FocusGoals from './components/outcomes/FocusGoals.js';
 
-import { isTokenValid, removeToken } from "./utils/auth";
+import { isTokenValid, removeToken, getAccessToken } from "./utils/auth";
 import { Footer } from 'native-base';
+import Constants from 'expo-constants';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,52 +28,14 @@ function componentWithRefreshFunc(Component, refresh_func) {
     }
 }
 
-export default class MainTabNavigator extends React.Component {
-    render() {
-        return (
-            <NavigationContainer>
-                <Tab.Navigator>
-                    <Tab.Screen
-                        name="Home"
-                        children={ () => <MainStackNavigator/> }
-                        options={{
-                            tabBarLabel: 'Main Screen',
-                            tabBarIcon: ({ color, size }) => (
-                                <Icon
-                                name="outlet"
-                                color={color}
-                                size={size}
-                                />
-                            ),
-                        }} 
-                    />
-                    <Tab.Screen 
-                        name="FocusGoals"
-                        children={ () => <FocusGoals/> }
-                        options={{
-                            tabBarLabel: 'Focus Goals',
-                            tabBarIcon: ({ color, size }) => (
-                                <Icon
-                                name="playlist-add-check"
-                                color={color}
-                                size={size}
-                                />
-                            ),
-                        }} 
-                    />
-                </Tab.Navigator>
-            </NavigationContainer>
-        );
-    }
-}
-
-class MainStackNavigator extends React.Component {
+export default class MainNavigator extends React.Component {
     state = {
         loggedIn: false
     };
 
     // refreshes login state, updating screen being displayed.
     refreshLoginState = () => {
+        console.log("State updated.")
         isTokenValid().then(valid => {
             this.setState({loggedIn: valid});
         });
@@ -90,37 +53,118 @@ class MainStackNavigator extends React.Component {
 
     render() {
         return (
-            <Stack.Navigator initialRouteName={this.state.initialRouteName}>
+            <NavigationContainer>
                 {this.state.loggedIn ? (
-                    /* Screens for logged in users */
-                    <>
+                    <MainTabNavigator 
+                        loggedIn={this.state.loggedIn}
+                        logout={this.logout}
+                    />
+                ) : (
+                    <Stack.Navigator>
                         <Stack.Screen
-                            name="Pods"
-                            component={HomeScreen}
+                            name="Login Screen"
+                            component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
                             options={{
-                                headerRight: () =>
-                                    <TouchableOpacity onPress={this.logout} style={{marginRight: 16}}>
-                                        <Text>Log Out</Text>
-                                    </TouchableOpacity>,
-                                animationEnabled: false
+                                animationEnabled: false,
                             }}
                         />
-                        <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
-                        <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
-                        <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
-                        <Stack.Screen name="Random Screen" component={RandomScreen} />
-                        <Stack.Screen name="Outcomes" component={OutcomesScreen} />
-                    </>
-                ) : (
-                    /* Screens for signed out users */
+                    </Stack.Navigator>
+                )}
+            </NavigationContainer>
+        );
+    }
+}
+
+class MainTabNavigator extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    async componentDidMount() {
+        if (!this.props.loggedIn) {
+            console.log("Component mount and not logged in");
+            return;
+        } else {
+            console.log("Component mount and logged in");
+            await fetch(`${Constants.manifest.extra.apiUrl}/getMainGoals`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': "Bearer " + await getAccessToken(),
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+    }
+
+    render() {
+        return (
+            <Tab.Navigator>
+                <Tab.Screen
+                    name="Home"
+                    children={ () => <MainStackNavigator logout={this.props.logout}/> }
+                    options={{
+                        tabBarLabel: 'Main Screen',
+                        tabBarIcon: ({ color, size }) => (
+                            <Icon
+                            name="outlet"
+                            color={color}
+                            size={size}
+                            />
+                        ),
+                    }} 
+                />
+                <Tab.Screen 
+                    name="FocusGoals"
+                    children={ () => <FocusGoals/> }
+                    options={{
+                        tabBarLabel: 'Focus Goals',
+                        tabBarIcon: ({ color, size }) => (
+                            <Icon
+                            name="playlist-add-check"
+                            color={color}
+                            size={size}
+                            />
+                        ),
+                    }} 
+                />
+            </Tab.Navigator>
+        );
+    }
+}
+
+class MainStackNavigator extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Stack.Navigator>
+                <>
                     <Stack.Screen
-                        name="Login Screen"
-                        component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
+                        name="Pods"
+                        component={HomeScreen}
                         options={{
-                            animationEnabled: false,
+                            headerRight: () =>
+                                <TouchableOpacity onPress={this.props.logout} style={{marginRight: 16}}>
+                                    <Text>Log Out</Text>
+                                </TouchableOpacity>,
+                            animationEnabled: false
                         }}
                     />
-                )}
+                    <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
+                    <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
+                    <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
+                    <Stack.Screen name="Random Screen" component={RandomScreen} />
+                    <Stack.Screen name="Outcomes" component={OutcomesScreen} />
+                </>
             </Stack.Navigator>
         );
     }
@@ -155,5 +199,3 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     }
 });
-
-// export default MainStackNavigator;
