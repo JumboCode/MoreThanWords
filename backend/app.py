@@ -91,6 +91,40 @@ def sample(user):
     return jsonify(user)
 
 
+@app.route("/finishSignUp", methods=['POST'])
+def finishSignup():
+    """
+    After sign up, to be called by auth0 to checkoff the box in salesforce
+    to indicate that the account has been registered.
+    """
+    secret = request.headers.get('Authorization')
+    email = request.json.get('email')
+    correct_secret = os.environ.get('VERIFY_SIGNUP_SECRET')
+    # exit when the wrong secret is provided
+    if (not secret or secret != "Secret " + correct_secret):
+        response = jsonify({"code": "invalid_secret",
+                            "description": "Access denied."})
+        response.status_code = 401
+        return response
+    
+    # get the object
+    response = sf.query(
+        format_soql("SELECT Id, Has_Youth_App_Account__c FROM Contact WHERE (email = {email})", 
+                    email=email))
+    if response.get("totalSize") is None or response.get("totalSize") < 0:
+        response = jsonify({
+            "code": "user_not_found", 
+            "description": "The User is not found in the database."
+        })
+        response.status_code = 401
+        return response
+    
+    # update the contact
+    sf.Contact.update(response["records"][0]["Id"], {"Has_Youth_App_Account__c": True})
+
+    return jsonify({"result": "success"})
+
+
 # route to verify sign up and check whether user who wants to register is 
 # allowed to use the app by checking salesforce database
 @app.route("/verifySignUp")
