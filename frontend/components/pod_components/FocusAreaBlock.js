@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
-import Constants from 'expo-constants';
+import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+
 
 import PodProgressBar from './PodProgressBar.js';
 
