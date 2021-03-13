@@ -78,6 +78,9 @@ export default class MainNavigator extends React.Component {
 class MainTabNavigator extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            allData: {}
+        };
     }
 
     async componentDidMount() {
@@ -93,8 +96,75 @@ class MainTabNavigator extends React.Component {
                 },
             })
             .then(response => response.json())
-            .then(data => {
-                console.log(data);
+            .then(queryData => {
+                let allData = {};
+                
+                // Extract all outcome titles for later use
+                for (const podName in queryData) {
+                    let newData = [];
+                    let data = queryData[podName];
+                    
+                    function findAndUpdate(key, index, fieldName) {
+                        // Get ID of the current key so we can match with existing entry
+                        let words_in_key = key.split("_");
+                        let curr_id = words_in_key[words_in_key.length - 3].toLowerCase();
+                        // Finds index of object in content array to update
+                        let content_index = newData[index].content.findIndex(x => {
+                            return x.id === curr_id;
+                        });
+                        // If the corresponding youth exists for the YDM field, update the value
+                        if (content_index >= 0) {
+                            // Update ydmApproved field in existing entry
+                            newData[index].content[content_index][fieldName] = data[key]["value"];
+                        }
+                    }
+
+                    for (const api_name in data) {
+                        // console.log(api_name);
+                        if (api_name.includes("Outcome") && !api_name.includes("Outcomes")) {
+                            newData.push({
+                                id: api_name.substring(0, 3),
+                                title: data[api_name]["name"],
+                                content: []
+                            });
+                        }
+                    }
+
+                    // Create all content objects based on the youth fields
+                    for (const key in data) {
+                        let key_id = key.substring(0, 3);
+                        let index = newData.findIndex(x => x.id === key_id);
+                        if (key.includes("Youth") && index >= 0 && !key.includes("BOOL")) {
+                            let words_in_key = key.split("_");
+                            newData[index].content.push({
+                                api_key: key,
+                                id: words_in_key[words_in_key.length - 3].toLowerCase(),
+                                key: data[key]["name"],
+                                ydmApproved: true,
+                                checked: data[key]["value"],
+                                starIsFilled: false, // Change later based on salesforce data
+                            });
+                        }
+                    }
+
+                    // Update all ydmApproved values based on YDM fields
+                    for (const key in data) {
+                        let key_id = key.substring(0, 3);
+                        let index = newData.findIndex(x => x.id === key_id);
+                        if (key.includes("YDM") && index >= 0) {
+                            findAndUpdate(key, index, "ydmApproved");
+                        }
+                        if (key.includes("BOOL") && index >= 0) {
+                            findAndUpdate(key, index, "starIsFilled");
+                        }
+                    }
+
+                    allData[podName] = newData;
+                }
+
+                this.setState({
+                    allData: allData
+                });
             })
             .catch((error) => {
                 console.error(error);
@@ -121,7 +191,9 @@ class MainTabNavigator extends React.Component {
                 />
                 <Tab.Screen 
                     name="FocusGoals"
-                    children={ () => <FocusGoals/> }
+                    children={ () => <FocusGoalsStackNavigator
+                                        allData={this.state.allData}
+                                     />}
                     options={{
                         tabBarLabel: 'Focus Goals',
                         tabBarIcon: ({ color, size }) => (
@@ -134,6 +206,25 @@ class MainTabNavigator extends React.Component {
                     }} 
                 />
             </Tab.Navigator>
+        );
+    }
+}
+
+class FocusGoalsStackNavigator extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Stack.Navigator>
+                <Stack.Screen 
+                    name="Focus Goals"
+                    children={ () => <FocusGoals
+                                        allData={this.props.allData}
+                                     />} 
+                />
+            </Stack.Navigator>
         );
     }
 }
