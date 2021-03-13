@@ -224,7 +224,7 @@ def podoutcomes(user):
         outcome_dict[field_type]['completed_outcomes'] = sf_result["records"][0][field]  
         
         # count the *total* outcomes for each field:
-        outcome_dict[field_type]['total_outcomes'] = 0;
+        outcome_dict[field_type]['total_outcomes'] = 0
         for name_and_label in field_names_and_labels:
             if "_Outcome_" + field_type in name_and_label[0]:
                 outcome_dict[field_type]['total_outcomes'] += 1
