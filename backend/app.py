@@ -162,6 +162,7 @@ def HomeScreenoutcomes(user):
         'total': Pod_total_count,
     }    
     
+    print(pod_outcome)
 
     return pod_outcome
     

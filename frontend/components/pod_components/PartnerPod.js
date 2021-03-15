@@ -1,51 +1,91 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-import Constants from 'expo-constants';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
-export default function PartnerPodScreen({ navigation }) {
-    return (
-        <ScrollView style={styles.scrollView}>
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>
-                PARTNER POD
-            </Text>
-            
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
-            >
-                <Text style={styles.blockText}>
-                    Competencies
+export default class PartnerPodScreen extends React.Component {
+    constructor(props) {
+        super(props);
+
+        /* State variables initalized:
+        *    - compet_outcomes: number of completed competency outcomes 
+        *    - career_outcomes: number of completed career pathway outcomes
+        *    - life_outcomes: number of completed life essential outcomes 
+        *    - compet_total_outcomes: total number of competency outcomes
+        *    - career_total_outcomes: total number of career outcomes
+        *    - life_total_outcomes: total number of life outcomes
+        */
+        this.state = {
+            compet_outcomes: 0, 
+            career_outcomes: 0,
+            life_outcomes: 0,
+            compet_total_outcomes: 0,
+            career_total_outcomes: 0,
+            life_total_outcomes: 0,
+        };
+    }
+
+    render(){
+        return (
+            <ScrollView style={styles.scrollView}>
+            <SafeAreaView style={styles.container}>
+                <Text style={styles.title}>
+                    PARTNER POD
                 </Text>
                 
-                <Text>Outcomes Achieved</Text>
-            </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.block} 
+                    onPress={() => {
+                        const { pod } = this.props.route.params;
+                        this.props.navigation.navigate('Outcomes', {
+                            pod: pod,
+                            focus_area: "COM",
+                            title: "Competencies"
+                        });
+                    }}
+                >
+                    <Text style={styles.blockText}>
+                        Competencies
+                    </Text>
+                    
+                    <Text>Outcomes Achieved</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                    style={styles.block} 
+                    onPress={() => {
+                        const { pod } = this.props.route.params;
+                        this.props.navigation.navigate('Outcomes', {
+                            pod: pod,
+                            focus_area: "CAR",
+                            title: "Career Pathway"
+                        });
+                    }}
+                >
+                    <Text style={styles.blockText}>
+                        Career Pathway
+                    </Text>
+                    <Text>Outcomes Achieved</Text>
+                </TouchableOpacity>
             
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
-            >
-                <Text style={styles.blockText}>
-                    Career Pathway
-                </Text>
-                <Text>Outcomes Achieved</Text>
-            </TouchableOpacity>
-        
-            <TouchableOpacity 
-                style={styles.block} 
-                onPress={() => navigation.navigate('Random Screen')}
-            >
-                <Text style={styles.blockText}>
-                    Life Essentials/ Support Network
-                </Text>
-                <Text>Outcomes Achieved</Text>
-            </TouchableOpacity>
-        </SafeAreaView>
-        </ScrollView>
-    );
+                <TouchableOpacity 
+                    style={styles.block} 
+                    onPress={() => {
+                        const { pod } = this.props.route.params;
+                        this.props.navigation.navigate('Outcomes', {
+                            pod: pod,
+                            focus_area: "LIF",
+                            title: "Life Essentials / Support Network"
+                        });
+                    }}
+                >
+                    <Text style={styles.blockText}>
+                        Life Essentials/ Support Network
+                    </Text>
+                    <Text>Outcomes Achieved</Text>
+                </TouchableOpacity>
+            </SafeAreaView>
+            </ScrollView>
+        );
+    }
 }
 
 const styles = StyleSheet.create({

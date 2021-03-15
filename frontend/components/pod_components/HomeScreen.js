@@ -7,6 +7,10 @@ import { getAccessToken } from '../../utils/auth.js';
 import HomeScreenPod from './HomeScreenPod.js'
 import ProgressBar from '../ProgressBar.js';
 
+const   TRAINEE_TOTAL_OUTCOMES = 7
+const ASSOCIATE_TOTAL_OUTCOMES = 11
+const   PARTNER_TOTAL_OUTCOMES = 9
+
 const server_add = Constants.manifest.extra.apiUrl;
 const pods = ['Trainee', 'Associate', 'Partner']; // hardcoded pod names for data query and subsequent screens
 
