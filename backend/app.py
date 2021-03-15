@@ -160,9 +160,7 @@ def HomeScreenoutcomes(user):
     pod_outcome = {
         'progress': Pod_outcome_sum,
         'total': Pod_total_count,
-    }    
-    
-    print(pod_outcome)
+    }   
 
     return pod_outcome
     
