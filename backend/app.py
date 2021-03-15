@@ -127,101 +127,43 @@ def HomeScreenoutcomes(user):
     lastname = user['LastName']
     name = firstname + " " + lastname 
 
-# Trainee Pod
-    desc = sf.Trainee_POD_Map__c.describe()
+    # Extract current pod to update from request arguments
+    pod = request.args.get('pod')
+    pod_map_name = pod + '_POD_Map__c'
+
+    desc = getattr(sf, pod_map_name).describe()
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
     filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
-    Trainee_field_names = [field[0] for field in filtered_field_names]
+    Pod_field_names = [field[0] for field in filtered_field_names]
 
     # salesforce query of each completed outcome # in trainee pod, based on the email and name
-    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(Trainee_field_names))
-    Trainee_sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
+    query_from = "SELECT {} FROM " + pod_map_name
+    soql = query_from.format(','.join(Pod_field_names))
+    Pod_sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
     
     # calculate Trainee total 
-    Trainee_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
-    for field in Trainee_field_names:
+    Pod_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
+    for field in Pod_field_names:
         field_type = field[3:6].upper()
         for name_and_label in field_names_and_labels:
             if "_Outcome_" + field_type in name_and_label[0]: 
-                Trainee_total_count += 1
+                Pod_total_count += 1
 
     # transform into a python dictionary
-    vars(Trainee_sf_result)
+    vars(Pod_sf_result)
 
     # calculate *Trainee* outcomes based on all related fields
-    Trainee_outcome_sum = 0
-    for outcome in Trainee_field_names:
-        Trainee_outcome_sum += Trainee_sf_result['records'][0][outcome]
+    Pod_outcome_sum = 0
+    for outcome in Pod_field_names:
+        Pod_outcome_sum += Pod_sf_result['records'][0][outcome]
 
-# Associate Pod
-    Associate_desc = sf.Associate_POD_Map__c.describe()
-    Associate_field_names_and_labels = [(field['name'], field['label']) for field in Associate_desc['fields']]
-    Associate_filtered_field_names = [field for field in Associate_field_names_and_labels if "Completed__c" in field[0]]
-    Associate_field_names = [field[0] for field in Associate_filtered_field_names]
-
-    # salesforce query of each completed outcome # in associate pod, based on the email and name
-    soql = "SELECT {} FROM Associate_POD_Map__c".format(','.join(Associate_field_names))
-    Associate_sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
-
-    # calculate Trainee total 
-    Associate_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
-    for field in Associate_field_names:
-        field_type = field[3:6].upper()
-        for name_and_label in Associate_field_names_and_labels:
-            if "_Outcome_" + field_type in name_and_label[0]: 
-                Associate_total_count += 1
-
-    # transform into a python dictionary
-    vars(Associate_sf_result)
-
-    # calculate *Trainee* outcomes based on all related fields
-    Associate_outcome_sum = 0
-    for outcome in Associate_field_names:
-        Associate_outcome_sum += Associate_sf_result['records'][0][outcome]
-
-  
-# Partner Pod
-    desc = sf.Partner_POD_Map__c.describe()
-    Partner_field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
-    Partner_filtered_field_names = [field for field in Partner_field_names_and_labels if "Completed__c" in field[0]]
-    Partner_field_names = [field[0] for field in Partner_filtered_field_names]
-
-    # calculate Trainee total 
-    Partner_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
-    for field in Partner_field_names:
-        field_type = field[3:6].upper()
-        for name_and_label in Partner_field_names_and_labels:
-            if "_Outcome_" + field_type in name_and_label[0]: 
-                Partner_total_count += 1
-     
-    # salesforce query of each completed outcome # in trainee pod, based on the email and name
-    soql = "SELECT {} FROM Partner_POD_Map__c".format(','.join(Partner_field_names))
-    Partner_sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
-  
-    # print('_________________________________________________')
-    # print(Partner_sf_result)
-
-    # transform into a python dictionary
-    # vars(Partner_sf_result)
-
-    # calculate *Partner* outcomes based on all related fields
-    # Partner_outcome_sum = 0
-    # for outcome in Partner_field_names:
-    #     Partner_outcome_sum += Partner_sf_result['records'][0][outcome]
-
-    # print(Partner_outcome_sum)
-    
-    # TODO:  Partner Pod
-    sum_pod_outcome = {
-        'Trainee_complete': Trainee_outcome_sum,
-        'Trainee_total': Trainee_total_count,
-        'Associate_complete': Associate_outcome_sum,
-        'Associate_total': Associate_total_count,
-        # 'Partner_complete': Partner_outcome_sum,
-        'Partner_total': Partner_total_count
+    pod_outcome = {
+        'progress': Pod_outcome_sum,
+        'total': Pod_total_count,
     }    
     
-    return sum_pod_outcome
+
+    return pod_outcome
     
 @app.route("/calculateProgressBar")
 @requires_auth(sf)
