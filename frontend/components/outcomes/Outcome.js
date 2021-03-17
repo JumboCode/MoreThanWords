@@ -71,6 +71,7 @@ const Outcome = (props) => {
                         ydmApproved={taskObj.ydmApproved}
                         checked={taskObj.checked}
                         backendID={taskObj.api_key}
+                        backendBoolID={taskObj.api_bool_key}
                         handleSetOutcomeData={handleSetOutcomeData}
                         starIsFilled={taskObj.starIsFilled}
                         pod={taskObj.pod}

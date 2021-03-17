@@ -104,7 +104,7 @@ class MainTabNavigator extends React.Component {
                     let newData = [];
                     let data = queryData[podName];
                     
-                    function findAndUpdate(key, index, fieldName) {
+                    function findAndUpdate(key, index, fieldName, getKey=false) {
                         // Get ID of the current key so we can match with existing entry
                         let words_in_key = key.split("_");
                         let curr_id = words_in_key[words_in_key.length - 3].toLowerCase();
@@ -115,7 +115,11 @@ class MainTabNavigator extends React.Component {
                         // If the corresponding youth exists for the YDM field, update the value
                         if (content_index >= 0) {
                             // Update ydmApproved field in existing entry
-                            newData[index].content[content_index][fieldName] = data[key]["value"];
+                            if (getKey) {
+                                newData[index].content[content_index][fieldName] = key;
+                            } else {
+                                newData[index].content[content_index][fieldName] = data[key]["value"];
+                            }
                         }
                     }
 
@@ -138,11 +142,13 @@ class MainTabNavigator extends React.Component {
                             let words_in_key = key.split("_");
                             newData[index].content.push({
                                 api_key: key,
+                                api_bool_key: "", // Change in next loop
                                 id: words_in_key[words_in_key.length - 3].toLowerCase(),
                                 key: data[key]["name"],
                                 ydmApproved: true,
                                 checked: data[key]["value"],
-                                starIsFilled: false, // Change later based on salesforce data
+                                starIsFilled: false, // Change in next loop
+                                pod: podName
                             });
                         }
                     }
@@ -156,6 +162,7 @@ class MainTabNavigator extends React.Component {
                         }
                         if (key.includes("BOOL") && index >= 0) {
                             findAndUpdate(key, index, "starIsFilled");
+                            findAndUpdate(key, index, "api_bool_key", getKey=true);
                         }
                     }
 
@@ -165,6 +172,9 @@ class MainTabNavigator extends React.Component {
                 this.setState({
                     allData: allData
                 });
+
+                console.log(allData);
+
             })
             .catch((error) => {
                 console.error(error);

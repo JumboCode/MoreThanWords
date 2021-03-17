@@ -113,7 +113,7 @@ def getMainGoals(user):
             if name in pod_response.keys():
                 pod_response[name]["value"] = value
 
-        final_response[pod_map_name] = pod_response
+        final_response[pod_map_name.split("_")[0]] = pod_response
 
     return final_response
 
