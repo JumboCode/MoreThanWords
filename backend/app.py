@@ -164,7 +164,7 @@ def HomeScreenoutcomes(user):
 
     return pod_outcome
     
-@app.route("/calculateProgressBar")
+@app.route("/calcProgressPodScreen")
 @requires_auth(sf)
 def podOutcomes(user):
     # parses arguments that user sent via query string
@@ -180,7 +180,7 @@ def podOutcomes(user):
     # salesforce query for all the field names and labels in the trainee pod 
     desc = getattr(sf, pod_map_name).describe()
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
-    
+        
     # filter to get only the trainee outcome field names 
     filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
     pod_field_names = [field[0] for field in filtered_field_names]
@@ -193,12 +193,23 @@ def podOutcomes(user):
     outcome_dict = {}
     for field in pod_field_names:
         field_type = field[3:6].upper()
-        sf_result[field_type + "_totalcount"] = 0; #create new value in sf_result dict that will store field's total outcomes 
+        outcome_dict[field_type] = {}
+        
+        # count the *completed* outcomes for each field:
+        outcome_dict[field_type]['completed_outcomes'] = sf_result["records"][0][field]  
+        
+        # count the *total* outcomes for each field:
+        outcome_dict[field_type]['total_outcomes'] = 0
         for name_and_label in field_names_and_labels:
-            if "_Outcome_" + field_type in name_and_label[0]: 
-                sf_result[field_type + "_totalcount"] += 1
+            if "_Outcome_" + field_type in name_and_label[0]:
+                outcome_dict[field_type]['total_outcomes'] += 1
+            
+            #putting in the name of each field into dictionary
+            if field in name_and_label[0]:
+                name = name_and_label[1].partition("Outcomes")[0]  #only grab part in label up to the word "Outcomes"
+                outcome_dict[field_type]['name'] = name
     
-    return sf_result
+    return outcome_dict
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
