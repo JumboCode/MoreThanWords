@@ -38,17 +38,26 @@ export default class HomeScreenPod extends React.Component{
         const nav_pod_name = pod_name + ' Pod';
         const complete_outcomes = this.state.progress;
         const total_outcomes = this.state.total;
+        let blocktext,block;
+        if (complete_outcomes != 0 && complete_outcomes < total_outcomes){
+            blocktext = styles.highlightBlockText;
+            block = styles.highlightBlock;
+        } else {
+            blocktext = styles.BlockText;
+            block = styles.Block;
+        } 
+            
         return(
         <SafeAreaView style={styles.container}>
         <TouchableOpacity 
-            style={styles.Block} 
+            style={block} 
                 onPress={() => 
                     this.props.navigation.navigate(nav_pod_name, {
                     pod: pod_name
                 })
             }
         >
-                <Text style={styles.BlockText}> {pod_name} </Text>
+                <Text style={blocktext}> {pod_name} </Text>
             <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
         </TouchableOpacity> 
     </SafeAreaView>);
