@@ -6,7 +6,7 @@ import { getAccessToken } from '../../utils/auth.js';
 import FocusAreaBlock from './FocusAreaBlock.js';
 const server_add = Constants.manifest.extra.apiUrl;
 
-export default class TraineePodScreen extends React.Component {
+export default class PodScreen extends React.Component {
     /* State variables initalized:
      * 	  - outcomes_list: a dictionary of dictionaries. values are field 
      *      names (ex. COM, CAR) that each map to another dictionary with 
