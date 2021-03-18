@@ -142,11 +142,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     imageContainer: {
-        flex: 1,
         backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: -250,
     },
     title: {
         fontSize: 40,
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
     logo: {
         justifyContent: "center",
         alignItems: "center",
-        height: 250,
+        height: 220,
         resizeMode: "contain",
     }
 });
