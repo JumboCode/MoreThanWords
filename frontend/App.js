@@ -1,13 +1,10 @@
-
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './components/pod_components/HomeScreen.js';
-import TraineePodScreen from './components/pod_components/TraineePod.js';
-import AssociatePodScreen from './components/pod_components/AssociatePod.js';
-import PartnerPodScreen from './components/pod_components/PartnerPod.js';
+import PodScreen from './components/pod_components/PodScreen.js';
 import LoginScreen from './components/LoginPage.js';
 import OutcomesScreen from './components/outcomes/OutcomesScreen.js';
 
@@ -62,10 +59,9 @@ class MainStackNavigator extends React.Component {
                                     animationEnabled: false
                                 }}
                             />
-                            <Stack.Screen name="Trainee Pod" component={TraineePodScreen} />
-                            <Stack.Screen name="Associate Pod" component={AssociatePodScreen} />
-                            <Stack.Screen name="Partner Pod" component={PartnerPodScreen} />
-                            <Stack.Screen name="Random Screen" component={RandomScreen} />
+                            <Stack.Screen name="Trainee Pod" component={PodScreen} />
+                            <Stack.Screen name="Associate Pod" component={PodScreen} />
+                            <Stack.Screen name="Partner Pod" component={PodScreen} />
                             <Stack.Screen name="Outcomes" component={OutcomesScreen} />
                         </>
                     ) : (
@@ -83,19 +79,6 @@ class MainStackNavigator extends React.Component {
             </NavigationContainer>
         );
     }
-}
-
-function RandomScreen() {
-    return (
-        <ScrollView style={styles.scrollView}>
-            <View style={styles.container}>
-                <Text style={styles.title}>
-                    When the competencies screen, career pathway screen, and life
-                    essential screens get set up, replace this screen with them.
-                </Text>
-            </View>
-        </ScrollView>
-    );
 }
 
 const styles = StyleSheet.create({
