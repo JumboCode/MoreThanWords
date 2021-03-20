@@ -6,7 +6,7 @@ import { getAccessToken } from '../../utils/auth.js';
 import FocusAreaBlock from './FocusAreaBlock.js';
 const server_add = Constants.manifest.extra.apiUrl;
 
-export default class TraineePodScreen extends React.Component {
+export default class PodScreen extends React.Component {
     /* State variables initalized:
      * 	  - outcomes_list: a dictionary of dictionaries. values are field 
      *      names (ex. COM, CAR) that each map to another dictionary with 
@@ -15,15 +15,16 @@ export default class TraineePodScreen extends React.Component {
     state = {
         outcomes_list: {},
     };
-
+    
     /* componentDidMount
 	 * Parameters: none
 	 * Returns: nothing
 	 * Purpose: Get the data from backend and use the info to set states
 	 */
     componentDidMount() {
+        let pod = this.props.route.params.pod;
         getAccessToken().then(accessToken => 
-            fetch(server_add + '/calcProgressPodScreen', {
+            fetch(server_add + `/calcProgressPodScreen?pod=${pod}`, {
                 headers: {
                     "Authorization": "Bearer " + accessToken
                 }

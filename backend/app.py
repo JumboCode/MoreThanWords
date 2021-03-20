@@ -76,6 +76,33 @@ def updateSalesforce(user):
     getattr(sf, pod_map_name).update(tr_pod_id, {task_title: new_value})
     return {}
 
+@app.route("/updateStar", methods=['POST'])
+@requires_auth(sf)
+def updateSalesforce(user):
+    # Extract user details from the user object
+    email = user.get('Email')
+    firstname = user.get('FirstName')
+    lastname = user.get('LastName')
+    fullname = firstname + " " + lastname
+
+    # Extract current pod to update from JSON body data
+    pod = request.json.get('pod')
+    pod_map_name = pod + '_POD_Map__c'
+
+    # Query for this user in Salesforce
+    soql = "SELECT Contact__c FROM " + pod_map_name
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+
+    # Obtain pod ID
+    tr_pod_id = sf_result['records'][0]['attributes']['url'].split('/')[-1]
+    task_title = request.json.get('task_title')
+    new_value = request.json.get('new_value')
+
+    # Update value of specific task in Salesforce
+    getattr(sf, pod_map_name).update(tr_pod_id, {task_title: new_value})
+    return {}
+
+
 @app.route("/getMainGoals")
 @requires_auth(sf)
 def getMainGoals(user):
