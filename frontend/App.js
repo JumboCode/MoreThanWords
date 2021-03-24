@@ -76,7 +76,8 @@ class MainTabNavigator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            allData: {}
+            allData: {},
+            timesChanged: 0
         };
     }
 
@@ -94,7 +95,7 @@ class MainTabNavigator extends React.Component {
                 dataTemp[pod][outcomeIndex].content[index].checked = updatedCheckboxValue;
                 dataTemp[pod][outcomeIndex].content[index].starIsFilled = updatedStarValue;
                 // console.log(dataTemp);
-                this.setState({allData: dataTemp});
+                this.setState({allData: dataTemp, timesChanged: this.state.timesChanged + 1});
             } else {
                 console.error("Unable to identify task index.");
             }
@@ -227,6 +228,7 @@ class MainTabNavigator extends React.Component {
                     name="FocusGoals"
                     children={ () => <FocusGoalsStackNavigator
                                         allData={this.state.allData}
+                                        timesChanged={this.state.timesChanged}
                                         handleSetAllData={this.handleSetAllData}
                                      />}
                     options={{
@@ -251,12 +253,14 @@ class FocusGoalsStackNavigator extends React.Component {
     }
 
     render() {
+        console.log("FocusGoalsStackNavigator");
         return (
             <Stack.Navigator>
                 <Stack.Screen 
                     name="Focus Goals"
                     children={ () => <FocusGoals
                                         allData={this.props.allData}
+                                        timesChanged={this.props.timesChanged}
                                         handleSetAllData={this.props.handleSetAllData}
                                      />} 
                 />

@@ -7,7 +7,7 @@ import Outcome from './Outcome';
 
 export default function FocusGoals(props, { navigation, route }) {
 
-    const [focusGoalsData, setFocusGoalsData] = useState([]);
+    const [focusGoalsDataState, setFocusGoalsDataState] = useState([]);
 
     const styles = StyleSheet.create({
         container: {
@@ -27,6 +27,8 @@ export default function FocusGoals(props, { navigation, route }) {
     });
 
     useEffect(() => {
+        console.log("Focus Goals useEffect")
+        // console.log(props.allData)
         let focusGoalsData = [
             {
                 title: "Unchecked",
@@ -49,7 +51,7 @@ export default function FocusGoals(props, { navigation, route }) {
                 for (const task of taskArray) {
                     // console.log(task);
                     if (task.starIsFilled) {
-                        console.log(task.api_key);
+                        // console.log(task.api_key);
                         if (task.checked) {
                             focusGoalsData[1].content.push(task);
                         } else {
@@ -62,23 +64,25 @@ export default function FocusGoals(props, { navigation, route }) {
 
         // console.log(focusGoalsData);
         if (focusGoalsData[0].content.length > 0 || focusGoalsData[1].content.length > 0) {
-            setFocusGoalsData(focusGoalsData);
+            setFocusGoalsDataState(focusGoalsData);
         } else {
-            setFocusGoalsData(false);
+            setFocusGoalsDataState(false);
         }
-    }, []);
-
+    }, [props.timesChanged]);
+    
+    // console.log(focusGoalsData);
     return (
         <SafeAreaView style={styles.container}>
-            {focusGoalsData ?
+            {focusGoalsDataState ?
                 <FlatList 
                     style={styles.listStyle}
-                    data={focusGoalsData}
+                    data={focusGoalsDataState}
                     renderItem={({ item }) => {
                         return (
                             <Outcome
                                 data={[item]}
                                 handleSetAllData={props.handleSetAllData}
+                                timesChanged={props.timesChanged}
                             />
                         );
                     }}

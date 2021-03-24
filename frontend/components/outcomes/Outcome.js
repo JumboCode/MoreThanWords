@@ -11,7 +11,7 @@
  *     3) A list of Tasks corresponding to the goals of the outcome group.
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, LogBox } from 'react-native';
 import { Accordion } from 'native-base';
 import Task from './Task';
@@ -48,21 +48,28 @@ const Outcome = (props) => {
     const [outcomeData, setOutcomeData] = useState(props.data);
 
     handleSetOutcomeData = (backendID, updatedCheckboxValue, updatedStarValue) => {
-        // console.log(outcomeData);
-        let dataTemp = outcomeData;
-        let index = outcomeData[0].content.findIndex(x => x.api_key === backendID);
-        dataTemp[0].content[index].checked = updatedCheckboxValue;
-        dataTemp[0].content[index].starIsFilled = updatedStarValue;
-        // console.log(dataTemp);
-        setOutcomeData(dataTemp);
+        // // console.log(outcomeData);
+        // let dataTemp = outcomeData;
+        // let index = outcomeData[0].content.findIndex(x => x.api_key === backendID);
+        // dataTemp[0].content[index].checked = updatedCheckboxValue;
+        // dataTemp[0].content[index].starIsFilled = updatedStarValue;
+        // // console.log(dataTemp);
+        // setOutcomeData(dataTemp);
     };
 
+    useEffect(() => {
+        console.log(props.data);
+        setOutcomeData(props.data);
+    }, [props.timesChanged]);
+
+    console.log("Rerendered Outcome", props.data[0].title);
+    console.log(props.data);
     return (
         <Accordion
             style={styles.accordion}
             useNativeDriver={true}
             expanded={0}
-            dataArray={outcomeData}
+            dataArray={props.data}
             headerStyle={styles.headerStyle}
             renderContent={(taskListObject) => {
                 const itemComponents = taskListObject.content.map(
