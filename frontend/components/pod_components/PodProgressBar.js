@@ -14,7 +14,7 @@ const PodProgressBar = (props) => {
     
     //Calculates how far the bar goes
     const width = animation.current.interpolate({
-        inputRange: [0, props.total_tasks],
+        inputRange: [0, props.total_outcomes],
         outputRange: ["0%", "100%"],
         extrapolate: "clamp"
     })
@@ -22,7 +22,7 @@ const PodProgressBar = (props) => {
     return (
         <View style={styles.container} >
             <Text style={styles.progressCount}>
-                {`${props.progress} of ${props.total_tasks}`}
+                {`${props.progress} of ${props.total_outcomes}`}
             </Text>
       
             <View style={styles.progressBar}>
