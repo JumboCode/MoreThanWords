@@ -1,9 +1,9 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
+import React from 'react';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { getAccessToken } from '../../utils/auth.js';
-
 import FocusAreaBlock from './FocusAreaBlock.js';
+
 const server_add = Constants.manifest.extra.apiUrl;
 
 export default class PodScreen extends React.Component {

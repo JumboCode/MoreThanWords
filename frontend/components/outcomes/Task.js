@@ -12,11 +12,11 @@
  *     3) The name of the task.
  */
 
-import React from 'react';
-import { StyleSheet, Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Constants from 'expo-constants';
-import { getAccessToken } from '../../utils/auth.js'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { getAccessToken } from '../../utils/auth.js';
 
 class Task extends React.Component {
     constructor(props) {
