@@ -1,5 +1,5 @@
-import React, {useRef, useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Animated } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 
 const PodProgressBar = (props) => {
     //Animates the progress bar
@@ -14,7 +14,7 @@ const PodProgressBar = (props) => {
     
     //Calculates how far the bar goes
     const width = animation.current.interpolate({
-        inputRange: [0, props.total_tasks],
+        inputRange: [0, props.total_outcomes],
         outputRange: ["0%", "100%"],
         extrapolate: "clamp"
     })
@@ -22,11 +22,11 @@ const PodProgressBar = (props) => {
     return (
         <View style={styles.container} >
             <Text style={styles.progressCount}>
-                {`${props.progress} of ${props.total_tasks}`}
+                {`${props.progress} of ${props.total_outcomes}`}
             </Text>
       
             <View style={styles.progressBar}>
-                <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27B48F', width }}/>
+                <Animated.View style={{backgroundColor: '#27B48F', width }}/>
             </View>
         </View>
     );
