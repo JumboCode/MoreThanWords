@@ -8,7 +8,7 @@
 #
 # It first gets the auth token by calling get_token_auth_header.
 # Then it moves to decode_and_verify_payload, which verifies the auth header.
-# Then it sends request to salesforce for user info in get_user_info.
+# Then it parses the sub field to get the auth0 user id.
 ###############################################################################
 from functools import wraps
 import json

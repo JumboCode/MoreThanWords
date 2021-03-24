@@ -104,8 +104,6 @@ export default class LoginPage extends React.Component {
             await setItemAsync("refresh_token", refreshToken);
         };
 
-        console.log(token_response);
-
         this.setState({name, loading: false});
         this.props.refresh();
     }
