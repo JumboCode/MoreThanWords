@@ -34,7 +34,7 @@ AUTH0_DOMAIN = env.get("AUTH0_DOMAIN")
 API_IDENTIFIER = env.get("API_IDENTIFIER")
 ALGORITHMS = ["RS256"]
 
-AUTH_HEADER_PREFIX = "jwt"
+AUTH_HEADER_PREFIX = "bearer"
 
 # Format error response and append status code.
 class AuthError(Exception):
@@ -159,9 +159,10 @@ def requires_auth(sf):
             token = get_token_auth_header()
             auth_info = decode_and_verify_payload(token)
 
-            # assuming that email is in the 'name' field, due to
-            # how auth0 handles signup.
-            user_info = get_user_info(sf, auth_info['name'])
+            # uses the auth0 id to identify users
+            user_info = {
+                "id": auth_info["sub"]
+            }
 
             return f(user=user_info, *args, **kwargs)
         return decorated

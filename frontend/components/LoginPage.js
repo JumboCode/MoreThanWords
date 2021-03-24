@@ -51,10 +51,10 @@ export default class LoginPage extends React.Component {
             codeChallengeMethod: 'S256',
             clientId: auth0ClientId,
             scopes: ["openid", "profile", "offline_access"],
-            audience: Constants.manifest.extra.api_audience,
             extraParams: {
                 nonce: nonce_generated,
                 prompt: "login",
+                audience: Constants.manifest.extra.api_audience,
             },
         };
         const discovery = await AuthSession.fetchDiscoveryAsync(auth0_domain);
@@ -79,7 +79,8 @@ export default class LoginPage extends React.Component {
             redirectUri: redirectUri,
             scopes: ["openid", "profile", "offline_access"],
             extraParams: {
-                "code_verifier": code_verifier
+                "code_verifier": code_verifier,
+                "audience": Constants.manifest.extra.api_audience,
             }
         };
         const token_response = await AuthSession.exchangeCodeAsync(access_token_req, discovery);
@@ -102,6 +103,8 @@ export default class LoginPage extends React.Component {
             await setItemAsync("expire_time", (issuedAt + expiresIn).toString());
             await setItemAsync("refresh_token", refreshToken);
         };
+
+        console.log(token_response);
 
         this.setState({name, loading: false});
         this.props.refresh();
