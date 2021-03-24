@@ -93,6 +93,7 @@ def finishSignup():
     """
     secret = request.headers.get('Authorization')
     email = request.json.get('email')
+    auth0id = request.json.get('id')
     correct_secret = os.environ.get('VERIFY_SIGNUP_SECRET')
     # exit when the wrong secret is provided
     if (not secret or secret != "Secret " + correct_secret):
@@ -114,7 +115,10 @@ def finishSignup():
         return response
     
     # update the contact
-    sf.Contact.update(response["records"][0]["Id"], {"Has_Youth_App_Account__c": True})
+    sf.Contact.update(response["records"][0]["Id"], {
+        "Has_Youth_App_Account__c": True,
+        "auth0_user_id__c": auth0id
+    })
 
     return jsonify({"result": "success"})
 
