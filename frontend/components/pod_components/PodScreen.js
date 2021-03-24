@@ -50,11 +50,11 @@ export default class PodScreen extends React.Component {
 	 */
     render() {
         let IDkey = 0;
+        const dict = this.state.outcomes_list;
         return (
             <ScrollView>
                 <SafeAreaView style={styles.container}>
-                    {Object.entries(this.state.outcomes_list).map(([key, value]) => {
-                        const dict = this.state.outcomes_list;
+                    {Object.entries(dict).map(([key, value]) => {
                         IDkey++;
                         return (
                             <FocusAreaBlock 
