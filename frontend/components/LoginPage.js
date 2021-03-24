@@ -118,7 +118,7 @@ export default class LoginPage extends React.Component {
                     <View style={styles.imageContainer}>
                         <Image
                             style={styles.logo}
-                            source={require("./logo.png")}
+                            source={require("./login-logo.png")}
                         />
                         <TouchableOpacity
                             onPress={this.signIn}
@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
     logo: {
         justifyContent: "center",
         alignItems: "center",
-        height: 220,
+        width: 300,
+        // height: 220,
         resizeMode: "contain",
     }
 });
