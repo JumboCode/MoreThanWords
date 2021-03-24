@@ -11,9 +11,9 @@
  *     3) A list of Tasks corresponding to the goals of the outcome group.
  */
 
-import React, { useState } from 'react';
-import { StyleSheet, View, LogBox } from 'react-native';
 import { Accordion } from 'native-base';
+import React, { useState } from 'react';
+import { LogBox, StyleSheet, View } from 'react-native';
 import Task from './Task';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message

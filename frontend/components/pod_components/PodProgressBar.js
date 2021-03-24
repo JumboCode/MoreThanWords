@@ -1,5 +1,5 @@
-import React, {useRef, useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Animated } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 
 const PodProgressBar = (props) => {
     //Animates the progress bar
