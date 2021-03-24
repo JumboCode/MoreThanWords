@@ -76,7 +76,10 @@ export default function FocusGoals(props, { navigation, route }) {
                     data={focusGoalsData}
                     renderItem={({ item }) => {
                         return (
-                            <Outcome data={[item]}/>
+                            <Outcome
+                                data={[item]}
+                                handleSetAllData={props.handleSetAllData}
+                            />
                         );
                     }}
                     keyExtractor={item => item.title}

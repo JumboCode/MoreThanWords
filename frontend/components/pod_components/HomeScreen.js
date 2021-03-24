@@ -41,7 +41,8 @@ export default class HomeScreen extends React.Component{
         });
     }
 
-    render(){
+    render() {
+        console.log(this.props);
         return (
         <ScrollView style={styles.scrollView}>
             <SafeAreaView style={styles.container}>

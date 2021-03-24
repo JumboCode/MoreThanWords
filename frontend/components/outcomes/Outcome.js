@@ -48,10 +48,12 @@ const Outcome = (props) => {
     const [outcomeData, setOutcomeData] = useState(props.data);
 
     handleSetOutcomeData = (backendID, updatedCheckboxValue, updatedStarValue) => {
+        // console.log(outcomeData);
         let dataTemp = outcomeData;
         let index = outcomeData[0].content.findIndex(x => x.api_key === backendID);
         dataTemp[0].content[index].checked = updatedCheckboxValue;
         dataTemp[0].content[index].starIsFilled = updatedStarValue;
+        // console.log(dataTemp);
         setOutcomeData(dataTemp);
     };
 
@@ -75,6 +77,7 @@ const Outcome = (props) => {
                         handleSetOutcomeData={handleSetOutcomeData}
                         starIsFilled={taskObj.starIsFilled}
                         pod={taskObj.pod}
+                        handleSetAllData={props.handleSetAllData}
                     />
                 );
                 return (

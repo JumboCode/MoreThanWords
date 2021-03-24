@@ -78,7 +78,7 @@ def updateSalesforce(user):
 
 @app.route("/updateStar", methods=['POST'])
 @requires_auth(sf)
-def updateSalesforce(user):
+def updateStar(user):
     # Extract user details from the user object
     email = user.get('Email')
     firstname = user.get('FirstName')

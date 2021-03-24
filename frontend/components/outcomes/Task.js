@@ -108,7 +108,7 @@ class Task extends React.Component {
         return success;
     }
 
-    async handleClick(isStar=False)  {
+    async handleClick(isStar=false)  {
         let updated_value = isStar ? !this.state.starIsFilled : !this.state.checked;
         this.setClickable(false);
         let success = await this.updateSalesforce(updated_value, isStar);
@@ -116,12 +116,14 @@ class Task extends React.Component {
         if (success) {
             if (isStar) {
                 this.props.handleSetOutcomeData(this.props.backendID, this.state.checked, updated_value);
+                this.props.handleSetAllData ? this.props.handleSetAllData(this.props.backendID, this.state.checked, updated_value, this.props.pod): console.log("Null handleSetAllData");
                 // Prevent user from clicking again until a second has passed
                 this.setState({starIsFilled: updated_value}, () => {
                     setTimeout(() => { this.setClickable(true); }, 1000);
                 });
             } else {
                 this.props.handleSetOutcomeData(this.props.backendID, updated_value, this.state.starIsFilled);
+                this.props.handleSetAllData ? this.props.handleSetAllData(this.props.backendID, updated_value, this.state.starIsFilled, this.props.pod) : console.log("Null handleSetAllData");
                 // Prevent user from clicking again until a second has passed
                 this.setState({checked: updated_value}, () => {
                     setTimeout(() => { this.setClickable(true); }, 1000);

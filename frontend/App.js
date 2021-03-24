@@ -80,6 +80,29 @@ class MainTabNavigator extends React.Component {
         };
     }
 
+    handleSetAllData = (backendID, updatedCheckboxValue, updatedStarValue, pod) => {
+        let dataTemp = this.state.allData;
+        // console.log(backendID, updatedCheckboxValue, updatedStarValue, pod);
+        // console.log(this.state.allData[pod]);
+        let outcomeID = backendID.substring(0, 3);
+        let outcomeIndex = this.state.allData[pod].findIndex(x => x.id === outcomeID);
+        // console.log(outcomeIndex);
+        if (outcomeIndex >= 0) {
+            let index = this.state.allData[pod][outcomeIndex].content.findIndex(x => x.api_key === backendID);
+            // console.log(this.state.allData[pod][outcomeIndex]);
+            if (index >= 0) {
+                dataTemp[pod][outcomeIndex].content[index].checked = updatedCheckboxValue;
+                dataTemp[pod][outcomeIndex].content[index].starIsFilled = updatedStarValue;
+                // console.log(dataTemp);
+                this.setState({allData: dataTemp});
+            } else {
+                console.error("Unable to identify task index.");
+            }
+        } else {
+            console.error("Unable to identify outcome index.");
+        }
+    };
+
     async componentDidMount() {
         if (!this.props.loggedIn) {
             console.log("Component mount and not logged in");
@@ -170,7 +193,7 @@ class MainTabNavigator extends React.Component {
                     allData: allData
                 });
 
-                console.log(allData);
+                // console.log(allData);
 
             })
             .catch((error) => {
@@ -184,7 +207,11 @@ class MainTabNavigator extends React.Component {
             <Tab.Navigator>
                 <Tab.Screen
                     name="Home"
-                    children={ () => <MainStackNavigator logout={this.props.logout}/> }
+                    children={ () => <MainStackNavigator 
+                                        logout={this.props.logout}
+                                        handleSetAllData={this.handleSetAllData}
+                                        allData={this.state.allData}
+                                     /> }
                     options={{
                         tabBarLabel: 'Main Screen',
                         tabBarIcon: ({ color, size }) => (
@@ -200,6 +227,7 @@ class MainTabNavigator extends React.Component {
                     name="FocusGoals"
                     children={ () => <FocusGoalsStackNavigator
                                         allData={this.state.allData}
+                                        handleSetAllData={this.handleSetAllData}
                                      />}
                     options={{
                         tabBarLabel: 'Focus Goals',
@@ -229,6 +257,7 @@ class FocusGoalsStackNavigator extends React.Component {
                     name="Focus Goals"
                     children={ () => <FocusGoals
                                         allData={this.props.allData}
+                                        handleSetAllData={this.props.handleSetAllData}
                                      />} 
                 />
             </Stack.Navigator>
@@ -256,7 +285,46 @@ class MainStackNavigator extends React.Component {
                                 </TouchableOpacity>,
                             animationEnabled: false
                         }}
+                        initialParams={{
+                            allData: this.props.allData,
+                            // handleSetAllData: this.props.handleSetAllData
+                        }}
                     />
+                    {/* <Stack.Screen
+                        name="Pods"
+                        children={ () => <HomeScreen
+                                            allData={this.props.allData}
+                                            handleSetAllData={this.props.handleSetAllData}
+                                         />}
+                        options={{
+                            headerRight: () =>
+                                <TouchableOpacity onPress={this.props.logout} style={{marginRight: 16}}>
+                                    <Text>Log Out</Text>
+                                </TouchableOpacity>,
+                            animationEnabled: false
+                        }}
+                    /> */}
+                    {/* <Stack.Screen
+                        name="Trainee Pod"
+                        children={ () => <PodScreen
+                                            allData={this.props.allData["Trainee"]}
+                                            handleSetAllData={this.props.handleSetAllData}
+                                         />}
+                    />
+                    <Stack.Screen
+                        name="Associate Pod"
+                        children={ () => <PodScreen
+                                            allData={this.props.allData["Associate"]}
+                                            handleSetAllData={this.props.handleSetAllData}
+                                         />}
+                    />
+                    <Stack.Screen
+                        name="Partner Pod"
+                        children={ () => <PodScreen
+                                            allData={this.props.allData["Partner"]}
+                                            handleSetAllData={this.props.handleSetAllData}
+                                         />}
+                    /> */}
                     <Stack.Screen name="Trainee Pod" component={PodScreen} />
                     <Stack.Screen name="Associate Pod" component={PodScreen} />
                     <Stack.Screen name="Partner Pod" component={PodScreen} />
