@@ -2,7 +2,7 @@
 import * as AuthSession from "expo-auth-session";
 import jwtDecode from "jwt-decode";
 import * as React from "react";
-import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
+import { Alert, Button, Platform, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import Constants from 'expo-constants';
 import { setItemAsync } from 'expo-secure-store';
 import LoadingModal from "./LoadingModal";
@@ -114,10 +114,19 @@ export default class LoginPage extends React.Component {
                 {this.state.name ? (
                     <Text style={styles.title}>You are logged in, {this.state.name}!</Text>
                 ) : (
-                    <Button
-                        title="Log in with Auth0"
-                        onPress={this.signIn}
-                    />
+
+                    <View style={styles.imageContainer}>
+                        <Image
+                            style={styles.logo}
+                            source={require("./logo.png")}
+                        />
+                        <TouchableOpacity
+                            onPress={this.signIn}
+                            style={styles.buttonContainer}
+                        >
+                            <Text style={styles.buttonText}>LOGIN</Text>
+                        </TouchableOpacity>
+                    </View>
                 )}
             </View>
         );
@@ -132,9 +141,41 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    imageContainer: {
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+    },
     title: {
-        fontSize: 20,
+        fontSize: 40,
         textAlign: "center",
         marginTop: 40,
     },
+    buttonContainer: {
+        width: 296,
+        height: 56,
+        backgroundColor: "#ff4646",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 10,
+        borderRadius: 10,
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowColor: 'red',
+    },
+    buttonText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "600",
+    },
+    logo: {
+        justifyContent: "center",
+        alignItems: "center",
+        height: 220,
+        resizeMode: "contain",
+    }
 });
