@@ -36,7 +36,7 @@ export default class FocusAreaBlock extends React.Component {
                 <Text style={styles.blockTitle}>
                     {pod_name} 
                 </Text>
-                <PodProgressBar progress={completed_outcomes} total_tasks={total_outcomes} />
+                <PodProgressBar progress={completed_outcomes} total_outcomes={total_outcomes} />
             </TouchableOpacity>
         );
     }
