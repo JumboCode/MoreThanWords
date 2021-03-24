@@ -26,7 +26,7 @@ const PodProgressBar = (props) => {
             </Text>
       
             <View style={styles.progressBar}>
-                <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27B48F', width }}/>
+                <Animated.View style={{backgroundColor: '#27B48F', width }}/>
             </View>
         </View>
     );

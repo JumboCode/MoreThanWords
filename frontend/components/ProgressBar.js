@@ -22,7 +22,7 @@ const ProgressBar = (props) => {
   return (
     <View style={{alignItems: 'center'}}>
       <View style={styles.progressBar}>
-        <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
+        <Animated.View style={{backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
       </View>
       <Text>
         {`${props.progress} of ${props.total_outcomes} outcomes achieved`}
