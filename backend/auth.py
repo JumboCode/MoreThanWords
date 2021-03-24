@@ -12,6 +12,7 @@
 ###############################################################################
 from functools import wraps
 import json
+from datetime import datetime, timedelta
 from os import environ as env
 
 from dotenv import load_dotenv, find_dotenv
@@ -36,6 +37,25 @@ ALGORITHMS = ["RS256"]
 
 AUTH_HEADER_PREFIX = "bearer"
 
+# auth0 keys caching
+auth0_key_expire = None
+auth0_jwk = {}
+
+def get_auth0_jwk():
+    """
+    gets the auth0 token and caches it.
+    refreshes the auth0 token if needed (refreshes every two weeks).
+    """
+    global auth0_key_expire
+    global auth0_jwk
+    if auth0_key_expire is None or auth0_key_expire < datetime.now():
+        print("refreshing")
+        request = requests.get(AUTH0_DOMAIN+"/.well-known/jwks.json")
+        auth0_jwk = request.json()
+        auth0_key_expire = datetime.now() + timedelta(weeks=2)
+    return auth0_jwk
+
+
 # Format error response and append status code.
 class AuthError(Exception):
     def __init__(self, error, status_code):
@@ -50,8 +70,7 @@ def decode_and_verify_payload(jwt_token):
     otherwise, an AuthError will be raised.
     """
     
-    request = requests.get(AUTH0_DOMAIN+"/.well-known/jwks.json")
-    jwks = request.json()
+    jwks = get_auth0_jwk()
     try:
         unverified_header = jwt.get_unverified_header(jwt_token)
     except jwt.JWTError:
@@ -98,25 +117,6 @@ def decode_and_verify_payload(jwt_token):
                                 "Unable to parse authentication"
                                 " token."}, 401)
     return payload
-
-
-def get_user_info(sf, email):
-    """
-    given an email, retrieves the user info.
-    """
-    result = sf.query(format_soql(
-        "SELECT Email,FirstName,LastName FROM Contact WHERE (MTW_Role__c = 'MTW Young Adult' AND email = {email_value})",
-        email_value=email))
-
-    if (result["totalSize"] == 1 and result["records"]):
-        user_info = result["records"][0]
-        return user_info
-    else:
-        # if the salesforce request did not return any matching user
-        raise AuthError({"code": "not_found_in_salesforce",
-                        "description":
-                            "The current user is not found in the MoreThanWords Database."},
-                            401)
 
 
 def get_token_auth_header():
