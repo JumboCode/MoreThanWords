@@ -68,6 +68,9 @@ export default class HomeScreenPod extends React.Component{
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        backgroundColor: 'white'
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
@@ -91,7 +94,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    // ONGOING Block
     highlightBlock: {
         marginTop: 20,
         width: '100%',
@@ -109,10 +111,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    scrollView: {
-        backgroundColor: 'white'
-    },
-
     greyBlock: {
         marginTop: 20,
         width: '100%',
