@@ -39,7 +39,7 @@ export default class HomeScreenPod extends React.Component{
         const complete_outcomes = this.state.progress;
         const total_outcomes = this.state.total;
         let blocktext,block;
-        if (complete_outcomes == total_outcomes){
+        if (complete_outcomes != 0 && complete_outcomes == total_outcomes){
             blocktext = styles.BlockText;
             block = styles.Block;
         } else if (complete_outcomes != 0 && complete_outcomes < total_outcomes){
