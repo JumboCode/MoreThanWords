@@ -17,14 +17,14 @@ const ProgressBar = (props) => {
     extrapolate: "clamp"
   })
 
-  const NotOn = (props.progress == 0);
+  const GreyOut = (props.progress == 0);
   
   return (
     <View style={{alignItems: 'center'}}>
       {props.progress != 0 && <View style={styles.progressBar}>
         <Animated.View style={{backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
       </View>}
-      <Text style = {[NotOn ? styles.ProgressBarText : styles.ongoing_ProgressBarText]}>
+      <Text style = {[GreyOut ? styles.ProgressBarText : styles.ongoing_ProgressBarText]}>
         {`${props.progress} of ${props.total_outcomes} outcomes achieved`}
       </Text>
     </View>
