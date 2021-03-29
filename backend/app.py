@@ -18,10 +18,7 @@ CORS(app)
 @requires_auth(sf)
 def youthCheck(user):
     # Extract user details from the user object
-    email = user.get('Email')
-    firstname = user.get('FirstName')
-    lastname = user.get('LastName')
-    fullname = firstname + " " + lastname
+    user_id = user.get('id')
 
     # Extract current pod to update from request arguments
     pod = request.args.get('pod')
@@ -34,7 +31,7 @@ def youthCheck(user):
 
     # Query for all fields for this user
     soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id))
 
     # Format response
     response = {}
@@ -53,10 +50,7 @@ def youthCheck(user):
 @requires_auth(sf)
 def updateSalesforce(user):
     # Extract user details from the user object
-    email = user.get('Email')
-    firstname = user.get('FirstName')
-    lastname = user.get('LastName')
-    fullname = firstname + " " + lastname
+    user_id = user.get('id')
 
     # Extract current pod to update from JSON body data
     pod = request.json.get('pod')
@@ -64,7 +58,7 @@ def updateSalesforce(user):
 
     # Query for this user in Salesforce
     soql = "SELECT Contact__c FROM " + pod_map_name
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id))
 
     # Obtain pod ID
     tr_pod_id = sf_result['records'][0]['attributes']['url'].split('/')[-1]
@@ -97,6 +91,7 @@ def finishSignup():
     """
     secret = request.headers.get('Authorization')
     email = request.json.get('email')
+    auth0id = request.json.get('id')
     correct_secret = os.environ.get('VERIFY_SIGNUP_SECRET')
     # exit when the wrong secret is provided
     if (not secret or secret != "Secret " + correct_secret):
@@ -118,7 +113,10 @@ def finishSignup():
         return response
 
     # update the contact
-    sf.Contact.update(response["records"][0]["Id"], {"Has_Youth_App_Account__c": True})
+    sf.Contact.update(response["records"][0]["Id"], {
+        "Has_Youth_App_Account__c": True,
+        "auth0_user_id__c": auth0id
+    })
 
     return jsonify({"result": "success"})
 
@@ -161,10 +159,7 @@ def verify():
 @requires_auth(sf)
 def HomeScreenoutcomes(user):
     # parses arguments that user sent via query string
-    email = user['Email']
-    firstname = user['FirstName']
-    lastname = user['LastName']
-    name = firstname + " " + lastname 
+    user_id = user.get('id')
 
     # Extract current pod to update from request arguments
     pod = request.args.get('pod')
@@ -207,10 +202,7 @@ def HomeScreenoutcomes(user):
 @requires_auth(sf)
 def podOutcomes(user):
     # parses arguments that user sent via query string
-    email = user['Email']
-    firstname = user['FirstName']
-    lastname = user['LastName']
-    name = firstname + " " + lastname 
+    user_id = user.get('id')
 
     # Extract current pod to update from request arguments
     pod = request.args.get('pod')
@@ -226,7 +218,7 @@ def podOutcomes(user):
     
     # salesforce query of each *completed* outcome # in trainee pod, based on the email and name
     soql = ("SELECT {} FROM " + pod_map_name).format(','.join(pod_field_names))
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
+    sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
 
     # organizing and putting data into dictionary outcome_dict
     outcome_dict = {}
