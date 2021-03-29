@@ -18,13 +18,20 @@ const ProgressBar = (props) => {
   })
 
   const GreyOut = (props.progress == 0);
-  
+  const IsCompleted = (props.progress == props.total_outcomes && props.total_outcomes != 0);
+  var Progresstextstyle = (GreyOut ? styles.ProgressBarText : styles.ongoing_ProgressBarText)
+  if(IsCompleted){
+    Progresstextstyle =  styles.complete_ProgressBarText;
+  }
+
   return (
-    <View style={{alignItems: 'center'}}>
-      {props.progress != 0 && <View style={styles.progressBar}>
+    <View style={{alignItems: 'center'}}> 
+    {props.progress != 0 && 
+      <View style={styles.progressBar}>
         <Animated.View style={{backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
-      </View>}
-      <Text style = {[GreyOut ? styles.ProgressBarText : styles.ongoing_ProgressBarText]}>
+      </View>
+      }
+      <Text style = {Progresstextstyle}>
         {`${props.progress} of ${props.total_outcomes} outcomes achieved`}
       </Text>
     </View>
@@ -35,32 +42,22 @@ const ProgressBar = (props) => {
 export default ProgressBar;
 
 const styles = StyleSheet.create({
-  ongoing_ProgressBar: {
-    flexDirection: 'row',
-    height: 20,
-    width: 250,
-    backgroundColor: '#27b48f',
-    borderColor: 'white',
-    borderWidth: 2,
-    borderRadius: 10
-  },
-  ongoing_ProgressBarText: {
-    color: '#FFFFFF'
-},
-
-// complete
   progressBar: {
     flexDirection: 'row',
     height: 20,
     width: 250,
     backgroundColor: 'white',
-    // backgroundColor: '#27b48f',
     borderColor: '#27b48f',
-    // borderColor: 'white',
     borderWidth: 2,
     borderRadius: 10
   },
+  ongoing_ProgressBarText: {
+    color: '#FFFFFF'
+  },
   ProgressBarText: {
     color: '#C4C4C4'
-},
+  },
+  complete_ProgressBarText: {
+    color: '#27b48f'
+  },
 });
