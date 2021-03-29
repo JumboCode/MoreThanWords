@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-
-
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import PodProgressBar from './PodProgressBar.js';
+
+
 
 export default class FocusAreaBlock extends React.Component {    
     constructor(props) {
@@ -36,7 +36,7 @@ export default class FocusAreaBlock extends React.Component {
                 <Text style={styles.blockTitle}>
                     {pod_name} 
                 </Text>
-                <PodProgressBar progress={completed_outcomes} total_tasks={total_outcomes} />
+                <PodProgressBar progress={completed_outcomes} total_outcomes={total_outcomes} />
             </TouchableOpacity>
         );
     }

@@ -1,6 +1,5 @@
-import React, {useRef, useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Animated } from 'react-native';
-import Constants from 'expo-constants';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 
 const ProgressBar = (props) => {
   let animation = useRef(new Animated.Value(0));
@@ -21,8 +20,8 @@ const ProgressBar = (props) => {
 
   return (
     <View style={{alignItems: 'center'}}>
-      <View style={styles.ProgressBar}>
-        <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: '#27b48f', width, borderRadius: 10, margin: 2}}/>
+      <View style={styles.progressBar}>
+        <Animated.View style={{backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
       </View>
       <Text style = {styles.ProgressBarText}>
         {`${props.progress} of ${props.total_outcomes} outcomes achieved`}
