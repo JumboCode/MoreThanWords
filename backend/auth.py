@@ -49,7 +49,6 @@ def get_auth0_jwk():
     global auth0_key_expire
     global auth0_jwk
     if auth0_key_expire is None or auth0_key_expire < datetime.now():
-        print("refreshing")
         request = requests.get(AUTH0_DOMAIN+"/.well-known/jwks.json")
         auth0_jwk = request.json()
         auth0_key_expire = datetime.now() + timedelta(weeks=2)
