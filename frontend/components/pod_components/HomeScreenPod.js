@@ -39,12 +39,15 @@ export default class HomeScreenPod extends React.Component{
         const complete_outcomes = this.state.progress;
         const total_outcomes = this.state.total;
         let blocktext,block;
-        if (complete_outcomes != 0 && complete_outcomes < total_outcomes){
+        if (complete_outcomes == total_outcomes){
+            blocktext = styles.BlockText;
+            block = styles.Block;
+        } else if (complete_outcomes != 0 && complete_outcomes < total_outcomes){
             blocktext = styles.highlightBlockText;
             block = styles.highlightBlock;
         } else {
-            blocktext = styles.BlockText;
-            block = styles.Block;
+            blocktext = styles.greyBlockText;
+            block = styles.greyBlock;
         } 
             
         return(
@@ -108,5 +111,23 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         backgroundColor: 'white'
-    }
+    },
+
+    greyBlock: {
+        marginTop: 20,
+        width: '100%',
+        height: 220,
+        backgroundColor: '#ececec',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    greyBlockText: {
+        fontSize: 40,
+        color: '#C4C4C4',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
 });

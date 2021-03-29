@@ -3,7 +3,6 @@ import { Animated, StyleSheet, Text, View } from 'react-native';
 
 const ProgressBar = (props) => {
   let animation = useRef(new Animated.Value(0));
-
   useEffect(() => {
     Animated.timing(animation.current, {
       toValue: props.progress,
@@ -18,17 +17,20 @@ const ProgressBar = (props) => {
     extrapolate: "clamp"
   })
 
+  const NotOn = (props.progress == 0);
+  
   return (
     <View style={{alignItems: 'center'}}>
-      <View style={styles.progressBar}>
+      {props.progress != 0 && <View style={styles.progressBar}>
         <Animated.View style={{backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
-      </View>
-      <Text style = {styles.ProgressBarText}>
+      </View>}
+      <Text style = {[NotOn ? styles.ProgressBarText : styles.ongoing_ProgressBarText]}>
         {`${props.progress} of ${props.total_outcomes} outcomes achieved`}
       </Text>
     </View>
   );
 }
+
 
 export default ProgressBar;
 
@@ -58,8 +60,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10
   },
-  progressBarText: {
-    color: '#3F3F3F'
-    // color: '#FFFFFF'
+  ProgressBarText: {
+    color: '#C4C4C4'
 },
 });
