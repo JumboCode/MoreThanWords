@@ -36,7 +36,7 @@ export default class HomeScreenPod extends React.Component{
     render(){
         const pod_name = this.props.pod;
         const nav_pod_name = pod_name + ' Pod';
-        const complete_outcomes = this.state.progress;
+        const complete_outcomes = this.state.progress;       
         const total_outcomes = this.state.total;
         let blocktext,block;
         if (complete_outcomes != 0 && complete_outcomes == total_outcomes){

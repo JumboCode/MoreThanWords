@@ -4,6 +4,7 @@ import { Animated, StyleSheet, Text, View } from 'react-native';
 const ProgressBar = (props) => {
   let animation = useRef(new Animated.Value(0));
   useEffect(() => {
+    let isMounted = true;
     Animated.timing(animation.current, {
       toValue: props.progress,
       useNativeDriver: false,

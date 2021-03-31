@@ -158,7 +158,6 @@ def verify():
 @app.route("/calcProgressHomeScreen")
 @requires_auth(sf)
 def HomeScreenoutcomes(user):
-    # parses arguments that user sent via query string
     user_id = user.get('id')
 
     # Extract current pod to update from request arguments
@@ -170,11 +169,12 @@ def HomeScreenoutcomes(user):
     filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
     Pod_field_names = [field[0] for field in filtered_field_names]
 
+    
     # salesforce query of each completed outcome # in trainee pod, based on the email and name
     query_from = "SELECT {} FROM " + pod_map_name
     soql = query_from.format(','.join(Pod_field_names))
-    Pod_sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
-    
+    Pod_sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
+
     # calculate Trainee total 
     Pod_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
     for field in Pod_field_names:
@@ -182,6 +182,7 @@ def HomeScreenoutcomes(user):
         for name_and_label in field_names_and_labels:
             if "_Outcome_" + field_type in name_and_label[0]: 
                 Pod_total_count += 1
+    
 
     # transform into a python dictionary
     vars(Pod_sf_result)
