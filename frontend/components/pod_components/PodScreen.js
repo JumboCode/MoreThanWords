@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { getAccessToken } from '../../utils/auth.js';
 import FocusAreaBlock from './FocusAreaBlock.js';
 
@@ -14,6 +14,7 @@ export default class PodScreen extends React.Component {
      */
     state = {
         outcomes_list: {},
+        data_loaded: false,
     };
     
     /* componentDidMount
@@ -34,6 +35,7 @@ export default class PodScreen extends React.Component {
             let data = await response.json();
             this.setState({
                 outcomes_list: data,
+                data_loaded: true,
             })
         })
         .catch(function (error) {
@@ -45,31 +47,41 @@ export default class PodScreen extends React.Component {
 	 * Paramaters: none
 	 * Returns: nothing
 	 * Purpose: renders page, which takes backend data from salesforce and 
-     * uses it to calculate progress bars 
+     * uses it to calculate progress bars. Renders a loading circle before 
+     * data has been loaded.
      * Note: map function needs a specific numbered ID key for each list item 
 	 */
     render() {
         let IDkey = 0;
         const dict = this.state.outcomes_list;
+        //If data has loaded, then render the FocusAreaBlock
+        if (this.state.data_loaded) {
+            return (
+                <ScrollView>
+                    <SafeAreaView style={styles.container}>
+                        {Object.entries(dict).map(([key, value]) => {
+                            IDkey++;
+                            return (
+                                <FocusAreaBlock 
+                                    pod={key}
+                                    name={dict[key]['name']}
+                                    completed_outcomes={dict[key]['completed_outcomes']}
+                                    total_outcomes={dict[key]['total_outcomes']}
+                                    key={IDkey}
+                                    route={this.props.route}
+                                    navigation={this.props.navigation}
+                                />
+                            )
+                        })}
+                    </SafeAreaView>
+                </ScrollView>
+            ); 
+        }
+        //If data hasn't loaded, display loading circle
         return (
-            <ScrollView>
-                <SafeAreaView style={styles.container}>
-                    {Object.entries(dict).map(([key, value]) => {
-                        IDkey++;
-                        return (
-                            <FocusAreaBlock 
-                                pod={key}
-                                name={dict[key]['name']}
-                                completed_outcomes={dict[key]['completed_outcomes']}
-                                total_outcomes={dict[key]['total_outcomes']}
-                                key={IDkey}
-                                route={this.props.route}
-                                navigation={this.props.navigation}
-                            />
-                        )
-                    })}
-                </SafeAreaView>
-            </ScrollView>
+            <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+                <ActivityIndicator size="large" />
+            </SafeAreaView>
         );
     }
 }
@@ -79,8 +91,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     scrollView: {
-        backgroundColor: 'white'
-    }
+        backgroundColor: 'white',
+    },
 });
