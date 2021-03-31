@@ -270,13 +270,8 @@ def podoutcomes(user):
     Trainee_field_names = [field[0] for field in filtered_field_names]
     
     # salesforce query of each *completed* outcome # in trainee pod, based on the email and name
-<<<<<<< HEAD
-    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(Trainee_field_names))
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
-=======
     soql = ("SELECT {} FROM " + pod_map_name).format(','.join(pod_field_names))
     sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
->>>>>>> staging
 
     # organizing and putting data into dictionary outcome_dict
     outcome_dict = {}
