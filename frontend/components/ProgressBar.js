@@ -14,22 +14,25 @@ const ProgressBar = (props) => {
 
   const width = animation.current.interpolate({
     inputRange: [0, props.total_outcomes],
-    outputRange: ["0%", "98%"], // getting rid of the weird border
+    outputRange: ["0%", "98.5%"], // getting rid of the weird border
     extrapolate: "clamp"
   })
 
   const GreyOut = (props.progress == 0);
   const IsCompleted = (props.progress == props.total_outcomes && props.total_outcomes != 0);
   var Progresstextstyle = (GreyOut ? styles.ProgressBarText : styles.ongoing_ProgressBarText)
+  var Progressbarstyle = styles.ongoing_progressBar;
   if(IsCompleted){
     Progresstextstyle =  styles.complete_ProgressBarText;
+    Progressbarstyle = styles.progressBar;
   }
 
   return (
     <View style={{alignItems: 'center'}}> 
     {props.progress != 0 && 
-      <View style={styles.progressBar}>
-        <Animated.View style={{backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>
+      <View style={Progressbarstyle}>
+        {IsCompleted && <Animated.View style={{backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>}
+        {!IsCompleted && <Animated.View style={{backgroundColor: 'white', width, borderRadius: 10, margin: 2}}/>}
       </View>
       }
       <Text style = {Progresstextstyle}>
@@ -45,20 +48,47 @@ export default ProgressBar;
 const styles = StyleSheet.create({
   progressBar: {
     flexDirection: 'row',
-    height: 20,
-    width: 250,
+    height: 18,
+    width: 300,
     backgroundColor: 'white',
+    paddingLeft: 2, 
+    paddingRight: 2, 
     borderColor: '#27b48f',
     borderWidth: 2,
-    borderRadius: 10
+    borderRadius: 10,
+    marginTop: 4
+  },
+  ongoing_progressBar: {
+    flexDirection: 'row',
+    height: 17,
+    width: 305,
+    paddingLeft: 2, 
+    paddingRight: 2, 
+    backgroundColor: '#27b48f',
+    borderColor: 'white',
+    borderWidth: 2,
+    borderRadius: 10,
+    marginTop: 4
   },
   ongoing_ProgressBarText: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    marginTop: 13,
+    fontSize: 16.5,
+    fontWeight: '500',
+    letterSpacing: 0.75
   },
   ProgressBarText: {
-    color: '#C4C4C4'
+    color: '#C4C4C4',
+    marginTop: 13,
+    fontSize: 16.5,
+    fontWeight: '500',
+    letterSpacing:  0.75
   },
   complete_ProgressBarText: {
-    color: '#27b48f'
+    color: '#27b48f',
+    marginTop: 13,
+    fontSize: 16.5,
+    fontWeight: '500',
+    letterSpacing:  0.75
   },
 });
