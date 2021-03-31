@@ -231,5 +231,47 @@ def podOutcomes(user):
     
     return outcome_dict
 
+@app.route("/getValidPods")
+@requires_auth(sf)
+def findValid(user):
+    pod_names = ['Trainee_POD_Map__c', 'Associate_POD_Map__c', 'Partner_POD_Map__c']
+    total_dict = {}
+    for pod_num, pod_map_name in enumerate(pod_names):
+        desc = getattr(sf, pod_map_name).describe()
+        field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+        field_names = [field['name'] for field in desc['fields']]
+
+        # Query for all fields for this user
+        soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
+        sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id))
+        print(sf_result)
+        if len(sf_result["records"]) == 0:
+            total_dict[pod_map_name] = {'status': 'no access', 'completed': False}
+            continue
+        
+        tot_outcomes = 0
+        tot_completed = 0
+        for field in field_names:
+            if 'Outcome' in field:
+                tot_outcomes += 1
+        for name, value in sf_result["records"][0].items():
+            if 'Outcome' in name and value == True:
+                tot_completed += 1
+
+        if pod_num == 0:
+            status = 'allowed'
+        else:
+            while pod_num > 0:
+                print(pod_num)
+                if total_dict[pod_names[pod_num - 1]]['completed'] == True:
+                    pod_num -= 1
+                    status = 'allowed'
+                else:
+                    status = 'no access'
+                    break    
+        total_dict[pod_map_name] = {'status': status, 'completed': True if tot_completed == tot_outcomes else False}
+        
+    return total_dict
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
