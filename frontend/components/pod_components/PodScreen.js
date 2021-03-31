@@ -56,11 +56,7 @@ export default class PodScreen extends React.Component {
         const dict = this.state.outcomes_list;
             return (
                 this.state.data_loaded ?
-<<<<<<< HEAD
                     // If data has loaded, then render the FocusAreaBlock
-=======
-                    //If data has loaded, then render the FocusAreaBlock
->>>>>>> 098826967770cb595937538a6dd8cf3dc52b7e03
                     <ScrollView>
                         <SafeAreaView style={styles.container}>
                             {Object.entries(dict).map(([key, value]) => {
@@ -80,11 +76,7 @@ export default class PodScreen extends React.Component {
                         </SafeAreaView>
                     </ScrollView>
                 :
-<<<<<<< HEAD
                     // If data hasn't loaded, then display loading circle
-=======
-                    //If data hasn't loaded, display loading circle
->>>>>>> 098826967770cb595937538a6dd8cf3dc52b7e03
                     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
                         <ActivityIndicator size="large" />
                     </SafeAreaView>
