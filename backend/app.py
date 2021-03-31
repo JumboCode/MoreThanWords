@@ -234,6 +234,7 @@ def podOutcomes(user):
 @app.route("/getValidPods")
 @requires_auth(sf)
 def findValid(user):
+    user_id = user.get('id')
     pod_names = ['Trainee_POD_Map__c', 'Associate_POD_Map__c', 'Partner_POD_Map__c']
     total_dict = {}
     for pod_num, pod_map_name in enumerate(pod_names):

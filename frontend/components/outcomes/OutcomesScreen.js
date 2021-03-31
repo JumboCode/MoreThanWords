@@ -38,12 +38,19 @@ export default function OutcomesScreen({ navigation, route }) {
         });
 
         async function fetchData() {
-            // await fetch(`${Constants.manifest.extra.apiUrl}/getValidPods`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Authorization': "Bearer " + await getAccessToken(),
-            //     },
-            // })
+            await fetch(`${Constants.manifest.extra.apiUrl}/getValidPods`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': "Bearer " + await getAccessToken(),
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
             // Call checkbox endpoint with specific pod as argument
             await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox?pod=${pod}`, {
                 method: 'GET',

@@ -157,7 +157,6 @@ def requires_auth(sf):
         def decorated(*args, **kwargs):
             token = get_token_auth_header()
             auth_info = decode_and_verify_payload(token)
-            print(auth_info)
 
             # uses the auth0 id to identify users
             user_info = {
