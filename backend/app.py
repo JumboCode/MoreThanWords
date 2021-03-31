@@ -245,7 +245,6 @@ def findValid(user):
         # Query for all fields for this user
         soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
         sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id))
-        print(sf_result)
         if len(sf_result["records"]) == 0:
             total_dict[pod_map_name] = {'status': 'does not exist', 'completed': False}
             continue
@@ -263,7 +262,6 @@ def findValid(user):
             status = 'allowed'
         else:
             while pod_num > 0:
-                print(pod_num)
                 if total_dict[pod_names[pod_num - 1]]['completed'] == True:
                     pod_num -= 1
                     status = 'allowed'
