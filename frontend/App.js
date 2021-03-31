@@ -1,7 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+<<<<<<< HEAD
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -14,6 +13,17 @@ import FocusGoals from './components/outcomes/FocusGoals.js';
 import { isTokenValid, removeToken, getAccessToken } from "./utils/auth";
 import { Footer } from 'native-base';
 import Constants from 'expo-constants';
+=======
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import LoginScreen from './components/LoginPage.js';
+import OutcomesScreen from './components/outcomes/OutcomesScreen.js';
+import HomeScreen from './components/pod_components/HomeScreen.js';
+import PodScreen from './components/pod_components/PodScreen.js';
+import { isTokenValid, removeToken } from "./utils/auth";
+>>>>>>> staging
+
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,7 +72,8 @@ export default class MainNavigator extends React.Component {
                             name="Login Screen"
                             component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
                             options={{
-                                animationEnabled: false,
+                                headerShown: false,
+                                animationEnabled: false
                             }}
                         />
                     </Stack.Navigator>

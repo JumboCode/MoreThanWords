@@ -12,11 +12,16 @@
  *     3) The name of the task.
  */
 
+import Constants from 'expo-constants';
 import React from 'react';
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+<<<<<<< HEAD
 import Constants from 'expo-constants';
 import { getAccessToken, isTokenValid } from '../../utils/auth.js'
+=======
+import { getAccessToken } from '../../utils/auth.js';
+>>>>>>> staging
 
 class Task extends React.Component {
     constructor(props) {
