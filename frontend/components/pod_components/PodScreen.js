@@ -54,35 +54,33 @@ export default class PodScreen extends React.Component {
     render() {
         let IDkey = 0;
         const dict = this.state.outcomes_list;
-        //If data has loaded, then render the FocusAreaBlock
-        if (this.state.data_loaded) {
             return (
-                <ScrollView>
-                    <SafeAreaView style={styles.container}>
-                        {Object.entries(dict).map(([key, value]) => {
-                            IDkey++;
-                            return (
-                                <FocusAreaBlock 
-                                    pod={key}
-                                    name={dict[key]['name']}
-                                    completed_outcomes={dict[key]['completed_outcomes']}
-                                    total_outcomes={dict[key]['total_outcomes']}
-                                    key={IDkey}
-                                    route={this.props.route}
-                                    navigation={this.props.navigation}
-                                />
-                            )
-                        })}
+                this.state.data_loaded ?
+                    //If data has loaded, then render the FocusAreaBlock
+                    <ScrollView>
+                        <SafeAreaView style={styles.container}>
+                            {Object.entries(dict).map(([key, value]) => {
+                                IDkey++;
+                                return (
+                                    <FocusAreaBlock 
+                                        pod={key}
+                                        name={dict[key]['name']}
+                                        completed_outcomes={dict[key]['completed_outcomes']}
+                                        total_outcomes={dict[key]['total_outcomes']}
+                                        key={IDkey}
+                                        route={this.props.route}
+                                        navigation={this.props.navigation}
+                                    />
+                                )
+                            })}
+                        </SafeAreaView>
+                    </ScrollView>
+                :
+                    //If data hasn't loaded, display loading circle
+                    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+                        <ActivityIndicator size="large" />
                     </SafeAreaView>
-                </ScrollView>
             ); 
-        }
-        //If data hasn't loaded, display loading circle
-        return (
-            <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-                <ActivityIndicator size="large" />
-            </SafeAreaView>
-        );
     }
 }
 
