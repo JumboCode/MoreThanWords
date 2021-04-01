@@ -1,10 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
+import React from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { getAccessToken } from '../../utils/auth.js';
-
 import ProgressBar from '../ProgressBar.js';
+
 
 const   TRAINEE_TOTAL_OUTCOMES = 7
 const ASSOCIATE_TOTAL_OUTCOMES = 11

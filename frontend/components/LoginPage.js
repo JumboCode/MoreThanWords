@@ -1,13 +1,13 @@
 /* Adapted from expo/examples/with-auth0 */
 import * as AuthSession from "expo-auth-session";
+import Constants from 'expo-constants';
+import * as Random from 'expo-random';
+import { setItemAsync } from 'expo-secure-store';
 import jwtDecode from "jwt-decode";
 import * as React from "react";
-import { Alert, Button, Platform, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import Constants from 'expo-constants';
-import { setItemAsync } from 'expo-secure-store';
+import { Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import LoadingModal from "./LoadingModal";
 
-import * as Random from 'expo-random';
 
 /* converts random bytes into string. Taken from expo-auth-session */
 const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -51,10 +51,10 @@ export default class LoginPage extends React.Component {
             codeChallengeMethod: 'S256',
             clientId: auth0ClientId,
             scopes: ["openid", "profile", "offline_access"],
-            audience: Constants.manifest.extra.api_audience,
             extraParams: {
                 nonce: nonce_generated,
                 prompt: "login",
+                audience: Constants.manifest.extra.api_audience,
             },
         };
         const discovery = await AuthSession.fetchDiscoveryAsync(auth0_domain);
@@ -79,7 +79,8 @@ export default class LoginPage extends React.Component {
             redirectUri: redirectUri,
             scopes: ["openid", "profile", "offline_access"],
             extraParams: {
-                "code_verifier": code_verifier
+                "code_verifier": code_verifier,
+                "audience": Constants.manifest.extra.api_audience,
             }
         };
         const token_response = await AuthSession.exchangeCodeAsync(access_token_req, discovery);

@@ -1,6 +1,5 @@
-import React, {useRef, useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Animated } from 'react-native';
-import Constants from 'expo-constants';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 
 const ProgressBar = (props) => {
   let animation = useRef(new Animated.Value(0));
