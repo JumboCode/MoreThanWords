@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
     logo: {
         justifyContent: "center",
         alignItems: "center",
-        width: 300,
-        // height: 220,
-        resizeMode: "contain",
+        width: 280,
+        height: 200,
+        resizeMode: "stretch",
     }
 });
