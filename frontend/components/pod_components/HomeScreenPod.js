@@ -68,64 +68,76 @@ export default class HomeScreenPod extends React.Component{
 }
 
 const styles = StyleSheet.create({
-    scrollView: {
-        backgroundColor: 'white'
-    },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        flexDirection: 'column',
+        backgroundColor: '#ffffff',
         alignItems: 'center',
         justifyContent: 'center',
+        justifyContent: 'space-evenly'
     },
+
     Block: {
         marginTop: 20,
         width: '100%',
         height: 185,
         backgroundColor: '#ECECEC50',
-        borderColor: 'white',
+
+        borderColor: '#ffffff',
         borderWidth: 1,
         borderBottomWidth: 3,
         borderBottomColor:'#ececec',
         borderRadius: 1,
+
         alignItems: 'center',
         justifyContent: 'center',
     },
+
     BlockText: {
         fontSize: 48,
         color: '#27b48f',
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    highlightBlock: {
 
+    highlightBlock: {
+        margin: 20,
         width: '100%',
         height: 200,
         backgroundColor: '#27b48f',
-        borderColor: 'white',
+        borderColor: '#ffffff',
+
         borderBottomWidth: 3,
         borderBottomColor:'#c4c4c4',
         borderRadius: 1,
+
         alignItems: 'center',
         justifyContent: 'center',
     },
+
     highlightBlockText: {
         fontSize: 48,
         color: '#ffffff',
         fontWeight: 'bold',
         textAlign: 'center',
     },
+
     greyBlock: {
         width: '100%',
         height: 185,
         backgroundColor: '#ececec50',
-        borderColor: 'white',
+        margin: 20,
+        
+        borderColor: '#ffffff',
         borderWidth: 1,
         borderRadius: 1,
         borderBottomWidth: 3,
         borderBottomColor:'#ececec',
+
         alignItems: 'center',
         justifyContent: 'center',
     },
+
     greyBlockText: {
         fontSize: 48,
         color: '#C4C4C4',

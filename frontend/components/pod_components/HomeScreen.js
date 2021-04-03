@@ -13,7 +13,7 @@ export default class HomeScreen extends React.Component{
             <ScrollView
                 style={{backgroundColor: '#ffffff' }}
             >
-                <SafeAreaView style={styles.container}>
+                <SafeAreaView>
                     {pods.map((pod, index) => {
                             return (
                                 <HomeScreenPod
@@ -29,12 +29,3 @@ export default class HomeScreen extends React.Component{
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-});
