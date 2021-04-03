@@ -25,6 +25,7 @@ export default function OutcomesScreen({ navigation, route }) {
 
     const [dataTemp, setDataTemp] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
+    const [validPods, setValidPods] = useState({});
 
     useEffect(() => {
 
@@ -47,7 +48,8 @@ export default function OutcomesScreen({ navigation, route }) {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
+                setValidPods(data);
             })
             .catch((error) => {
                 console.error(error);
@@ -62,6 +64,25 @@ export default function OutcomesScreen({ navigation, route }) {
                 .then(response => response.json())
                 .then(data => {
                     let newData = [];
+
+                    function findAndUpdate(key, index, fieldName, getKey=false) {
+                        // Get ID of the current key so we can match with existing entry
+                        let words_in_key = key.split("_");
+                        let curr_id = words_in_key[words_in_key.length - 3].toLowerCase();
+                        // Finds index of object in content array to update
+                        let content_index = newData[index].content.findIndex(x => {
+                            return x.id === curr_id;
+                        });
+                        // If the corresponding youth exists for the YDM field, update the value
+                        if (content_index >= 0) {
+                            // Update ydmApproved field in existing entry
+                            if (getKey) {
+                                newData[index].content[content_index][fieldName] = key;
+                            } else {
+                                newData[index].content[content_index][fieldName] = data[key]["value"];
+                            }
+                        }
+                    }
 
                     // Extract all outcome titles for later use
                     for (const api_name in data) {
@@ -78,10 +99,11 @@ export default function OutcomesScreen({ navigation, route }) {
                     for (const key in data) {
                         let key_id = key.substring(0, 3);
                         let index = newData.findIndex(x => x.id === key_id);
-                        if (key.includes("Youth") && index >= 0) {
+                        if (key.includes("Youth") && !key.includes("BOOL") && index >= 0) {
                             let words_in_key = key.split("_");
                             newData[index].content.push({
                                 api_key: key,
+                                api_bool_key: "",
                                 id: words_in_key[words_in_key.length - 3].toLowerCase(),
                                 key: data[key]["name"],
                                 ydmApproved: true,
@@ -94,21 +116,30 @@ export default function OutcomesScreen({ navigation, route }) {
 
                     // Update all ydmApproved values based on YDM fields
                     for (const key in data) {
+                        // let key_id = key.substring(0, 3);
+                        // let index = newData.findIndex(x => x.id === key_id);
+                        // if (key.includes("YDM") && index >= 0) {
+                        //     // Get ID of the current key so we can match with existing entry
+                        //     let words_in_key = key.split("_");
+                        //     let curr_id = words_in_key[words_in_key.length - 3].toLowerCase();
+                        //     // Finds index of object in content array to update
+                        //     let content_index = newData[index].content.findIndex(x => {
+                        //         return x.id === curr_id;
+                        //     });
+                        //     // If the corresponding youth exists for the YDM field, update the value
+                        //     if (content_index >= 0) {
+                        //         // Update ydmApproved field in existing entry
+                        //         newData[index].content[content_index].ydmApproved = data[key]["value"];
+                        //     }
+                        // }
                         let key_id = key.substring(0, 3);
                         let index = newData.findIndex(x => x.id === key_id);
                         if (key.includes("YDM") && index >= 0) {
-                            // Get ID of the current key so we can match with existing entry
-                            let words_in_key = key.split("_");
-                            let curr_id = words_in_key[words_in_key.length - 3].toLowerCase();
-                            // Finds index of object in content array to update
-                            let content_index = newData[index].content.findIndex(x => {
-                                return x.id === curr_id;
-                            });
-                            // If the corresponding youth exists for the YDM field, update the value
-                            if (content_index >= 0) {
-                                // Update ydmApproved field in existing entry
-                                newData[index].content[content_index].ydmApproved = data[key]["value"];
-                            }
+                            findAndUpdate(key, index, "ydmApproved");
+                        }
+                        if (key.includes("BOOL") && index >= 0) {
+                            findAndUpdate(key, index, "starIsFilled");
+                            findAndUpdate(key, index, "api_bool_key", getKey=true);
                         }
                     }
 
@@ -136,7 +167,10 @@ export default function OutcomesScreen({ navigation, route }) {
                         data={dataTemp}
                         renderItem={({ item }) => {
                             return (
-                                <Outcome data={[item]}/>
+                                <Outcome 
+                                    data={[item]}
+                                    validPods={validPods}
+                                />
                             );
                         }}
                         keyExtractor={item => item.title}
