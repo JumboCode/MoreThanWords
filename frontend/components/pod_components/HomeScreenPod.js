@@ -53,23 +53,6 @@ export default class HomeScreenPod extends React.Component{
     
 
     componentDidMount(){
-        // let pod = this.props.pod;
-        // getAccessToken().then(accessToken => 
-        //     fetch(server_add + `/calcProgressHomeScreen?pod=${pod}`, { // query for a specific pod
-        //         "headers": {
-        //             "Authorization": "Bearer " + accessToken
-        //         }
-        // }))
-        // .then(async response => {
-        //     let data = await response.json();
-        //     this.setState({
-        //         progress: data.progress,
-        //         total: data.total,
-        //     })
-        // })
-        // .catch(function (error){
-        //     console.log(error);
-        // });
         this.fetchData();
     }
 
