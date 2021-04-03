@@ -3,7 +3,6 @@ from flask_cors import CORS
 import os # for environment variables
 from flask import request, jsonify # imported for parsing arguemnts
 from simple_salesforce import Salesforce, format_soql # import Salesforce
-
 from auth import AuthError, requires_auth
 
 
@@ -19,10 +18,7 @@ CORS(app)
 @requires_auth(sf)
 def youthCheck(user):
     # Extract user details from the user object
-    email = user.get('Email')
-    firstname = user.get('FirstName')
-    lastname = user.get('LastName')
-    fullname = firstname + " " + lastname
+    user_id = user.get('id')
 
     # Extract current pod to update from request arguments
     pod = request.args.get('pod')
@@ -35,7 +31,7 @@ def youthCheck(user):
 
     # Query for all fields for this user
     soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id))
 
     # Format response
     response = {}
@@ -54,10 +50,7 @@ def youthCheck(user):
 @requires_auth(sf)
 def updateSalesforce(user):
     # Extract user details from the user object
-    email = user.get('Email')
-    firstname = user.get('FirstName')
-    lastname = user.get('LastName')
-    fullname = firstname + " " + lastname
+    user_id = user.get('id')
 
     # Extract current pod to update from JSON body data
     pod = request.json.get('pod')
@@ -65,7 +58,7 @@ def updateSalesforce(user):
 
     # Query for this user in Salesforce
     soql = "SELECT Contact__c FROM " + pod_map_name
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=fullname))
+    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id))
 
     # Obtain pod ID
     tr_pod_id = sf_result['records'][0]['attributes']['url'].split('/')[-1]
@@ -90,7 +83,6 @@ def handle_auth_error(ex):
 def sample(user):
     return jsonify(user)
 
-
 @app.route("/finishSignUp", methods=['POST'])
 def finishSignup():
     """
@@ -99,6 +91,7 @@ def finishSignup():
     """
     secret = request.headers.get('Authorization')
     email = request.json.get('email')
+    auth0id = request.json.get('id')
     correct_secret = os.environ.get('VERIFY_SIGNUP_SECRET')
     # exit when the wrong secret is provided
     if (not secret or secret != "Secret " + correct_secret):
@@ -106,7 +99,7 @@ def finishSignup():
                             "description": "Access denied."})
         response.status_code = 401
         return response
-    
+
     # get the object
     response = sf.query(
         format_soql("SELECT Id, Has_Youth_App_Account__c FROM Contact WHERE (email = {email})", 
@@ -118,12 +111,14 @@ def finishSignup():
         })
         response.status_code = 401
         return response
-    
+
     # update the contact
-    sf.Contact.update(response["records"][0]["Id"], {"Has_Youth_App_Account__c": True})
+    sf.Contact.update(response["records"][0]["Id"], {
+        "Has_Youth_App_Account__c": True,
+        "auth0_user_id__c": auth0id
+    })
 
     return jsonify({"result": "success"})
-
 
 # route to verify sign up and check whether user who wants to register is 
 # allowed to use the app by checking salesforce database
@@ -160,46 +155,55 @@ def verify():
 	
     return {"verified": bool(0)} # false
 
-@app.route("/calculateProgressBar")
+@app.route("/calcProgressHomeScreen")
 @requires_auth(sf)
-def outcomes(user):
-    # parses arguments that user sent via query string
-    email = user['Email']
-    firstname = user['FirstName']
-    lastname = user['LastName']
-    name = firstname + " " + lastname 
+def HomeScreenoutcomes(user):
+    user_id = user.get('id')
 
-    # Trainee Pod
-    # salesforce query for all the field names and labels in the trainee pod 
-    desc = sf.Trainee_POD_Map__c.describe()
+    # Extract current pod to update from request arguments
+    pod = request.args.get('pod')
+    pod_map_name = pod + '_POD_Map__c'
+
+    desc = getattr(sf, pod_map_name).describe()
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
-
-    # filter to get only the trainee outcome field names 
     filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
-    Trainee_field_names = [field[0] for field in filtered_field_names]
+    Pod_field_names = [field[0] for field in filtered_field_names]
 
-    # salesforce query of each *completed* outcome # in trainee pod, based on the email and name
-    soql = "SELECT {} FROM Trainee_POD_Map__c".format(','.join(Trainee_field_names))
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
+    
+    # salesforce query of each completed outcome # in trainee pod, based on the email and name
+    query_from = "SELECT {} FROM " + pod_map_name
+    soql = query_from.format(','.join(Pod_field_names))
+    Pod_sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
 
-    # count the *total* outcomes for each field 
-    for field in Trainee_field_names:
+    # calculate Trainee total 
+    Pod_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
+    for field in Pod_field_names:
         field_type = field[3:6].upper()
-        sf_result[field_type + "_totalcount"] = 0; #create new value in sf_result dict that will store field's total outcomes 
         for name_and_label in field_names_and_labels:
             if "_Outcome_" + field_type in name_and_label[0]: 
-                sf_result[field_type + "_totalcount"] += 1
+                Pod_total_count += 1
+    
 
-    return sf_result
+    # transform into a python dictionary
+    vars(Pod_sf_result)
 
+    # calculate *Trainee* outcomes based on all related fields
+    Pod_outcome_sum = 0
+    for outcome in Pod_field_names:
+        Pod_outcome_sum += Pod_sf_result['records'][0][outcome]
+
+    pod_outcome = {
+        'progress': Pod_outcome_sum,
+        'total': Pod_total_count,
+    }   
+
+    return pod_outcome
+    
 @app.route("/calcProgressPodScreen")
 @requires_auth(sf)
 def podOutcomes(user):
     # parses arguments that user sent via query string
-    email = user['Email']
-    firstname = user['FirstName']
-    lastname = user['LastName']
-    name = firstname + " " + lastname 
+    user_id = user.get('id')
 
     # Extract current pod to update from request arguments
     pod = request.args.get('pod')
@@ -215,7 +219,7 @@ def podOutcomes(user):
     
     # salesforce query of each *completed* outcome # in trainee pod, based on the email and name
     soql = ("SELECT {} FROM " + pod_map_name).format(','.join(pod_field_names))
-    sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.email = {email_value} AND Contact__r.name={full_name})"), email_value=email, full_name=name))
+    sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
 
     # organizing and putting data into dictionary outcome_dict
     outcome_dict = {}
@@ -256,6 +260,47 @@ def podOutcomes(user):
     # print (json.dumps(outcome_dict, indent=2))
     
     return outcome_dict
+
+@app.route("/getValidPods")
+@requires_auth(sf)
+def findValid(user):
+    user_id = user.get('id')
+    pod_names = ['Trainee_POD_Map__c', 'Associate_POD_Map__c', 'Partner_POD_Map__c']
+    total_dict = {}
+    for pod_num, pod_map_name in enumerate(pod_names):
+        desc = getattr(sf, pod_map_name).describe()
+        field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+        field_names = [field['name'] for field in desc['fields']]
+
+        # Query for all fields for this user
+        soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
+        sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id))
+        if len(sf_result["records"]) == 0:
+            total_dict[pod_map_name] = {'status': 'does not exist', 'completed': False}
+            continue
+        
+        tot_outcomes = 0
+        tot_completed = 0
+        for field in field_names:
+            if 'Outcome' in field:
+                tot_outcomes += 1
+        for name, value in sf_result["records"][0].items():
+            if 'Outcome' in name and value == True:
+                tot_completed += 1
+
+        if pod_num == 0:
+            status = 'allowed'
+        else:
+            while pod_num > 0:
+                if total_dict[pod_names[pod_num - 1]]['completed'] == True:
+                    pod_num -= 1
+                    status = 'allowed'
+                else:
+                    status = 'no access'
+                    break    
+        total_dict[pod_map_name] = {'status': status, 'completed': True if tot_completed == tot_outcomes else False}
+        
+    return total_dict
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
