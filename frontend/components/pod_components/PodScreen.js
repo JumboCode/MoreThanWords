@@ -57,7 +57,9 @@ export default class PodScreen extends React.Component {
             return (
                 this.state.data_loaded ?
                     // If data has loaded, then render the FocusAreaBlock
-                    <ScrollView>
+                    <ScrollView
+                        style={{backgroundColor: '#ffffff' }}
+                    >
                         <SafeAreaView style={styles.container}>
                             {Object.entries(dict).map(([key, value]) => {
                                 IDkey++;

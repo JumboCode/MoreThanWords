@@ -10,7 +10,9 @@ const pods = ['Trainee', 'Associate', 'Partner']; // hardcoded pod names for dat
 export default class HomeScreen extends React.Component{
     render() {
         return(
-            <ScrollView>
+            <ScrollView
+                style={{backgroundColor: '#ffffff' }}
+            >
                 <SafeAreaView style={styles.container}>
                     {pods.map((pod, index) => {
                             return (
