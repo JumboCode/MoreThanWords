@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import LoginScreen from './components/LoginPage.js';
@@ -7,6 +7,7 @@ import OutcomesScreen from './components/outcomes/OutcomesScreen.js';
 import HomeScreen from './components/pod_components/HomeScreen.js';
 import PodScreen from './components/pod_components/PodScreen.js';
 import { isTokenValid, removeToken } from "./utils/auth";
+import { Image } from 'react-native';
 
 
 
@@ -44,7 +45,9 @@ class MainStackNavigator extends React.Component {
     render() {
         return (
             <NavigationContainer>
-                <Stack.Navigator initialRouteName={this.state.initialRouteName}>
+                <Stack.Navigator 
+                    initialRouteName={this.state.initialRouteName}
+                >
                     {this.state.loggedIn ? (
                         /* Screens for logged in users */
                         <>
@@ -52,17 +55,54 @@ class MainStackNavigator extends React.Component {
                                 name="Pods"
                                 component={HomeScreen}
                                 options={{
-                                    headerRight: () =>
-                                        <TouchableOpacity onPress={this.logout} style={{marginRight: 16}}>
-                                            <Text style={{fontSize: 11, color: "#007aff", fontWeight: 'bold'}}>LOGOUT</Text>
+                                    headerTitleAlign: 'center',
+                                    headerLeft: () =>
+                                        <TouchableOpacity onPress={this.logout} style={{marginLeft: 16}}>
+                                            <Text style={{fontSize: 11, color: "#007aff"}}>LOGOUT</Text>
                                         </TouchableOpacity>,
                                     animationEnabled: false
                                 }}
                             />
-                            <Stack.Screen name="Trainee Pod" component={PodScreen} />
-                            <Stack.Screen name="Associate Pod" component={PodScreen} />
-                            <Stack.Screen name="Partner Pod" component={PodScreen} />
-                            <Stack.Screen name="Outcomes" component={OutcomesScreen} />
+                            <Stack.Screen 
+                                name="Trainee Pod" 
+                                component={PodScreen} 
+                                options={{
+                                    headerTitleAlign: 'center',
+                                    headerBackImage: () => (
+                                        <Image source={require("./arrow_back.png")} style={{ width: 20, height: 20, marginLeft: 16}} />
+                                    ),
+                                    headerBackTitleVisible: false
+                                }} />
+                            <Stack.Screen 
+                                name="Associate Pod" 
+                                component={PodScreen} 
+                                options={{
+                                    headerTitleAlign: 'center',
+                                    headerBackImage: () => (
+                                        <Image source={require("./arrow_back.png")} style={{ width: 20, height: 20, marginLeft: 16}} />
+                                    ),
+                                    headerBackTitleVisible: false
+                                }}/>
+                            <Stack.Screen 
+                                name="Partner Pod" 
+                                component={PodScreen} 
+                                options={{
+                                    headerTitleAlign: 'center',
+                                    headerBackImage: () => (
+                                        <Image source={require("./arrow_back.png")} style={{ width: 20, height: 20, marginLeft: 16}} />
+                                    ),
+                                    headerBackTitleVisible: false
+                                }}/>
+                            <Stack.Screen 
+                                name="Outcomes" 
+                                component={OutcomesScreen} 
+                                options={{
+                                    headerTitleAlign: 'center',
+                                    headerBackImage: () => (
+                                        <Image source={require("./arrow_back.png")} style={{ width: 20, height: 20, marginLeft: 16}} />
+                                    ),
+                                    headerBackTitleVisible: false
+                            }}/>
                         </>
                     ) : (
                         /* Screens for signed out users */
