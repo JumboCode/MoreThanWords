@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import React, { useEffect, useState } from 'react';
-import { FlatList, LogBox, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, FlatList, LogBox, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { getAccessToken } from '../../utils/auth.js';
 import Outcome from './Outcome';
 
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
 export default function OutcomesScreen({ navigation, route }) {
 
     const [dataTemp, setDataTemp] = useState([]);
+    const [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(() => {
 
@@ -38,6 +39,19 @@ export default function OutcomesScreen({ navigation, route }) {
         });
 
         async function fetchData() {
+            await fetch(`${Constants.manifest.extra.apiUrl}/getValidPods`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': "Bearer " + await getAccessToken(),
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
             // Call checkbox endpoint with specific pod as argument
             await fetch(`${Constants.manifest.extra.apiUrl}/youthCheckbox?pod=${pod}`, {
                 method: 'GET',
@@ -100,6 +114,8 @@ export default function OutcomesScreen({ navigation, route }) {
 
                     // Update the dataTemp variable with the newly parsed data
                     setDataTemp(newData);
+                    // Update the dataLoaded variable so OutcomeScreen replaces loading circle
+                    setDataLoaded(true);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -111,25 +127,32 @@ export default function OutcomesScreen({ navigation, route }) {
     }, []);
 
     return (
-        <SafeAreaView style={styles.container}>
-            {dataTemp ?
-                <FlatList 
-                    style={styles.listStyle}
-                    data={dataTemp}
-                    renderItem={({ item }) => {
-                        return (
-                            <Outcome data={[item]}/>
-                        );
-                    }}
-                    keyExtractor={item => item.title}
-                />
-            :
-                <SafeAreaView style={styles.error_parent}>
-                    <Text style={styles.error_message}> 
-                        There are no outcomes to display.{"\n"}Please contact your manager or More Than Words{"\n"}administrator if you think this is an error.
-                    </Text>
-                </SafeAreaView>
-            }
-        </SafeAreaView>
+        dataLoaded ?
+            //If data has loaded, then render the OutcomeScreen normally
+            <SafeAreaView style={styles.container}>
+                {dataTemp ?
+                    <FlatList 
+                        style={styles.listStyle}
+                        data={dataTemp}
+                        renderItem={({ item }) => {
+                            return (
+                                <Outcome data={[item]}/>
+                            );
+                        }}
+                        keyExtractor={item => item.title}
+                    />
+                :
+                    <SafeAreaView style={styles.error_parent}>
+                        <Text style={styles.error_message}> 
+                            There are no outcomes to display.{"\n"}Please contact your manager or More Than Words{"\n"}administrator if you think this is an error.
+                        </Text>
+                    </SafeAreaView>
+                }
+            </SafeAreaView>
+        : 
+            //If data hasn't loaded, then display loading circle
+            <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+                <ActivityIndicator size="large" />
+            </SafeAreaView>
     );
 }
