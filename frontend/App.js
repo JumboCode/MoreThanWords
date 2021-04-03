@@ -54,7 +54,7 @@ class MainStackNavigator extends React.Component {
                                 options={{
                                     headerRight: () =>
                                         <TouchableOpacity onPress={this.logout} style={{marginRight: 16}}>
-                                            <Text>Log Out</Text>
+                                            <Text style={{fontSize: 11, color: "#007aff", fontWeight: 'bold'}}>LOGOUT</Text>
                                         </TouchableOpacity>,
                                     animationEnabled: false
                                 }}
