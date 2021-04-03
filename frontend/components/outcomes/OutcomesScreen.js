@@ -78,7 +78,7 @@ export default function OutcomesScreen({ navigation, route }) {
                     for (const key in data) {
                         let key_id = key.substring(0, 3);
                         let index = newData.findIndex(x => x.id === key_id);
-                        if (key.includes("Youth") && index >= 0) {
+                        if (key.includes("Youth") && index >= 0 && !key.includes("BOOL")) {
                             let words_in_key = key.split("_");
                             newData[index].content.push({
                                 api_key: key,
