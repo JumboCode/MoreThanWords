@@ -8,29 +8,69 @@ import ProgressBar from '../ProgressBar.js';
 
 const server_add = Constants.manifest.extra.apiUrl;
 
+
 export default class HomeScreenPod extends React.Component{
     state = {
         progress: 0, 
         total: 0,
+        status: "",
+        completed: ""
     };
-    componentDidMount(){
-        let pod = this.props.pod;
-        getAccessToken().then(accessToken => 
-            fetch(server_add + `/calcProgressHomeScreen?pod=${pod}`, { // query for a specific pod
-                "headers": {
-                    "Authorization": "Bearer " + accessToken
-                }
-        }))
-        .then(async response => {
-            let data = await response.json();
+    
+
+    async fetchData() {
+        try{
+            let pod = this.props.pod;
+
+            const token = await getAccessToken();
+            const podsResponse =  await fetch(server_add + `/getValidPods`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': "Bearer " + token,
+                },
+            });
+            const podsData = await podsResponse.json();
+            const thispoddata = podsData[pod + '_POD_Map__c'];
+
+            const HomepodsResponse =  await fetch(server_add + `/calcProgressHomeScreen?pod=${pod}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': "Bearer " + token,
+                },
+            });
+            const HomepodsData = await HomepodsResponse.json();
+            
             this.setState({
-                progress: data.progress,
-                total: data.total,
+                progress: HomepodsData.progress,
+                total: HomepodsData.total,
+                status: thispoddata.status, 
+                completed: thispoddata.completed,
             })
-        })
-        .catch(function (error){
-            console.log(error);
-        });
+        } catch(e){
+            console.error(e);
+        }
+    };  
+    
+
+    componentDidMount(){
+        // let pod = this.props.pod;
+        // getAccessToken().then(accessToken => 
+        //     fetch(server_add + `/calcProgressHomeScreen?pod=${pod}`, { // query for a specific pod
+        //         "headers": {
+        //             "Authorization": "Bearer " + accessToken
+        //         }
+        // }))
+        // .then(async response => {
+        //     let data = await response.json();
+        //     this.setState({
+        //         progress: data.progress,
+        //         total: data.total,
+        //     })
+        // })
+        // .catch(function (error){
+        //     console.log(error);
+        // });
+        this.fetchData();
     }
 
     render(){
@@ -56,7 +96,9 @@ export default class HomeScreenPod extends React.Component{
             style={block} 
                 onPress={() => 
                     this.props.navigation.navigate(nav_pod_name, {
-                    pod: pod_name
+                    pod: pod_name,
+                    status: this.state.status,
+                    completed: this.state.completed,
                 })
             }
         >
