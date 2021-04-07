@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
     },
+    
     error_message: {
         textAlign: 'center',
     }

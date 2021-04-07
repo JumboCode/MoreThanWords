@@ -11,9 +11,9 @@
  *     3) A list of Tasks corresponding to the goals of the outcome group.
  */
 
-import { Accordion } from 'native-base';
+import { Icon, Accordion, Text, View } from 'native-base';
 import React, { useState } from 'react';
-import { LogBox, StyleSheet, View } from 'react-native';
+import { LogBox, StyleSheet } from 'react-native';
 import Task from './Task';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -32,13 +32,36 @@ const Outcome = (props) => {
         setOutcomeData(dataTemp);
     };
 
-    return (
+    const _renderHeader = (item, expanded) => {
+        return (
+            <View style={{
+              flexDirection: "row",
+              paddingTop: 15,
+              paddingBottom: 15,
+              paddingLeft: 4,
+              paddingRight: 4,
+
+              justifyContent: "space-between",
+              alignItems: "center" ,
+              backgroundColor: "#fcfcfc" }}>
+            <Text style={{ fontWeight: "600", fontSize: "20"}}>
+                {" "}{item.title}
+              </Text>
+              {expanded
+                ? <Icon style={{ fontSize: 20 }} name="chevron-down" />
+                : <Icon style={{ fontSize: 20 }} name="chevron-up" />}
+            </View>
+          );
+    }
+
+    return ( 
         <Accordion
             style={styles.accordion}
             useNativeDriver={true}
             expanded={0}
             dataArray={outcomeData}
-            headerStyle={styles.headerStyle}
+            renderHeader={_renderHeader}
+            // headerStyle={styles.headerStyle}
             renderContent={(taskListObject) => {
                 const itemComponents = taskListObject.content.map(
                     (taskObj) =>
@@ -75,7 +98,7 @@ const styles = StyleSheet.create({
 
     headerStyle: {
         flexDirection: "row",
-        backgroundColor: "#fcfcfc",
+        backgroundColor: "#ff0000",
         justifyContent: "space-between",
         alignItems: "center",
 
@@ -83,8 +106,8 @@ const styles = StyleSheet.create({
     
     contentStyle: {
         flexDirection: "column",
-        paddingLeft: 15,
-        paddingRight: 5,
+        paddingLeft: 8,
+        paddingRight: 4,
         backgroundColor: "#fcfcfc",
 
         shadowColor: "#b4b4b4",
