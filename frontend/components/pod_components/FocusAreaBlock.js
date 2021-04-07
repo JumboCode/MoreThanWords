@@ -21,7 +21,6 @@ export default class FocusAreaBlock extends React.Component {
         const total_outcomes = this.props.total_outcomes;
         const pod_name = this.props.name;
         const pod_status = this.props.route.params.status;
-        console.log(pod_status);
         return (     
             <TouchableOpacity 
                 style={styles.block} 
