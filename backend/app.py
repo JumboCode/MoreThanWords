@@ -223,7 +223,6 @@ def podOutcomes(user):
 
     # organizing and putting data into dictionary outcome_dict
     outcome_dict = {}
-    # sum_completed = sum_total = 0 #########FOR GREYING OUT youth unlock########
     for field in pod_field_names:
         field_type = field[3:6].upper()
         outcome_dict[field_type] = {}
@@ -231,10 +230,8 @@ def podOutcomes(user):
         # count the *completed* outcomes for each field:
         if sf_result['records']:
             outcome_dict[field_type]['completed_outcomes'] = sf_result['records'][0][field]
-            # sum_completed += sf_result['records'][0][field] #########FOR GREYING OUT youth unlock########
         else:
             outcome_dict[field_type]['completed_outcomes'] = 0
-            #TODO: grey pod out and should not be clickable
         
         # count the *total* outcomes for each field:
         outcome_dict[field_type]['total_outcomes'] = 0
@@ -246,18 +243,6 @@ def podOutcomes(user):
             if field in name_and_label[0]:
                 name = name_and_label[1].partition("Outcomes")[0]  #only grab part in label up to the word "Outcomes"
                 outcome_dict[field_type]['name'] = name
-        # sum_total += outcome_dict[field_type]['total_outcomes']  #########FOR GREYING OUT youth unlock########
-    
-    #########FOR GREYING OUT youth unlock########
-    # for field in pod_field_names:
-    #     field_type = field[3:6].upper()
-    #     if (sum_completed == sum_total):
-    #         outcome_dict[field_type]['finished'] = 1
-    #     else: 
-    #         outcome_dict[field_type]['finished'] = 0
-    # 
-    # import json
-    # print (json.dumps(outcome_dict, indent=2))
     
     return outcome_dict
 
