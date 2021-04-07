@@ -175,22 +175,27 @@ def HomeScreenoutcomes(user):
     soql = query_from.format(','.join(Pod_field_names))
     Pod_sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
 
-    # calculate Trainee total 
-    Pod_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
-    for field in Pod_field_names:
-        field_type = field[3:6].upper()
-        for name_and_label in field_names_and_labels:
-            if "_Outcome_" + field_type in name_and_label[0]: 
-                Pod_total_count += 1
+    if len(Pod_sf_result["records"]) == 0:
+        Pod_outcome_sum = 0
+        Pod_total_count = 0
     
+    else:
+        # calculate Trainee total 
+        Pod_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
+        for field in Pod_field_names:
+            field_type = field[3:6].upper()
+            for name_and_label in field_names_and_labels:
+                if "_Outcome_" + field_type in name_and_label[0]: 
+                    Pod_total_count += 1
+        
 
-    # transform into a python dictionary
-    vars(Pod_sf_result)
+        # transform into a python dictionary
+        vars(Pod_sf_result)
 
-    # calculate *Trainee* outcomes based on all related fields
-    Pod_outcome_sum = 0
-    for outcome in Pod_field_names:
-        Pod_outcome_sum += Pod_sf_result['records'][0][outcome]
+        # calculate *Trainee* outcomes based on all related fields
+        Pod_outcome_sum = 0
+        for outcome in Pod_field_names:
+            Pod_outcome_sum += Pod_sf_result['records'][0][outcome]
 
     pod_outcome = {
         'progress': Pod_outcome_sum,
@@ -257,7 +262,9 @@ def findValid(user):
         # Query for all fields for this user
         soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
         sf_result = sf.query(format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id))
+        
         if len(sf_result["records"]) == 0:
+            print('this is empty: ', pod_map_name)
             total_dict[pod_map_name] = {'status': 'does not exist', 'completed': False}
             continue
         
