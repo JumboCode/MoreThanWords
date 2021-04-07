@@ -80,7 +80,7 @@ export default class PodScreen extends React.Component {
                     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
                         <ActivityIndicator size="large" />
                     </SafeAreaView>
-            );
+            ); 
     }
 }
 
@@ -89,9 +89,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center'
     },
     scrollView: {
-        backgroundColor: 'white',
-    },
+        backgroundColor: 'white'
+    }
 });
