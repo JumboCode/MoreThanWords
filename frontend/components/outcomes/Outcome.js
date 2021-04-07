@@ -43,13 +43,13 @@ const Outcome = (props) => {
 
               justifyContent: "space-between",
               alignItems: "center" ,
-              backgroundColor: "#fcfcfc" }}>
+              backgroundColor: "#fefefe" }}>
             <Text style={{ fontWeight: "600", fontSize: "20"}}>
                 {" "}{item.title}
               </Text>
               {expanded
-                ? <Icon style={{ fontSize: 20 }} name="chevron-down" />
-                : <Icon style={{ fontSize: 20 }} name="chevron-up" />}
+                ? <Icon style={{ fontSize: 18 }} name="chevron-down" />
+                : <Icon style={{ fontSize: 18 }} name="chevron-up" />}
             </View>
           );
     }
@@ -90,7 +90,7 @@ const Outcome = (props) => {
 
 const styles = StyleSheet.create({
     accordion: {
-        backgroundColor: "#fcfcfc",
+        backgroundColor: "#fefefe",
         marginLeft: 10,
         marginRight: 10,
         marginTop: 32,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         paddingLeft: 8,
         paddingRight: 4,
-        backgroundColor: "#fcfcfc",
+        backgroundColor: "#fefefe",
 
         shadowColor: "#b4b4b4",
         shadowOffset: { height: 2 },
