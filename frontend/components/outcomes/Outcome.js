@@ -35,18 +35,25 @@ const Outcome = (props) => {
     const _renderHeader = (item, expanded) => {
         return (
             <View style={{
-              flexDirection: "row",
-              paddingTop: 15,
-              paddingBottom: 15,
-              paddingLeft: 4,
-              paddingRight: 4,
-
-              justifyContent: "space-between",
-              alignItems: "center" ,
-              backgroundColor: "#fefefe" }}>
+                flexDirection: "row",
+                paddingTop: 15,
+                paddingBottom: 15,
+                paddingLeft: 4,
+                paddingRight: 4,
+                
+                justifyContent: "space-between",
+                alignItems: "center" ,
+                backgroundColor: "#fefefe",
+            
+                shadowColor: "#b4b4b4",
+                shadowOffset: { height: 2 },
+                shadowRadius: 0.5,
+                shadowOpacity: 0.4,
+            }}
+                >
             <Text style={{ fontWeight: "600", fontSize: "20"}}>
                 {" "}{item.title}
-              </Text>
+            </Text>
               {expanded
                 ? <Icon style={{ fontSize: 18 }} name="chevron-down" />
                 : <Icon style={{ fontSize: 18 }} name="chevron-up" />}
@@ -101,12 +108,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#ff0000",
         justifyContent: "space-between",
         alignItems: "center",
-
     },
     
     contentStyle: {
         flexDirection: "column",
-        paddingLeft: 8,
+        paddingTop: 4,
+        paddingLeft: 12,
         paddingRight: 4,
         backgroundColor: "#fefefe",
 
