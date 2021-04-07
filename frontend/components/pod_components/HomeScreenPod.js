@@ -7,7 +7,7 @@ import { getAccessToken } from '../../utils/auth.js';
 import ProgressBar from '../ProgressBar.js';
 
 const server_add = Constants.manifest.extra.apiUrl;
-
+const error_message = "This pod is not clickable because it hasn't been generated yet. If you think this is a mistake, please contact your More Than Words manager. "
 
 export default class HomeScreenPod extends React.Component{
     state = {
@@ -16,7 +16,6 @@ export default class HomeScreenPod extends React.Component{
         status: "",
         completed: ""
     };
-    
 
     async fetchData() {
         try{
@@ -50,7 +49,6 @@ export default class HomeScreenPod extends React.Component{
             console.error(e);
         }
     };  
-    
 
     componentDidMount(){
         this.fetchData();
@@ -61,6 +59,9 @@ export default class HomeScreenPod extends React.Component{
         const nav_pod_name = pod_name + ' Pod';
         const complete_outcomes = this.state.progress;       
         const total_outcomes = this.state.total;
+        const pod_status = this.state.status;
+        const pod_completed = this.state.completed;
+
         let blocktext,block;
         if (complete_outcomes != 0 && complete_outcomes == total_outcomes){
             blocktext = styles.BlockText;
@@ -72,18 +73,21 @@ export default class HomeScreenPod extends React.Component{
             blocktext = styles.greyBlockText;
             block = styles.greyBlock;
         } 
-            
+
+
         return(
         <SafeAreaView style={styles.container}>
         <TouchableOpacity 
             style={block} 
-                onPress={() => 
+            onPress={() => {
+                if (pod_status == 'does not exist'){
+                    alert(error_message);
+                } else{
                     this.props.navigation.navigate(nav_pod_name, {
-                    pod: pod_name,
-                    status: this.state.status,
-                    completed: this.state.completed,
-                })
-            }
+                        pod: pod_name,
+                        status: this.state.status,
+                        completed: this.state.completed,
+                    })}}}
         >
                 <Text style={blocktext}> {pod_name} </Text>
             <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
