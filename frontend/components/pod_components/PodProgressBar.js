@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
     },
 
     progressBar: {
         flexDirection: 'row',
-        height: 10,
+        height: 6,
         width: '100%',
         backgroundColor: 'white',
 
