@@ -41,15 +41,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+
     progressBar: {
         flexDirection: 'row',
         height: 10,
         width: '100%',
         backgroundColor: 'white',
+
         shadowOffset: { height: 2 },
         shadowColor: '#b4b4b4',
         shadowOpacity: 0.8,
     },
+    
     progressCount: {
         fontSize: 15,
         fontWeight: 'bold',

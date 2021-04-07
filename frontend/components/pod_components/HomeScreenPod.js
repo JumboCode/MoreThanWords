@@ -96,24 +96,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#ffffff',
         alignItems: 'center',
         justifyContent: 'center',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
     },
 
     Block: {
-        marginTop: 20,
+        marginTop: 32,
         width: '100%',
         height: 185,
         backgroundColor: '#ECECEC50',
 
         alignItems: 'center',
         justifyContent: 'center',
-
-        shadowOffset: { height: 2 },
-        shadowColor: '#b4b4b4',
-        shadowOpacity: 0.8,
     },
 
     BlockText: {
@@ -124,7 +119,7 @@ const styles = StyleSheet.create({
     },
 
     highlightBlock: {
-        margin: 20,
+        marginTop: 32,
         width: '100%',
         height: 200,
         backgroundColor: '#27b48f',
@@ -149,7 +144,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 185,
         backgroundColor: '#fcfcfc',
-        margin: 20,
+        marginTop: 32,
 
         alignItems: 'center',
         justifyContent: 'center',
