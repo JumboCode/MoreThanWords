@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     blockTitle: {
         fontSize: 30,
         fontWeight: 'bold',
-
+        color: "#3f3f3f", 
+        
         marginTop: 15,
         marginLeft: 20,
         marginRight: 50,

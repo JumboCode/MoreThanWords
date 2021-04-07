@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
     progressCount: {
         fontSize: 15,
         fontWeight: 'bold',
+        color: "#3f3f3f",
+
         marginBottom: 10,
         marginLeft: '85%',
     },
