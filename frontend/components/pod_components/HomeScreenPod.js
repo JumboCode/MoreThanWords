@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     Block: {
         marginTop: 32,
         width: '100%',
-        height: 185,
+        height: 170,
         backgroundColor: '#ECECEC50',
 
         alignItems: 'center',
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     highlightBlock: {
         marginTop: 32,
         width: '100%',
-        height: 200,
+        height: 170,
         backgroundColor: '#27b48f',
         borderColor: '#ffffff',
 
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
 
     greyBlock: {
         width: '100%',
-        height: 185,
+        height: 170,
         backgroundColor: '#fcfcfc',
         marginTop: 32,
 
