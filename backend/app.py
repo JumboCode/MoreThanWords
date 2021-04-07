@@ -190,7 +190,10 @@ def HomeScreenoutcomes(user):
     # calculate *Trainee* outcomes based on all related fields
     Pod_outcome_sum = 0
     for outcome in Pod_field_names:
-        Pod_outcome_sum += Pod_sf_result['records'][0][outcome]
+        if Pod_sf_result['records']:
+            Pod_outcome_sum += Pod_sf_result['records'][0][outcome]
+        else:
+            Pod_outcome_sum = 0
 
     pod_outcome = {
         'progress': Pod_outcome_sum,
