@@ -44,17 +44,12 @@ const styles = StyleSheet.create({
 });
 
 const Outcome = (props) => {
-    // console.log(props.data);
     const [outcomeData, setOutcomeData] = useState(props.data);
     const [accessible, setAccessible] = useState(props.validPods[props.data[0].content[0].pod + "_POD_Map__c"].status === "allowed");
     
-
     function handleSetOutcomeData(backendID, updatedCheckboxValue, updatedStarValue) {
         let dataTemp = outcomeData;
-        // console.log(dataTemp);
         let index = outcomeData[0].content.findIndex(x => x.api_key === backendID);
-        // console.log(index);
-        // console.log(backendID);
         dataTemp[0].content[index].checked = updatedCheckboxValue;
         dataTemp[0].content[index].starIsFilled = updatedStarValue;
         setOutcomeData(dataTemp);
