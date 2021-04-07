@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     block: {
         width: '100%',
         height: 130,
-        backgroundColor: '#fcfcfc',
+        backgroundColor: '#fefefe',
         marginTop: 32,
     },
     
