@@ -20,29 +20,6 @@ LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 LogBox.ignoreLogs(['Animated: `useNativeDriver`']); // Ignore 'useNativeDriver' warning
 
-const styles = StyleSheet.create({
-    accordion: {
-        borderRadius: 2,
-        shadowColor: "rgba(242, 242, 242, 1)",
-        shadowOffset: { width: 1, height: 2 },
-        shadowRadius: 3,
-        margin: 10
-    },
-    headerStyle: {
-        flexDirection: "row",
-        backgroundColor: "rgba(242, 242, 242, 0.5)",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 10
-    },
-    contentStyle: {
-        flexDirection: "column",
-        paddingLeft: 15,
-        paddingRight: 5,
-        backgroundColor: "rgba(242, 242, 242, 0.5)"
-    },
-});
-
 const Outcome = (props) => {
 
     const [outcomeData, setOutcomeData] = useState(props.data);
@@ -86,5 +63,35 @@ const Outcome = (props) => {
         />
     );
 };
+
+
+const styles = StyleSheet.create({
+    accordion: {
+        backgroundColor: "#fcfcfc",
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 32,
+    },
+
+    headerStyle: {
+        flexDirection: "row",
+        backgroundColor: "#fcfcfc",
+        justifyContent: "space-between",
+        alignItems: "center",
+
+    },
+    
+    contentStyle: {
+        flexDirection: "column",
+        paddingLeft: 15,
+        paddingRight: 5,
+        backgroundColor: "#fcfcfc",
+
+        shadowColor: "#b4b4b4",
+        shadowOffset: { height: 2 },
+        shadowRadius: 0.5,
+        shadowOpacity: 0.4,
+    },
+});
 
 export default Outcome;

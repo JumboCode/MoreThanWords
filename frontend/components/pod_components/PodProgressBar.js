@@ -46,11 +46,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 6,
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: '#ffffff',
 
+        shadowColor: "#b4b4b4",
         shadowOffset: { height: 2 },
-        shadowColor: '#b4b4b4',
-        shadowOpacity: 0.8,
+        shadowRadius: 0.5,
+        shadowOpacity: 0.4,
     },
     
     progressCount: {

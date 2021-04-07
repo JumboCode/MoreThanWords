@@ -35,25 +35,30 @@ class Task extends React.Component {
                 paddingRight: 0,
                 paddingLeft: 0,
             },
+
             star: {
                 width: 30,
                 margin: 0,
                 marginRight: 0,
                 marginLeft: 0,
             },
+
             taskContainer: {
                 flexDirection: 'row',
                 alignItems: 'center',
             },
+
             checkbox: {
                 margin: 0,
                 marginRight: 0,
             },
+
             text: {
                 flex: 1,
                 textAlign: 'left',
                 color: this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F",
             },
+            
             checkboxContainer: {
                 paddingRight: 0,
             }

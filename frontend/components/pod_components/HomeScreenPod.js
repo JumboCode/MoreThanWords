@@ -128,9 +128,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
 
+        shadowColor: "#b4b4b4",
         shadowOffset: { height: 2 },
-        shadowColor: '#b4b4b4',
-        shadowOpacity: 0.8,
+        shadowRadius: 0.5,
+        shadowOpacity: 0.4,
     },
 
     highlightBlockText: {
@@ -149,9 +150,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
 
+        shadowColor: "#b4b4b4",
         shadowOffset: { height: 2 },
-        shadowColor: '#b4b4b4',
-        shadowOpacity: 0.8,
+        shadowRadius: 0.5,
+        shadowOpacity: 0.4,
     },
 
     greyBlockText: {

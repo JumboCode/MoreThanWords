@@ -4,23 +4,6 @@ import { ActivityIndicator, FlatList, LogBox, SafeAreaView, StyleSheet, Text } f
 import { getAccessToken } from '../../utils/auth.js';
 import Outcome from './Outcome';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    listStyle: {
-        paddingTop: 10
-    },
-    error_parent: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    error_message: {
-        textAlign: 'center',
-    }
-});
-
 export default function OutcomesScreen({ navigation, route }) {
 
     const [dataTemp, setDataTemp] = useState([]);
@@ -155,3 +138,22 @@ export default function OutcomesScreen({ navigation, route }) {
             </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+
+    listStyle: {
+        paddingTop: 0,
+    },
+
+    error_parent: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    error_message: {
+        textAlign: 'center',
+    }
+});
