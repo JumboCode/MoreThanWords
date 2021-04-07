@@ -108,14 +108,12 @@ const styles = StyleSheet.create({
         height: 185,
         backgroundColor: '#ECECEC50',
 
-        borderColor: '#ffffff',
-        borderWidth: 1,
-        borderBottomWidth: 3,
-        borderBottomColor:'#ececec',
-        borderRadius: 1,
-
         alignItems: 'center',
         justifyContent: 'center',
+
+        shadowOffset: { height: 2 },
+        shadowColor: '#b4b4b4',
+        shadowOpacity: 0.8,
     },
 
     BlockText: {
@@ -132,12 +130,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#27b48f',
         borderColor: '#ffffff',
 
-        borderBottomWidth: 3,
-        borderBottomColor:'#c4c4c4',
-        borderRadius: 1,
-
         alignItems: 'center',
         justifyContent: 'center',
+
+        shadowOffset: { height: 2 },
+        shadowColor: '#b4b4b4',
+        shadowOpacity: 0.8,
     },
 
     highlightBlockText: {
@@ -150,22 +148,20 @@ const styles = StyleSheet.create({
     greyBlock: {
         width: '100%',
         height: 185,
-        backgroundColor: '#ececec50',
+        backgroundColor: '#fcfcfc',
         margin: 20,
-        
-        borderColor: '#ffffff',
-        borderWidth: 1,
-        borderRadius: 1,
-        borderBottomWidth: 3,
-        borderBottomColor:'#ececec',
 
         alignItems: 'center',
         justifyContent: 'center',
+
+        shadowOffset: { height: 2 },
+        shadowColor: '#b4b4b4',
+        shadowOpacity: 0.8,
     },
 
     greyBlockText: {
         fontSize: 48,
-        color: '#C4C4C4',
+        color: '#e5e5e5',
         fontWeight: 'bold',
         textAlign: 'center',
     },
