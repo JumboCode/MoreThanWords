@@ -21,7 +21,7 @@ const PodProgressBar = (props) => {
 
     return (
         <View style={styles.container} >
-            <Text style={styles.progressCount}>
+            <Text style={[styles.progressCount, {color: props.pod_status == "no access" ? '#C4C4C4' : 'black'}]}>
                 {`${props.progress} of ${props.total_outcomes}`}
             </Text>
       

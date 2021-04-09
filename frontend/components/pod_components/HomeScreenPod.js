@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { getAccessToken } from '../../utils/auth.js';
 
@@ -77,13 +77,16 @@ export default class HomeScreenPod extends React.Component{
         <SafeAreaView style={styles.container}>
         <TouchableOpacity 
             style={block} 
-                onPress={() => 
+            onPress={() => {
+                this.state.status == "does not exist" ?
+                    Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.") 
+                :
                     this.props.navigation.navigate(nav_pod_name, {
-                    pod: pod_name,
-                    status: this.state.status,
-                    completed: this.state.completed,
-                })
-            }
+                        pod: pod_name,
+                        status: this.state.status,
+                        completed: this.state.completed,
+                    })
+            }}
         >
                 <Text style={blocktext}> {pod_name} </Text>
             <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />

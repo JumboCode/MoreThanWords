@@ -21,7 +21,6 @@ export default class FocusAreaBlock extends React.Component {
         const total_outcomes = this.props.total_outcomes;
         const pod_name = this.props.name;
         const pod_status = this.props.route.params.status;
-        console.log(pod_status);
         return (     
             <TouchableOpacity 
                 style={styles.block} 
@@ -34,10 +33,10 @@ export default class FocusAreaBlock extends React.Component {
                     });
                 }}
             >
-                <Text style={styles.blockTitle}>
-                    {pod_name} 
+                <Text style={[styles.blockTitle, {color: pod_status == "no access" ? '#C4C4C4' : 'black'}]}>
+                    {pod_name}
                 </Text>
-                <PodProgressBar progress={completed_outcomes} total_outcomes={total_outcomes} />
+                <PodProgressBar progress={completed_outcomes} total_outcomes={total_outcomes} pod_status={pod_status} />
             </TouchableOpacity>
         );
     }
