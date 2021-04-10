@@ -15,7 +15,7 @@
 import Constants from 'expo-constants';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { getAccessToken } from '../../utils/auth.js';
 
 class Task extends React.Component {
@@ -36,25 +36,30 @@ class Task extends React.Component {
                 paddingRight: 0,
                 paddingLeft: 0,
             },
+
             star: {
                 width: 30,
                 margin: 0,
                 marginRight: 0,
                 marginLeft: 0,
             },
+
             taskContainer: {
                 flexDirection: 'row',
                 alignItems: 'center',
             },
+
             checkbox: {
                 margin: 0,
                 marginRight: 0,
             },
+
             text: {
                 flex: 1,
                 textAlign: 'left',
                 color: this.state.ydmApproved || !this.props.accessible ? "#C4C4C4" : "#3F3F3F",
             },
+            
             checkboxContainer: {
                 paddingRight: 0,
             },
@@ -107,7 +112,7 @@ class Task extends React.Component {
             <View style={this.styles().taskContainer}>
                 <Icon.Button
                     style={this.styles().starContainer}
-                    name={this.state.starIsFilled ? "star" : "star-border"}
+                    name={this.state.starIsFilled ? "star" : "star-outline"}
                     iconStyle={this.styles().star}
                     color={!this.props.accessible || this.state.ydmApproved ? "#C4C4C4" : "#FF4646"}
                     backgroundColor='transparent'
@@ -134,8 +139,8 @@ class Task extends React.Component {
 
                 <Icon.Button
                     style={this.styles().checkboxContainer}
-                    name={this.state.checked ? 'check-box' : 
-                          'check-box-outline-blank'}
+                    name={this.state.checked ? 'checkbox-outline' : 
+                          'square-outline'}
                     iconStyle={this.styles().checkbox}
                     color={!this.props.accessible || this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F"}
                     backgroundColor='transparent'

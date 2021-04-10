@@ -45,15 +45,18 @@ export default class FocusAreaBlock extends React.Component {
 const styles = StyleSheet.create({
     block: {
         width: '100%',
-        height: 180,
-        backgroundColor: '#fcfcfc',
-        marginTop: 40,
+        height: 130,
+        backgroundColor: '#fefefe',
+        marginTop: 32,
     },
+    
     blockTitle: {
         fontSize: 30,
         fontWeight: 'bold',
-        marginTop: 30,
-        marginLeft: 30,
+        color: "#3f3f3f", 
+        
+        marginTop: 15,
+        marginLeft: 20,
         marginRight: 50,
     },
 });

@@ -38,22 +38,27 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        // padding: 8,
     },
+
     progressBar: {
         flexDirection: 'row',
-        height: 10,
+        height: 6,
         width: '100%',
-        backgroundColor: 'white',
-        shadowOffset: { height: 3 },
-        shadowColor: 'lightgrey',
-        shadowOpacity: 1.0,
+        backgroundColor: '#ffffff',
+
+        shadowColor: "#b4b4b4",
+        shadowOffset: { height: 2 },
+        shadowRadius: 0.5,
+        shadowOpacity: 0.4,
     },
+    
     progressCount: {
         fontSize: 15,
         fontWeight: 'bold',
+        color: "#3f3f3f",
+
         marginBottom: 10,
         marginLeft: '85%',
     },
