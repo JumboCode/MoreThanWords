@@ -21,16 +21,16 @@ LogBox.ignoreAllLogs(); //Ignore all log notifications
 LogBox.ignoreLogs(['Animated: `useNativeDriver`']); // Ignore 'useNativeDriver' warning
 
 const Outcome = (props) => {
-
     const [outcomeData, setOutcomeData] = useState(props.data);
-
-    handleSetOutcomeData = (backendID, updatedCheckboxValue, updatedStarValue) => {
+    const [accessible, setAccessible] = useState(props.validPods[props.data[0].content[0].pod + "_POD_Map__c"].status === "allowed");
+    
+    function handleSetOutcomeData(backendID, updatedCheckboxValue, updatedStarValue) {
         let dataTemp = outcomeData;
         let index = outcomeData[0].content.findIndex(x => x.api_key === backendID);
         dataTemp[0].content[index].checked = updatedCheckboxValue;
         dataTemp[0].content[index].starIsFilled = updatedStarValue;
         setOutcomeData(dataTemp);
-    };
+    }
 
     const _renderHeader = (item, expanded) => {
         return (
@@ -81,6 +81,8 @@ const Outcome = (props) => {
                         handleSetOutcomeData={handleSetOutcomeData}
                         starIsFilled={taskObj.starIsFilled}
                         pod={taskObj.pod}
+                        backendBoolID={taskObj.api_bool_key}
+                        accessible={accessible}
                     />
                 );
                 return (
