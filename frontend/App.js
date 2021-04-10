@@ -61,7 +61,6 @@ export default class MainNavigator extends React.Component {
                     />
                 ) : (
                     <Stack.Navigator>
-                        /* Screens for signed out users */
                         <Stack.Screen
                             name="Login Screen"
                             component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
@@ -282,10 +281,7 @@ class MainStackNavigator extends React.Component {
 
     render() {
         return (
-            <Stack.Navigator 
-                initialRouteName={this.state.initialRouteName}
-            >
-                /* Screens for logged in users */
+            <Stack.Navigator>
                 <>
                     <Stack.Screen
                         name="Pods"

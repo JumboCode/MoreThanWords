@@ -23,6 +23,7 @@ export default class HomeScreenPod extends React.Component{
             let pod = this.props.pod;
 
             const token = await getAccessToken();
+            console.log(server_add);
             const podsResponse =  await fetch(server_add + `/getValidPods`, {
                 method: 'GET',
                 headers: {
