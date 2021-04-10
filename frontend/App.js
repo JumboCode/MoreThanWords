@@ -1,8 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -61,6 +61,7 @@ export default class MainNavigator extends React.Component {
                     />
                 ) : (
                     <Stack.Navigator>
+                        /* Screens for signed out users */
                         <Stack.Screen
                             name="Login Screen"
                             component={componentWithRefreshFunc(LoginScreen, this.refreshLoginState)}
@@ -281,62 +282,63 @@ class MainStackNavigator extends React.Component {
 
     render() {
         return (
-            <Stack.Navigator>
+            <Stack.Navigator 
+                initialRouteName={this.state.initialRouteName}
+            >
+                /* Screens for logged in users */
                 <>
                     <Stack.Screen
                         name="Pods"
                         component={HomeScreen}
                         options={{
-                            headerRight: () =>
-                                <TouchableOpacity onPress={this.props.logout} style={{marginRight: 16}}>
-                                    <Text>Log Out</Text>
+                            headerTitleAlign: 'center',
+                            headerLeft: () =>
+                                <TouchableOpacity onPress={this.logout} style={{marginLeft: 16}}>
+                                    <Text style={{fontSize: 11, color: "#007aff"}}>LOGOUT</Text>
                                 </TouchableOpacity>,
                             animationEnabled: false
                         }}
-                        initialParams={{
-                            allData: this.props.allData,
-                            // handleSetAllData: this.props.handleSetAllData
-                        }}
                     />
-                    {/* <Stack.Screen
-                        name="Pods"
-                        children={ () => <HomeScreen
-                                            allData={this.props.allData}
-                                            handleSetAllData={this.props.handleSetAllData}
-                                         />}
+                    <Stack.Screen 
+                        name="Trainee Pod" 
+                        component={PodScreen} 
                         options={{
-                            headerRight: () =>
-                                <TouchableOpacity onPress={this.props.logout} style={{marginRight: 16}}>
-                                    <Text>Log Out</Text>
-                                </TouchableOpacity>,
-                            animationEnabled: false
-                        }}
-                    /> */}
-                    {/* <Stack.Screen
-                        name="Trainee Pod"
-                        children={ () => <PodScreen
-                                            allData={this.props.allData["Trainee"]}
-                                            handleSetAllData={this.props.handleSetAllData}
-                                         />}
-                    />
-                    <Stack.Screen
-                        name="Associate Pod"
-                        children={ () => <PodScreen
-                                            allData={this.props.allData["Associate"]}
-                                            handleSetAllData={this.props.handleSetAllData}
-                                         />}
-                    />
-                    <Stack.Screen
-                        name="Partner Pod"
-                        children={ () => <PodScreen
-                                            allData={this.props.allData["Partner"]}
-                                            handleSetAllData={this.props.handleSetAllData}
-                                         />}
-                    /> */}
-                    <Stack.Screen name="Trainee Pod" component={PodScreen} />
-                    <Stack.Screen name="Associate Pod" component={PodScreen} />
-                    <Stack.Screen name="Partner Pod" component={PodScreen} />
-                    <Stack.Screen name="Outcomes" component={OutcomesScreen} />
+                            headerTitleAlign: 'center',
+                            headerBackImage: () => (
+                                <Image source={require("./arrow_back.png")} style={{ width: 20, height: 20, marginLeft: 16}} />
+                            ),
+                            headerBackTitleVisible: false
+                        }} />
+                    <Stack.Screen 
+                        name="Associate Pod" 
+                        component={PodScreen} 
+                        options={{
+                            headerTitleAlign: 'center',
+                            headerBackImage: () => (
+                                <Image source={require("./arrow_back.png")} style={{ width: 20, height: 20, marginLeft: 16}} />
+                            ),
+                            headerBackTitleVisible: false
+                        }}/>
+                    <Stack.Screen 
+                        name="Partner Pod" 
+                        component={PodScreen} 
+                        options={{
+                            headerTitleAlign: 'center',
+                            headerBackImage: () => (
+                                <Image source={require("./arrow_back.png")} style={{ width: 20, height: 20, marginLeft: 16}} />
+                            ),
+                            headerBackTitleVisible: false
+                        }}/>
+                    <Stack.Screen 
+                        name="Outcomes" 
+                        component={OutcomesScreen} 
+                        options={{
+                            headerTitleAlign: 'center',
+                            headerBackImage: () => (
+                                <Image source={require("./arrow_back.png")} style={{ width: 20, height: 20, marginLeft: 16}} />
+                            ),
+                            headerBackTitleVisible: false
+                    }}/>
                 </>
             </Stack.Navigator>
         );

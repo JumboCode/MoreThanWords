@@ -15,8 +15,8 @@
 import Constants from 'expo-constants';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { getAccessToken, isTokenValid } from '../../utils/auth.js'
+import Icon from 'react-native-vector-icons/Ionicons';
+import { getAccessToken } from '../../utils/auth.js';
 
 class Task extends React.Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class Task extends React.Component {
             ydmApproved: props.ydmApproved,
             starIsFilled: props.ydmApproved ? false : props.starIsFilled, // change second value later based on local storage
             clickable: true,
-            // accessToken: null
+            taskColor: props.ydmApproved ? "#C4C4C4" : "#3F3F3F"
         };
     }
 
@@ -36,28 +36,38 @@ class Task extends React.Component {
                 paddingRight: 0,
                 paddingLeft: 0,
             },
+
             star: {
                 width: 30,
                 margin: 0,
                 marginRight: 0,
                 marginLeft: 0,
             },
+
             taskContainer: {
                 flexDirection: 'row',
                 alignItems: 'center',
             },
+
             checkbox: {
                 margin: 0,
                 marginRight: 0,
             },
+
             text: {
                 flex: 1,
                 textAlign: 'left',
-                color: this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F",
+                color: this.state.ydmApproved || !this.props.accessible ? "#C4C4C4" : "#3F3F3F",
             },
+            
             checkboxContainer: {
                 paddingRight: 0,
-            }
+            },
+            greyText: {
+                flex: 1,
+                textAlign: 'left',
+                color: '#C4C4C4',
+            },
         });
     }
 
@@ -94,7 +104,6 @@ class Task extends React.Component {
             })
         })
         .then(response => {
-            // console.log("status code:", response.status);
             if (response.status != 200) {
                 success = false;
             } else {
@@ -108,32 +117,6 @@ class Task extends React.Component {
         return success;
     }
 
-    async handleClick(isStar=false)  {
-        let updated_value = isStar ? !this.state.starIsFilled : !this.state.checked;
-        this.setClickable(false);
-        let success = await this.updateSalesforce(updated_value, isStar);
-        // console.log(success);
-        if (success) {
-            if (isStar) {
-                this.props.handleSetOutcomeData(this.props.backendID, this.state.checked, updated_value);
-                this.props.handleSetAllData ? this.props.handleSetAllData(this.props.backendID, this.state.checked, updated_value, this.props.pod): console.log("Null handleSetAllData");
-                // Prevent user from clicking again until a second has passed
-                this.setState({starIsFilled: updated_value}, () => {
-                    setTimeout(() => { this.setClickable(true); }, 1000);
-                });
-            } else {
-                this.props.handleSetOutcomeData(this.props.backendID, updated_value, this.state.starIsFilled);
-                this.props.handleSetAllData ? this.props.handleSetAllData(this.props.backendID, updated_value, this.state.starIsFilled, this.props.pod) : console.log("Null handleSetAllData");
-                // Prevent user from clicking again until a second has passed
-                this.setState({checked: updated_value}, () => {
-                    setTimeout(() => { this.setClickable(true); }, 1000);
-                });
-            }
-        } else {
-            setTimeout(() => { this.setClickable(true); }, 1000);
-        }
-    }
-
     render() {
         let name = this.props.name;
 
@@ -141,16 +124,24 @@ class Task extends React.Component {
             <View style={this.styles().taskContainer}>
                 <Icon.Button
                     style={this.styles().starContainer}
-                    name={this.state.starIsFilled ? "star" : "star-border"}
+                    name={this.state.starIsFilled ? "star" : "star-outline"}
                     iconStyle={this.styles().star}
-                    color={this.state.ydmApproved ? "#C4C4C4" : "#FF4646"}
+                    color={!this.props.accessible || this.state.ydmApproved ? "#C4C4C4" : "#FF4646"}
                     backgroundColor='transparent'
                     underlayColor='transparent'
                     size={20}
-                    // KNOWN ISSUE: Clicking the star in the "Complete Getting Started Module"
-                    // of the Life Essentials/Support Network Outcome causes issues, or sometimes isn't clickable.
-                    onPress={this.state.ydmApproved || !this.state.clickable ? null : async () => {
-                        await this.handleClick(isStar=true);
+                    onPress={!this.props.accessible || this.state.ydmApproved || !this.state.clickable ? null : () => {
+                        this.setClickable(false);
+                        let success = this.updateSalesforce(!this.state.starIsFilled, true);
+                        if (success) {
+                            this.props.handleSetOutcomeData(this.props.backendID, this.state.checked, !this.state.starIsFilled);
+                            // Prevent user from clicking again until a second has passed
+                            this.setState({starIsFilled: !this.state.starIsFilled}, () => {
+                                setTimeout(() => { this.setClickable(true); }, 1000);
+                            });
+                        } else {
+                            this.setClickable(true);
+                        }
                     }}
                 />
 
@@ -160,15 +151,24 @@ class Task extends React.Component {
 
                 <Icon.Button
                     style={this.styles().checkboxContainer}
-                    name={this.state.checked ? 'check-box' : 
-                          'check-box-outline-blank'}
+                    name={this.state.checked ? 'checkbox-outline' : 
+                          'square-outline'}
                     iconStyle={this.styles().checkbox}
-                    color={this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F"}
+                    color={!this.props.accessible || this.state.ydmApproved ? "#C4C4C4" : "#3F3F3F"}
                     backgroundColor='transparent'
                     underlayColor='transparent'
-                    // KNOWN ISSUE: 401 error from multiple requests made in a short amount of time
-                    onPress={this.state.ydmApproved || !this.state.clickable ? null : async () => {
-                        await this.handleClick();
+                    onPress={!this.props.accessible || this.state.ydmApproved || !this.state.clickable ? null : () => {
+                        this.setClickable(false);
+                        let success = this.updateSalesforce(!this.state.checked, false);
+                        if (success) {
+                            this.props.handleSetOutcomeData(this.props.backendID, !this.state.checked, this.state.starIsFilled);
+                            // Prevent user from clicking again until a second has passed
+                            this.setState({checked: !this.state.checked}, () => {
+                                setTimeout(() => { this.setClickable(true); }, 1000);
+                            });
+                        } else {
+                            this.setClickable(true);
+                        }
                     }}
                 />
             </View>
