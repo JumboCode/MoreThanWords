@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { getAccessToken } from '../../utils/auth.js';
 
@@ -80,14 +80,15 @@ export default class HomeScreenPod extends React.Component{
         <TouchableOpacity 
             style={block} 
             onPress={() => {
-                if (pod_status == 'does not exist'){
-                    alert(error_message);
-                } else{
+                this.state.status == "does not exist" ?
+                    Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.") 
+                :
                     this.props.navigation.navigate(nav_pod_name, {
                         pod: pod_name,
                         status: this.state.status,
                         completed: this.state.completed,
-                    })}}}
+                    })
+            }}
         >
                 <Text style={blocktext}> {pod_name} </Text>
             <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
@@ -97,67 +98,72 @@ export default class HomeScreenPod extends React.Component{
 }
 
 const styles = StyleSheet.create({
-    scrollView: {
-        backgroundColor: 'white'
-    },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        justifyContent: 'space-evenly',
     },
+
     Block: {
-        marginTop: 20,
+        marginTop: 32,
         width: '100%',
-        height: 185,
+        height: 170,
         backgroundColor: '#ECECEC50',
-        borderColor: 'white',
-        borderWidth: 1,
-        borderBottomWidth: 3,
-        borderBottomColor:'#ececec',
-        borderRadius: 1,
+
         alignItems: 'center',
         justifyContent: 'center',
     },
+
     BlockText: {
         fontSize: 48,
         color: '#27b48f',
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    highlightBlock: {
 
+    highlightBlock: {
+        marginTop: 32,
         width: '100%',
-        height: 200,
+        height: 170,
         backgroundColor: '#27b48f',
-        borderColor: 'white',
-        borderBottomWidth: 3,
-        borderBottomColor:'#c4c4c4',
-        borderRadius: 1,
+        borderColor: '#ffffff',
+
         alignItems: 'center',
         justifyContent: 'center',
+
+        shadowColor: "#b4b4b4",
+        shadowOffset: { height: 2 },
+        shadowRadius: 0.5,
+        shadowOpacity: 0.4,
     },
+
     highlightBlockText: {
         fontSize: 48,
         color: '#ffffff',
         fontWeight: 'bold',
         textAlign: 'center',
     },
+
     greyBlock: {
         width: '100%',
-        height: 185,
-        backgroundColor: '#ececec50',
-        borderColor: 'white',
-        borderWidth: 1,
-        borderRadius: 1,
-        borderBottomWidth: 3,
-        borderBottomColor:'#ececec',
+        height: 170,
+        backgroundColor: '#fcfcfc',
+        marginTop: 32,
+
         alignItems: 'center',
         justifyContent: 'center',
+
+        shadowColor: "#b4b4b4",
+        shadowOffset: { height: 2 },
+        shadowRadius: 0.5,
+        shadowOpacity: 0.4,
     },
+
     greyBlockText: {
         fontSize: 48,
-        color: '#C4C4C4',
+        color: '#e5e5e5',
         fontWeight: 'bold',
         textAlign: 'center',
     },

@@ -33,10 +33,10 @@ export default class FocusAreaBlock extends React.Component {
                     });
                 }}
             >
-                <Text style={styles.blockTitle}>
-                    {pod_name} 
+                <Text style={[styles.blockTitle, {color: pod_status == "no access" ? '#C4C4C4' : 'black'}]}>
+                    {pod_name}
                 </Text>
-                <PodProgressBar progress={completed_outcomes} total_outcomes={total_outcomes} />
+                <PodProgressBar progress={completed_outcomes} total_outcomes={total_outcomes} pod_status={pod_status} />
             </TouchableOpacity>
         );
     }
@@ -45,15 +45,18 @@ export default class FocusAreaBlock extends React.Component {
 const styles = StyleSheet.create({
     block: {
         width: '100%',
-        height: 180,
-        backgroundColor: '#fcfcfc',
-        marginTop: 40,
+        height: 130,
+        backgroundColor: '#fefefe',
+        marginTop: 32,
     },
+    
     blockTitle: {
         fontSize: 30,
         fontWeight: 'bold',
-        marginTop: 30,
-        marginLeft: 30,
+        color: "#3f3f3f", 
+        
+        marginTop: 15,
+        marginLeft: 20,
         marginRight: 50,
     },
 });
