@@ -81,35 +81,28 @@ export default class HomeScreenPod extends React.Component{
 
 
         return(
-        this.state.isLoading ?
-        
-        // If data hasn't loaded, then display loading circle
-            <SafeAreaView style={styles.container}>
+            this.state.isLoading ?
+            // If data hasn't loaded, then display a blank screen
+                <SafeAreaView style={styles.container}></SafeAreaView>
+            :
+                <SafeAreaView style={styles.container}>
                 <TouchableOpacity 
-                style={block} >
-                    <Text  style={blocktext}> Loading...</Text>
+                    style={block} 
+                    onPress={() => {
+                        this.state.status == "does not exist" ?
+                            Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.") 
+                        :
+                            this.props.navigation.navigate(nav_pod_name, {
+                                pod: pod_name,
+                                status: pod_status,
+                                completed: pod_completed,
+                            })
+                    }}
+                >
+                        <Text style={blocktext}> {pod_name} </Text>
+                    <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
                 </TouchableOpacity> 
-            
             </SafeAreaView>
-        :
-            <SafeAreaView style={styles.container}>
-            <TouchableOpacity 
-                style={block} 
-                onPress={() => {
-                    this.state.status == "does not exist" ?
-                        Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.") 
-                    :
-                        this.props.navigation.navigate(nav_pod_name, {
-                            pod: pod_name,
-                            status: pod_status,
-                            completed: pod_completed,
-                        })
-                }}
-            >
-                    <Text style={blocktext}> {pod_name} </Text>
-                <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
-            </TouchableOpacity> 
-        </SafeAreaView>
         
         );
 
