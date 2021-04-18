@@ -21,7 +21,6 @@ export default class HomeScreen extends React.Component{
                                     key={index}
                                     route={this.props.route}
                                     navigation={this.props.navigation}
-                                    // ready = {()=> this.setState({ready_state[index]:1})}
                                 />
                             )
                         })}

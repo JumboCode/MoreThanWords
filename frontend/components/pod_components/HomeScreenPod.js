@@ -55,11 +55,9 @@ export default class HomeScreenPod extends React.Component{
 
     componentDidMount(){
         this.fetchData();
-
     }
 
     render(){
-        
         const pod_name = this.props.pod;
         const nav_pod_name = pod_name + ' Pod';
         const complete_outcomes = this.state.progress;       
@@ -103,14 +101,11 @@ export default class HomeScreenPod extends React.Component{
                     <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
                 </TouchableOpacity> 
             </SafeAreaView>
-        
         );
-
     }
 }
 
 const styles = StyleSheet.create({
-   
     container: {
         flex: 1,
         flexDirection: 'column',
