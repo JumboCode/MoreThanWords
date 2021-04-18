@@ -11,6 +11,7 @@ const error_message = "This pod is not clickable because it hasn't been generate
 
 export default class HomeScreenPod extends React.Component{
     state = {
+        isLoading : true,
         progress: 0, 
         total: 0,
         status: "",
@@ -40,11 +41,13 @@ export default class HomeScreenPod extends React.Component{
             const HomepodsData = await HomepodsResponse.json();
             
             this.setState({
+                isLoading : false,
                 progress: HomepodsData.progress,
                 total: HomepodsData.total,
                 status: thispoddata.status, 
                 completed: thispoddata.completed,
             })
+
         } catch(e){
             console.error(e);
         }
@@ -52,9 +55,11 @@ export default class HomeScreenPod extends React.Component{
 
     componentDidMount(){
         this.fetchData();
+
     }
 
     render(){
+        
         const pod_name = this.props.pod;
         const nav_pod_name = pod_name + ' Pod';
         const complete_outcomes = this.state.progress;       
@@ -76,28 +81,43 @@ export default class HomeScreenPod extends React.Component{
 
 
         return(
-        <SafeAreaView style={styles.container}>
-        <TouchableOpacity 
-            style={block} 
-            onPress={() => {
-                this.state.status == "does not exist" ?
-                    Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.") 
-                :
-                    this.props.navigation.navigate(nav_pod_name, {
-                        pod: pod_name,
-                        status: this.state.status,
-                        completed: this.state.completed,
-                    })
-            }}
-        >
-                <Text style={blocktext}> {pod_name} </Text>
-            <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
-        </TouchableOpacity> 
-    </SafeAreaView>);
+        this.state.isLoading ?
+        
+        // If data hasn't loaded, then display loading circle
+            <SafeAreaView style={styles.container}>
+                <TouchableOpacity 
+                style={block} >
+                    <Text  style={blocktext}> Loading...</Text>
+                </TouchableOpacity> 
+            
+            </SafeAreaView>
+        :
+            <SafeAreaView style={styles.container}>
+            <TouchableOpacity 
+                style={block} 
+                onPress={() => {
+                    this.state.status == "does not exist" ?
+                        Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.") 
+                    :
+                        this.props.navigation.navigate(nav_pod_name, {
+                            pod: pod_name,
+                            status: pod_status,
+                            completed: pod_completed,
+                        })
+                }}
+            >
+                    <Text style={blocktext}> {pod_name} </Text>
+                <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
+            </TouchableOpacity> 
+        </SafeAreaView>
+        
+        );
+
     }
 }
 
 const styles = StyleSheet.create({
+   
     container: {
         flex: 1,
         flexDirection: 'column',
