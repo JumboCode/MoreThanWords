@@ -108,10 +108,15 @@ const styles = StyleSheet.create({
         marginTop: 32,
         width: '100%',
         height: 170,
-        backgroundColor: '#ECECEC50',
+        backgroundColor: '#fcfcfc',
 
         alignItems: 'center',
         justifyContent: 'center',
+
+        shadowColor: "#b4b4b4",
+        shadowOffset: { height: 2 },
+        shadowRadius: 0.5,
+        shadowOpacity: 0.25,
     },
 
     BlockText: {
@@ -126,7 +131,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 170,
         backgroundColor: '#27b48f',
-        borderColor: '#ffffff',
 
         alignItems: 'center',
         justifyContent: 'center',
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
         shadowColor: "#b4b4b4",
         shadowOffset: { height: 2 },
         shadowRadius: 0.5,
-        shadowOpacity: 0.4,
+        shadowOpacity: 0.25,
     },
 
     highlightBlockText: {
@@ -156,7 +160,7 @@ const styles = StyleSheet.create({
         shadowColor: "#b4b4b4",
         shadowOffset: { height: 2 },
         shadowRadius: 0.5,
-        shadowOpacity: 0.4,
+        shadowOpacity: 0.25,
     },
 
     greyBlockText: {

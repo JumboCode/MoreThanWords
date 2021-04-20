@@ -48,28 +48,28 @@ export default ProgressBar;
 const styles = StyleSheet.create({
   progressBar: {
     flexDirection: 'row',
-    height: 18,
-    width: 300,
+    height: 16,
+    width: 320,
     backgroundColor: 'white',
     paddingLeft: 2, 
     paddingRight: 2, 
     borderColor: '#27b48f',
     borderWidth: 2,
     borderRadius: 10,
-    marginTop: 4
+    marginTop: 10
   },
 
   ongoing_progressBar: {
     flexDirection: 'row',
-    height: 17,
-    width: 305,
+    height: 16,
+    width: 320,
     paddingLeft: 2, 
     paddingRight: 2, 
     backgroundColor: '#27b48f',
     borderColor: '#ffffff',
     borderWidth: 2,
     borderRadius: 10,
-    marginTop: 4
+    marginTop: 10
   },
 
   ongoing_ProgressBarText: {
