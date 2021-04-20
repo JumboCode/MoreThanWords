@@ -1,29 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { StyleSheet, Text, Image, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { getAccessToken } from '../../utils/auth.js';
 
 import ProgressBar from '../ProgressBar.js';
 
 const server_add = Constants.manifest.extra.apiUrl;
+const TRAINEE_MEDAL = require('./trainee_medal.png');
+const ASSOCIATE_MEDAL = require('./associate_medal.png');
+const PARTNER_MEDAL = require('./partner_medal.png');
 
-
-export default class HomeScreenPod extends React.Component{
+export default class HomeScreenPod extends React.Component {
     state = {
-        progress: 0, 
+        progress: 0,
         total: 0,
         status: "",
         completed: ""
     };
-    
+
 
     async fetchData() {
-        try{
+        try {
             let pod = this.props.pod;
 
             const token = await getAccessToken();
-            const podsResponse =  await fetch(server_add + `/getValidPods`, {
+            const podsResponse = await fetch(server_add + `/getValidPods`, {
                 method: 'GET',
                 headers: {
                     'Authorization': "Bearer " + token,
@@ -32,70 +33,90 @@ export default class HomeScreenPod extends React.Component{
             const podsData = await podsResponse.json();
             const thispoddata = podsData[pod + '_POD_Map__c'];
 
-            const HomepodsResponse =  await fetch(server_add + `/calcProgressHomeScreen?pod=${pod}`, {
+            const HomepodsResponse = await fetch(server_add + `/calcProgressHomeScreen?pod=${pod}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': "Bearer " + token,
                 },
             });
             const HomepodsData = await HomepodsResponse.json();
-            
+
             this.setState({
                 progress: HomepodsData.progress,
                 total: HomepodsData.total,
-                status: thispoddata.status, 
+                status: thispoddata.status,
                 completed: thispoddata.completed,
             })
-        } catch(e){
+        } catch (e) {
             console.error(e);
         }
-    };  
-    
+    };
 
-    componentDidMount(){
+
+    componentDidMount() {
         this.fetchData();
     }
 
-    render(){
+    render() {
         const pod_name = this.props.pod;
         const nav_pod_name = pod_name + ' Pod';
-        const complete_outcomes = this.state.progress;       
+        const complete_outcomes = this.state.progress;
         const total_outcomes = this.state.total;
-        let blocktext,block;
-        if (complete_outcomes != 0 && complete_outcomes == total_outcomes){
+        let blocktext, block;
+        let icon;
+
+        if (complete_outcomes != 0 && complete_outcomes == total_outcomes) {
             blocktext = styles.BlockText;
             block = styles.Block;
-        } else if (complete_outcomes != 0 && complete_outcomes < total_outcomes){
+
+            if (pod_name == 'Trainee') {
+                icon = TRAINEE_MEDAL;
+            } else if (pod_name == 'Associate') {
+                icon = ASSOCIATE_MEDAL;
+            } else {
+                icon = PARTNER_MEDAL;
+            }
+        } else if (complete_outcomes != 0 && complete_outcomes < total_outcomes) {
             blocktext = styles.highlightBlockText;
             block = styles.highlightBlock;
         } else {
             blocktext = styles.greyBlockText;
             block = styles.greyBlock;
-        } 
-            
-        return(
-        <SafeAreaView style={styles.container}>
-        <TouchableOpacity 
-            style={block} 
-            onPress={() => {
-                this.state.status == "does not exist" ?
-                    Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.") 
-                :
-                    this.props.navigation.navigate(nav_pod_name, {
-                        pod: pod_name,
-                        status: this.state.status,
-                        completed: this.state.completed,
-                    })
-            }}
-        >
-                <Text style={blocktext}> {pod_name} </Text>
-            <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
-        </TouchableOpacity> 
-    </SafeAreaView>);
+        }
+
+
+        return (
+            <SafeAreaView style={styles.container}>
+                <TouchableOpacity
+                    style={block}
+                    onPress={() => {
+                        this.state.status == "does not exist" ?
+                            Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.")
+                            :
+                            this.props.navigation.navigate(nav_pod_name, {
+                                pod: pod_name,
+                                status: this.state.status,
+                                completed: this.state.completed,
+                            })
+                    }}
+                >
+                    <Image style={styles.medal} source={icon}/>
+                    <Text style={blocktext}> {pod_name} </Text>
+                    <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
+                </TouchableOpacity>
+            </SafeAreaView>);
     }
 }
 
 const styles = StyleSheet.create({
+    medal: {
+        position: 'absolute',
+        left: 4,
+        top: 10,
+        width: 42,
+        height: 42,
+    },
+
     container: {
         flex: 1,
         flexDirection: 'column',
