@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 4
   },
+
   ongoing_progressBar: {
     flexDirection: 'row',
     height: 17,
@@ -65,11 +66,12 @@ const styles = StyleSheet.create({
     paddingLeft: 2, 
     paddingRight: 2, 
     backgroundColor: '#27b48f',
-    borderColor: 'white',
+    borderColor: '#ffffff',
     borderWidth: 2,
     borderRadius: 10,
     marginTop: 4
   },
+
   ongoing_ProgressBarText: {
     color: '#FFFFFF',
     marginTop: 13,
@@ -77,13 +79,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 0.75
   },
+
   ProgressBarText: {
-    color: '#C4C4C4',
+    color: '#e5e5e5',
     marginTop: 13,
     fontSize: 16.5,
     fontWeight: '500',
     letterSpacing:  0.75
   },
+
   complete_ProgressBarText: {
     color: '#27b48f',
     marginTop: 13,
