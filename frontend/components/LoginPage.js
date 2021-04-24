@@ -44,7 +44,10 @@ export default class LoginPage extends React.Component {
         const nonce_generated = convertBufferToString(random_bytes);
         // prepares the login request.
         this.setState({loading: true});
-        const redirectUri = AuthSession.makeRedirectUri({ useProxy });
+        console.log(useProxy)
+        let redirectUri = AuthSession.makeRedirectUri({ useProxy });
+        redirectUri = "https://auth.expo.io/@ryanbeckwith/morethanwords"
+        console.log(redirectUri);
         const authenticationOptions = {
             redirectUri: redirectUri,
             responseType: 'code',
