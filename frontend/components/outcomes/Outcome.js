@@ -48,10 +48,10 @@ const Outcome = (props) => {
                 shadowColor: "#b4b4b4",
                 shadowOffset: { height: 2 },
                 shadowRadius: 0.5,
-                shadowOpacity: 0.4,
+                shadowOpacity: 0.25,
             }}
                 >
-            <Text style={{ fontWeight: "600", fontSize: "20"}}>
+            <Text style={{ fontWeight: "600", fontSize: "20", maxWidth: 350, lineHeight: 30}}>
                 {" "}{item.title}
             </Text>
               {expanded
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         shadowColor: "#b4b4b4",
         shadowOffset: { height: 2 },
         shadowRadius: 0.5,
-        shadowOpacity: 0.4,
+        shadowOpacity: 0.25,
 
         paddingBottom: 25,
     },
