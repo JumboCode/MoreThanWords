@@ -67,7 +67,12 @@ export default class LoginPage extends React.Component {
         // prompts the user for login
         this.setState({loading: false});
         const code_response = await request.promptAsync(null, { useProxy });
-        if (!code_response || !code_response.params || !code_response.params.code ) {
+            
+        if (!code_response || (code_response.type && code_response.type === "cancel")) {
+            // simply returns because this is undefined when the performed action is stopped by
+            // the user.
+            return;
+        } else if (!code_response.params || !code_response.params.code ) {
             Alert.alert("Server Error", "Something wrong happened when retrieving your credentials. Please try again soon.");
             return;
         } else if (!code_response.params.state || code_response.params.state != request.state) {
