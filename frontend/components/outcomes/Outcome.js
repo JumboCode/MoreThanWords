@@ -51,7 +51,7 @@ const Outcome = (props) => {
                 shadowOpacity: 0.25,
             }}
                 >
-            <Text style={{ fontWeight: "600", fontSize: "20", maxWidth: 350, lineHeight: 30}}>
+            <Text style={{ fontWeight: "600", fontSize: 20, maxWidth: 350, lineHeight: 30}}>
                 {" "}{item.title}
             </Text>
               {expanded
