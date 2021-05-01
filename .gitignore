@@ -1,4 +1,13 @@
+node_modules/*
+node_modules/**/*
 .idea
 backend/backendEnv/*
 backend/__pycache__/*
 frontend/app.config.js
+.env
+.DS_Store
+frontend/.expo/*
+*.log
+startBackend.sh
+startBackendWindows.sh
+frontend/node_modules/*

@@ -1,4 +1,4 @@
 #!/bin/bash
 cd frontend
 yarn add expo
-yarn start
+eval $(egrep -v '^#' ../.env | xargs) yarn start
