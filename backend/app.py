@@ -212,7 +212,7 @@ def verify():
     # salesforce query based on the email, firstname & lastname
     result = sf.query(
         format_soql(
-            "SELECT Id, Email FROM Contact WHERE (MTW_Role__c = 'MTW Young Adult' AND email = {email_value} AND name={full_name})", 
+            "SELECT Id, Email FROM Contact WHERE (Has_Youth_App_Account__c = true AND email = {email_value} AND name={full_name})", 
             email_value=email, 
             full_name=name))
 
