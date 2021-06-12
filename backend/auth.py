@@ -13,6 +13,7 @@
 from functools import wraps
 import json
 from datetime import datetime, timedelta
+import time
 from os import environ as env
 
 from dotenv import load_dotenv, find_dotenv
@@ -37,9 +38,45 @@ ALGORITHMS = ["RS256"]
 
 AUTH_HEADER_PREFIX = "bearer"
 
+
 # auth0 keys caching
-auth0_key_expire = None
-auth0_jwk = {}
+def refresh_auth0_jwk():
+    """
+    refreshes the auth0 token
+    """
+    global auth0_key_expire
+    global auth0_jwk
+    
+    # gets the jwt
+    print("loading the auth0 jwt token...")
+    request = requests.get(AUTH0_DOMAIN+"/.well-known/jwks.json")
+    auth0_jwk = request.json()
+    auth0_key_expire = datetime.now() + timedelta(weeks=2)
+    auth0_jwk['expires'] = datetime.timestamp(auth0_key_expire)
+
+    # writes file
+    auth0_file = open("auth0_token_cache.json", "w")
+    json.dump(auth0_jwk, auth0_file)
+    auth0_file.close()
+    print("loaded auth0 jwt token.")
+    
+
+# tries to open the auth0 file
+try:
+    auth0_file = open("auth0_token_cache.json", "r")
+    auth0_jwk = json.load(auth0_file)
+    auth0_file.close()
+    auth0_expires = datetime.fromtimestamp(auth0_jwk.get('expires'))
+    if auth0_expires < datetime.now():
+        refresh_auth0_jwk()
+    else:
+        print("successfully restored auth0 jwt token.")
+except FileNotFoundError:
+    auth0_jwk = {}
+    auth0_key_expire = None
+    refresh_auth0_jwk()
+
+
 
 def get_auth0_jwk():
     """
@@ -49,9 +86,7 @@ def get_auth0_jwk():
     global auth0_key_expire
     global auth0_jwk
     if auth0_key_expire is None or auth0_key_expire < datetime.now():
-        request = requests.get(AUTH0_DOMAIN+"/.well-known/jwks.json")
-        auth0_jwk = request.json()
-        auth0_key_expire = datetime.now() + timedelta(weeks=2)
+        refresh_auth0_jwk()
     return auth0_jwk
 
 
