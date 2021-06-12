@@ -38,6 +38,8 @@ ALGORITHMS = ["RS256"]
 
 AUTH_HEADER_PREFIX = "bearer"
 
+auth0_jwk = {}
+auth0_key_expire = None
 
 # auth0 keys caching
 def refresh_auth0_jwk():
@@ -66,14 +68,12 @@ try:
     auth0_file = open("auth0_token_cache.json", "r")
     auth0_jwk = json.load(auth0_file)
     auth0_file.close()
-    auth0_expires = datetime.fromtimestamp(auth0_jwk.get('expires'))
-    if auth0_expires < datetime.now():
+    auth0_key_expire = datetime.fromtimestamp(auth0_jwk.get('expires'))
+    if auth0_key_expire < datetime.now():
         refresh_auth0_jwk()
     else:
         print("successfully restored auth0 jwt token.")
 except FileNotFoundError:
-    auth0_jwk = {}
-    auth0_key_expire = None
     refresh_auth0_jwk()
 
 
