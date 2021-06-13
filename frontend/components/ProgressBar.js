@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 
 const ProgressBar = (props) => {
-  console.log(props);
   let animation = useRef(new Animated.Value(0));
   let animation_checked = useRef(new Animated.Value(0));
   useEffect(() => {

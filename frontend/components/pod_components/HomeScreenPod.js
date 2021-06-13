@@ -47,7 +47,7 @@ export default class HomeScreenPod extends React.Component {
                     <TouchableOpacity
                         style={block}
                         onPress={() => {
-                              status == "does not exist" ?
+                              status == "no access" ?
                                 Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.")
                                 :
                                 this.props.navigation.navigate(nav_pod_name, {

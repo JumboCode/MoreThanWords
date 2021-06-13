@@ -57,16 +57,15 @@ export default class HomeScreen extends React.Component {
             >
                 {progress_data && pods ?
                 <SafeAreaView style={{backgroundColor: '#ffffff' }}>
-                    {Object.keys(pods).map((pod, index) => {
-                        console.log("12333", pod);
-                                return <HomeScreenPod
+                    {Object.keys(pods).map((pod, index) => 
+                                <HomeScreenPod
                                     pod={pod.slice(0, -11) /* removing suffix */}
                                     key={index}
                                     route={this.props.route}
                                     navigation={this.props.navigation}
                                     pod_data={pods[pod]}
                                     progress_data={progress_data[pod]}
-                                />}
+                                />
                     )}
                 </SafeAreaView>  :
                 <SafeAreaView style={{backgroundColor: '#ffffff' }}>
