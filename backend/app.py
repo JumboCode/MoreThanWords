@@ -4,7 +4,7 @@ import os # for environment variables
 from flask import request, jsonify # imported for parsing arguemnts
 from simple_salesforce import Salesforce, format_soql # import Salesforce
 from auth import AuthError, requires_auth
-
+import json
 
 # global connection to Salesforce so we don't need to connect everytime
 sf = Salesforce(
@@ -262,6 +262,7 @@ def HomeScreenoutcomes(user):
         vars(Pod_sf_result)
 
     # calculate *Trainee* outcomes based on all related fields
+    print(json.dumps(Pod_sf_result))
     Pod_outcome_sum = 0
     for outcome in Pod_field_names:
         if Pod_sf_result['records']:
@@ -291,11 +292,11 @@ def podOutcomes(user):
     field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
         
     # filter to get only the trainee outcome field names 
-    filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
-    pod_field_names = [field[0] for field in filtered_field_names]
+    pod_field_names = [field[0][:-12] for field in field_names_and_labels if "Completed__c" in field[0]]
+    all_fields_to_fetch = [field[0] for field in field_names_and_labels if "Completed__c" in field[0] or "Checked__c" in field[0]]
     
     # salesforce query of each *completed* outcome # in trainee pod, based on the email and name
-    soql = ("SELECT {} FROM " + pod_map_name).format(','.join(pod_field_names))
+    soql = ("SELECT {} FROM " + pod_map_name).format(','.join(all_fields_to_fetch))
     sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
 
     # organizing and putting data into dictionary outcome_dict
@@ -306,9 +307,11 @@ def podOutcomes(user):
         
         # count the *completed* outcomes for each field:
         if sf_result['records']:
-            outcome_dict[field_type]['completed_outcomes'] = sf_result['records'][0][field]
+            outcome_dict[field_type]['completed_outcomes'] = sf_result['records'][0][field + 'Completed__c']
+            outcome_dict[field_type]['checked_outcomes'] = sf_result['records'][0].get(field + 'Checked__c')
         else:
             outcome_dict[field_type]['completed_outcomes'] = 0
+            outcome_dict[field_type]['checked_outcomes'] = 0
         
         # count the *total* outcomes for each field:
         outcome_dict[field_type]['total_outcomes'] = 0

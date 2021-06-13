@@ -68,6 +68,7 @@ export default class PodScreen extends React.Component {
                                         pod={key}
                                         name={dict[key]['name']}
                                         completed_outcomes={dict[key]['completed_outcomes']}
+                                        checked_outcomes={dict[key]['checked_outcomes']}
                                         total_outcomes={dict[key]['total_outcomes']}
                                         key={IDkey}
                                         route={this.props.route}

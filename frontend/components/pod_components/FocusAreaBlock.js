@@ -17,11 +17,10 @@ export default class FocusAreaBlock extends React.Component {
      * navigate to the outcomes screen when pressed 
 	 */
     render() {
-        const completed_outcomes = this.props.completed_outcomes;
-        const total_outcomes = this.props.total_outcomes;
+        const { completed_outcomes, total_outcomes, checked_outcomes } = this.props;
         const pod_name = this.props.name;
         const pod_status = this.props.route.params.status;
-        return (     
+        return (
             <TouchableOpacity 
                 style={styles.block} 
                 onPress={() => {
@@ -36,7 +35,11 @@ export default class FocusAreaBlock extends React.Component {
                 <Text style={[styles.blockTitle, {color: pod_status == "no access" ? '#C4C4C4' : 'black'}]}>
                     {pod_name}
                 </Text>
-                <PodProgressBar progress={completed_outcomes} total_outcomes={total_outcomes} pod_status={pod_status} />
+                <PodProgressBar 
+                    progress={completed_outcomes} 
+                    total_outcomes={total_outcomes} 
+                    pod_status={pod_status}
+                    checked={checked_outcomes}/>
             </TouchableOpacity>
         );
     }

@@ -112,6 +112,7 @@ export default class HomeScreenPod extends React.Component {
                         <Image style={styles.medal} source={icon} />
                         <Text style={blocktext}> {pod_name} </Text>
                         <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
+                        <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
                     </TouchableOpacity>
                 </SafeAreaView >
         );
