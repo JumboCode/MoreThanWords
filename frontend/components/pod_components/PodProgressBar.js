@@ -35,7 +35,8 @@ const PodProgressBar = (props) => {
     return (
         <View style={styles.container} >
             <Text style={[styles.progressCount, {color: props.pod_status == "no access" ? '#C4C4C4' : 'black'}]}>
-                {`${props.progress} of ${props.total_outcomes}`}
+                {props.checked ? `${Math.round(props.checked/props.total_outcomes * 100)}% checked\n` : ""}
+                {`${props.progress} of ${props.total_outcomes} completed`}
             </Text>
       
             <View style={styles.progressBar}>
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
         color: "#3f3f3f",
 
         marginBottom: 10,
-        marginLeft: '85%',
+        marginLeft: '65%',
+        textAlign: 'right'
     },
 });

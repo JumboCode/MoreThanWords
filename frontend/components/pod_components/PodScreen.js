@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import React from 'react';
-import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { getAccessToken } from '../../utils/auth.js';
 import FocusAreaBlock from './FocusAreaBlock.js';
 
@@ -15,6 +15,7 @@ export default class PodScreen extends React.Component {
     state = {
         outcomes_list: {},
         data_loaded: false,
+        refreshing: false
     };
     
     /* componentDidMount
@@ -23,6 +24,12 @@ export default class PodScreen extends React.Component {
 	 * Purpose: Get the data from backend and use the info to set states
 	 */
     componentDidMount() {
+        this.refresh(false);
+    }
+
+    refresh = async (set_refreshing = true) => {
+        if (set_refreshing) this.setState({refreshing: true});
+        
         let pod = this.props.route.params.pod;
         getAccessToken().then(accessToken => 
             fetch(server_add + `/calcProgressPodScreen?pod=${pod}`, {
@@ -41,6 +48,7 @@ export default class PodScreen extends React.Component {
         .catch(function (error) {
             console.log(error);
         });
+        this.setState({refreshing: false});
     }
 
     /* render
@@ -59,6 +67,10 @@ export default class PodScreen extends React.Component {
                     // If data has loaded, then render the FocusAreaBlock
                     <ScrollView
                         style={{backgroundColor: '#ffffff' }}
+                        refreshControl={
+                            <RefreshControl 
+                                refreshing={this.state.refreshing} 
+                                onRefresh={this.refresh}/>}
                     >
                         <SafeAreaView style={styles.container}>
                             {Object.entries(dict).map(([key, value]) => {

@@ -11,3 +11,4 @@ frontend/.expo/*
 startBackend.sh
 startBackendWindows.sh
 frontend/node_modules/*
+backend/auth0_token_cache.json
