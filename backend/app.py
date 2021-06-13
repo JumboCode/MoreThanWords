@@ -12,7 +12,10 @@ sf = Salesforce(
     password=os.environ['SALESFORCE_PASSWORD'],
     security_token=os.environ['SALESFORCE_SECURITY_TOKEN'])
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 CORS(app)
+
+pod_names = ['Trainee_POD_Map__c', 'Associate_POD_Map__c', 'Partner_POD_Map__c']
 
 @app.route("/youthCheckbox")
 @requires_auth(sf)
@@ -226,57 +229,61 @@ def verify():
 
 @app.route("/calcProgressHomeScreen")
 @requires_auth(sf)
-def HomeScreenoutcomes(user):
-    user_id = user.get('id')
+def HomeScreenOutcome(user):
+    def HomeScreenoutcomes(pod_map_name):
+        user_id = user.get('id')
 
-    # Extract current pod to update from request arguments
-    pod = request.args.get('pod')
-    pod_map_name = pod + '_POD_Map__c'
-
-    desc = getattr(sf, pod_map_name).describe()
-    field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
-    filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0]]
-    Pod_field_names = [field[0] for field in filtered_field_names]
-
-    
-    # salesforce query of each completed outcome # in trainee pod, based on the email and name
-    query_from = "SELECT {} FROM " + pod_map_name
-    soql = query_from.format(','.join(Pod_field_names))
-    Pod_sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
-
-    if len(Pod_sf_result["records"]) == 0:
-        Pod_outcome_sum = 0
-        Pod_total_count = 0
-    
-    else:
-        # calculate Trainee total 
-        Pod_total_count = 0; #create new value in sf_result dict that will store field's total outcomes 
-        for field in Pod_field_names:
-            field_type = field[3:6].upper()
-            for name_and_label in field_names_and_labels:
-                if "_Outcome_" + field_type in name_and_label[0]: 
-                    Pod_total_count += 1
+        desc = getattr(sf, pod_map_name).describe()
+        field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+        filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0] or field[0] == "Total_Checked__c"]
+        Pod_field_names = [field[0] for field in filtered_field_names]
         
+        # salesforce query of each completed outcome # in trainee pod, based on the email and name
+        query_from = "SELECT {} FROM " + pod_map_name
+        soql = query_from.format(','.join(Pod_field_names))
+        Pod_sf_result = sf.query(format_soql((soql + " WHERE Contact__r.auth0_user_id__c={user_id}"), user_id=user_id))
 
-        # transform into a python dictionary
-        vars(Pod_sf_result)
-
-    # calculate *Trainee* outcomes based on all related fields
-    print(json.dumps(Pod_sf_result))
-    Pod_outcome_sum = 0
-    for outcome in Pod_field_names:
-        if Pod_sf_result['records']:
-            Pod_outcome_sum += Pod_sf_result['records'][0][outcome]
-        else:
+        if len(Pod_sf_result["records"]) == 0:
             Pod_outcome_sum = 0
+            Pod_total_count = 0
+        
+        else:
+            # calculate Trainee total 
+            Pod_total_count = 0 #create new value in sf_result dict that will store field's total outcomes 
+            for field in Pod_field_names:
+                field_type = field[3:6].upper()
+                for name_and_label in field_names_and_labels:
+                    if "_Outcome_" + field_type in name_and_label[0]: 
+                        Pod_total_count += 1
+            
 
-    pod_outcome = {
-        'progress': Pod_outcome_sum,
-        'total': Pod_total_count,
-    }   
+            # transform into a python dictionary
+            vars(Pod_sf_result)
 
-    return pod_outcome
+        # calculate *Trainee* outcomes based on all related fields
+        Pod_outcome_sum = 0
+        Pod_checked_sum = 0
+        for outcome in Pod_field_names:
+            if Pod_sf_result['records'] and outcome != "Total_Checked__c":
+                Pod_outcome_sum += Pod_sf_result['records'][0][outcome]
+
+        if "Total_Checked__c" in Pod_sf_result['records'][0]:
+            Pod_checked_sum = Pod_sf_result['records'][0]['Total_Checked__c']
+
+        pod_outcome = {
+            'progress': Pod_outcome_sum,
+            'checked': Pod_checked_sum,
+            'total': Pod_total_count,
+        }   
+
+        return pod_outcome
     
+    res = dict()
+    for pod in pod_names:
+        res[pod] = HomeScreenoutcomes(pod)
+    return res
+
+
 @app.route("/calcProgressPodScreen")
 @requires_auth(sf)
 def podOutcomes(user):
@@ -330,7 +337,7 @@ def podOutcomes(user):
 @requires_auth(sf)
 def findValid(user):
     user_id = user.get('id')
-    pod_names = ['Trainee_POD_Map__c', 'Associate_POD_Map__c', 'Partner_POD_Map__c']
+    global pod_names
     total_dict = {}
     for pod_num, pod_map_name in enumerate(pod_names):
         desc = getattr(sf, pod_map_name).describe()

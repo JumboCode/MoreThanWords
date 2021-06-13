@@ -12,77 +12,30 @@ const ASSOCIATE_MEDAL = require('./associate_medal.png');
 const PARTNER_MEDAL = require('./partner_medal.png');
 
 export default class HomeScreenPod extends React.Component {
-    state = {
-        isLoading: true,
-        progress: 0,
-
-        total: 0,
-        status: "",
-        completed: ""
-    };
-
-    async fetchData() {
-        try {
-            const { pod, incrementSucceeded } = this.props;
-
-            const token = await getAccessToken();
-            const podsResponse = await fetch(server_add + `/getValidPods`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': "Bearer " + token,
-                },
-            });
-            const podsData = await podsResponse.json();
-            const thispoddata = podsData[pod + '_POD_Map__c'];
-
-            const HomepodsResponse = await fetch(server_add + `/calcProgressHomeScreen?pod=${pod}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': "Bearer " + token,
-                },
-            });
-            const HomepodsData = await HomepodsResponse.json();
-
-            this.setState({
-                isLoading: false,
-                progress: HomepodsData.progress,
-                total: HomepodsData.total,
-                status: thispoddata.status,
-                completed: thispoddata.completed,
-            })
-            incrementSucceeded();
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    componentDidMount() {
-        this.fetchData();
-    }
 
     render() {
-        const pod_name = this.props.pod;
-        const nav_pod_name = pod_name + ' Pod';
-        const complete_outcomes = this.state.progress;
-        const total_outcomes = this.state.total;
-        const pod_status = this.state.status;
-        const pod_completed = this.state.completed;
-        const { renderPod } = this.props;
+        if (!this.props.progress_data || !this.props.pod) {
+            return <></>
+        }
+        const { pod } = this.props;
+        const nav_pod_name = pod + ' Pod';
+        const { checked, progress, total } = this.props.progress_data;
+        const { completed, status } = this.props.pod_data;
 
         let blocktext, block;
         let icon;
-        if (complete_outcomes != 0 && complete_outcomes == total_outcomes) {
+        if (progress != 0 && progress == total) {
             blocktext = styles.BlockText;
             block = styles.Block;
 
-            if (pod_name == 'Trainee') {
+            if (pod == 'Trainee') {
                 icon = TRAINEE_MEDAL;
-            } else if (pod_name == 'Associate') {
+            } else if (pod == 'Associate') {
                 icon = ASSOCIATE_MEDAL;
             } else {
                 icon = PARTNER_MEDAL;
             }
-        } else if (complete_outcomes != 0 && complete_outcomes < total_outcomes) {
+        } else if (progress != 0 && progress < total) {
             blocktext = styles.highlightBlockText;
             block = styles.highlightBlock;
         } else {
@@ -90,32 +43,29 @@ export default class HomeScreenPod extends React.Component {
             block = styles.greyBlock;
         }
 
-        return (
-            this.state.isLoading || !renderPod ?
-                // If data hasn't loaded, then display a blank screen
-                <SafeAreaView style={styles.container}></SafeAreaView>
-                :
-                <SafeAreaView style={styles.container}>
+        return  <SafeAreaView style={styles.container}>
                     <TouchableOpacity
                         style={block}
                         onPress={() => {
-                            this.state.status == "does not exist" ?
+                              status == "does not exist" ?
                                 Alert.alert("You have not been assigned this pod. Please contact your manager or More Than Words administrator.")
                                 :
                                 this.props.navigation.navigate(nav_pod_name, {
-                                    pod: pod_name,
-                                    status: pod_status,
-                                    completed: pod_completed,
+                                    pod: pod,
+                                    status: status,
+                                    completed: completed,
                                 })
                         }}
                     >
                         <Image style={styles.medal} source={icon} />
-                        <Text style={blocktext}> {pod_name} </Text>
-                        <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
-                        <ProgressBar progress={complete_outcomes} total_outcomes={total_outcomes} />
+                        <Text style={blocktext}> {pod} </Text>
+                        <ProgressBar 
+                            progress={progress} 
+                            checked={checked} 
+                            total_outcomes={total} 
+                        />
                     </TouchableOpacity>
                 </SafeAreaView >
-        );
     }
 }
 

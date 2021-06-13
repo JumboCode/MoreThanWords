@@ -2,21 +2,33 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 
 const ProgressBar = (props) => {
+  console.log(props);
   let animation = useRef(new Animated.Value(0));
+  let animation_checked = useRef(new Animated.Value(0));
   useEffect(() => {
     let isMounted = true;
     Animated.timing(animation.current, {
       toValue: props.progress,
       useNativeDriver: false,
-      duration: 1
+      duration: 900
     }).start();
-  },[props.progress])
+    Animated.timing(animation_checked.current, {
+      toValue: props.checked ?? props.progress,
+      useNativeDriver: false,
+      duration: 900
+    }).start();
+  },[props.progress, props.checked])
 
   const width = animation.current.interpolate({
     inputRange: [0, props.total_outcomes],
-    outputRange: ["0%", "98.5%"], // getting rid of the weird border
+    outputRange: ["0%", "99.1%"], // getting rid of the weird border
     extrapolate: "clamp"
-  })
+  });
+  const checked_width = animation_checked.current.interpolate({
+    inputRange: [0, props.total_outcomes],
+    outputRange: ["0%", "99.1%"], // getting rid of the weird border
+    extrapolate: "clamp"
+  });
 
   const GreyOut = (props.progress == 0);
   const IsCompleted = (props.progress == props.total_outcomes && props.total_outcomes != 0);
@@ -27,15 +39,20 @@ const ProgressBar = (props) => {
     Progressbarstyle = styles.progressBar;
   }
 
+  const bar_color = IsCompleted ? '#27B48F' : 'white';
+  const checked_bar_color = IsCompleted ? 'grey' : '#cae6de';
+
   return (
     <View style={{alignItems: 'center'}}> 
-    {props.progress != 0 && 
-      <View style={Progressbarstyle}>
-        {IsCompleted && <Animated.View style={{backgroundColor: '#27B48F', width, borderRadius: 10, margin: 2}}/>}
-        {!IsCompleted && <Animated.View style={{backgroundColor: 'white', width, borderRadius: 10, margin: 2}}/>}
+    {props.progress != 0 && <>
+      <View style={Progressbarstyle} key={1}>
+        {!IsCompleted ? <Animated.View style={{ width: checked_width, backgroundColor: checked_bar_color, position: 'absolute', ...styles.barFill}}/> : null}
+        <Animated.View style={{ width, backgroundColor: bar_color, position: 'absolute', ...styles.barFill}}/>
       </View>
+      </>
       }
       <Text style = {Progresstextstyle}>
+        {props.checked && !IsCompleted ? `${Math.round(props.checked/props.total_outcomes * 100)}% items checked\n` : ""}
         {`${props.progress} of ${props.total_outcomes} outcomes achieved`}
       </Text>
     </View>
@@ -72,12 +89,22 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
 
+  barFill: {
+    position: 'absolute', 
+    borderRadius: 10, 
+    left: 1, 
+    height: 8, 
+    padding: 2, 
+    margin: 2
+  },
+
   ongoing_ProgressBarText: {
     color: '#FFFFFF',
     marginTop: 13,
     fontSize: 16.5,
     fontWeight: '500',
-    letterSpacing: 0.75
+    letterSpacing: 0.75,
+    textAlign: 'center'
   },
 
   ProgressBarText: {
@@ -85,7 +112,8 @@ const styles = StyleSheet.create({
     marginTop: 13,
     fontSize: 16.5,
     fontWeight: '500',
-    letterSpacing:  0.75
+    letterSpacing:  0.75,
+    textAlign: 'center'
   },
 
   complete_ProgressBarText: {
