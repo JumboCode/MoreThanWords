@@ -17,6 +17,58 @@ CORS(app)
 
 pod_names = ['Trainee_POD_Map__c', 'Associate_POD_Map__c', 'Partner_POD_Map__c']
 
+
+@app.route("/starredTasks")
+@requires_auth(sf)
+def getStarredTasks(user):
+    """
+    Gets a list of starred tasks, for display on the favorate tab.
+    """
+    user_id = user.get('id')
+    full_res = []
+
+    def getStarredTasksInPod(pod_map_name):
+        """
+        a sub-function that does the process for each user.
+        """
+        res = []
+        fields = {}
+        display_name = pod_map_name[:-11]
+
+        # Obtain all field names for the query
+        desc = getattr(sf, pod_map_name).describe()
+        field_names = [field['name'] for field in desc['fields']]
+        for field in desc['fields']:
+            fields[field['name']] = field['label']
+
+        # Query for all fields for this user
+        soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
+        query = format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id)
+        sf_result = sf.query(query)
+        print(sf_result)
+
+        for name, value in sf_result["records"][0].items():
+            if "_BOOL_" in name and value == True: # BOOL are the stars
+                words_in_api_name = name.split("_")
+                api_key = name.replace("_BOOL_", "_PT_")
+                ydm_key = api_key.replace("_Youth_", "_YDM_")
+                res.append({
+                    "api_key": api_key,
+                    "api_bool_key": name,
+                    "id": words_in_api_name[-3].lower(),
+                    "key": fields.get(api_key),
+                    "ydmApproved": sf_result["records"][0].get(ydm_key),
+                    "checked": sf_result["records"][0].get(api_key),
+                    "starIsFilled": True,
+                    "pod": display_name
+                })
+        return res
+    for pod in pod_names:
+        full_res += getStarredTasksInPod(pod)
+    return jsonify(full_res)
+
+
+
 @app.route("/youthCheckbox")
 @requires_auth(sf)
 def youthCheck(user):
@@ -136,6 +188,7 @@ def updateSalesforce(user):
     tr_pod_id = sf_result['records'][0]['attributes']['url'].split('/')[-1]
     task_title = request.json.get('task_title')
     new_value = request.json.get('new_value')
+    print(request.json)
 
     # Update value of specific task in Salesforce
     getattr(sf, pod_map_name).update(tr_pod_id, {task_title: new_value})
@@ -256,6 +309,9 @@ def HomeScreenOutcome(user):
         desc = getattr(sf, pod_map_name).describe()
 
         field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
+        print(field_names_and_labels)
+        print()
+        print()
         filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0] or field[0] == "Total_Checked__c"]
         Pod_field_names = [field[0] for field in filtered_field_names]
         
