@@ -20,7 +20,7 @@ export default function MainScreen({ refresh }) {
                 case "Home":
                     icon = faHome;
                     break;
-                case "Favorates":
+                case "Starred":
                     icon = focused ? faSolidStar : faRegularStar;
                     break;
                 case "Settings":
@@ -30,7 +30,7 @@ export default function MainScreen({ refresh }) {
                 return <FontAwesomeIcon icon={icon} size={size} color={color}/>
         }})}>
             <TabNav.Screen name="Home" component={componentWithRefreshFunc(HomeTab, refresh)} />
-            <TabNav.Screen name="Favorates" component={FavoratesTab} />
+            <TabNav.Screen name="Starred" component={FavoratesTab} />
             <TabNav.Screen name="Settings" component={componentWithRefreshFunc(SettingsTab, refresh)}/>
         </TabNav.Navigator>
     </NavigationContainer>

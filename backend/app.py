@@ -27,6 +27,8 @@ def getStarredTasks(user):
     user_id = user.get('id')
     full_res = []
 
+    pod_data = findValid(user)
+
     def getStarredTasksInPod(pod_map_name):
         """
         a sub-function that does the process for each user.
@@ -45,23 +47,27 @@ def getStarredTasks(user):
         soql = ("SELECT {} FROM " + pod_map_name).format(','.join(field_names))
         query = format_soql((soql + " WHERE (Contact__r.auth0_user_id__c={user_id})"), user_id=user_id)
         sf_result = sf.query(query)
-        print(sf_result)
 
         for name, value in sf_result["records"][0].items():
-            if "_BOOL_" in name and value == True: # BOOL are the stars
-                words_in_api_name = name.split("_")
-                api_key = name.replace("_BOOL_", "_PT_")
-                ydm_key = api_key.replace("_Youth_", "_YDM_")
-                res.append({
-                    "api_key": api_key,
-                    "api_bool_key": name,
-                    "id": words_in_api_name[-3].lower(),
-                    "key": fields.get(api_key),
-                    "ydmApproved": sf_result["records"][0].get(ydm_key),
-                    "checked": sf_result["records"][0].get(api_key),
-                    "starIsFilled": True,
-                    "pod": display_name
-                })
+            if "_Youth_" in name and "_BOOL_" not in name: # BOOL are the stars
+                parts = name.split("_")
+                parts[2] = "BOOL"
+                api_bool_key = '_'.join(parts)
+                ydm_key = name.replace("_Youth_", "_YDM_")
+                # show in starred if: 1. is starred, 2. not approved by YDM
+                if sf_result["records"][0].get(api_bool_key) == True and \
+                   sf_result["records"][0].get(ydm_key) == False:
+                    res.append({
+                        "api_key": name,
+                        "api_bool_key": api_bool_key,
+                        "id": parts[-3].lower(),
+                        "key": fields.get(name),
+                        "ydmApproved": sf_result["records"][0].get(ydm_key),
+                        "checked": value,
+                        "starIsFilled": True,
+                        "pod": display_name,
+                        "accessible": pod_data[pod_map_name].get('status') == "allowed"
+                    })
         return res
     for pod in pod_names:
         full_res += getStarredTasksInPod(pod)
@@ -309,9 +315,6 @@ def HomeScreenOutcome(user):
         desc = getattr(sf, pod_map_name).describe()
 
         field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
-        print(field_names_and_labels)
-        print()
-        print()
         filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0] or field[0] == "Total_Checked__c"]
         Pod_field_names = [field[0] for field in filtered_field_names]
         
@@ -412,6 +415,9 @@ def podOutcomes(user):
 
 @app.route("/getValidPods")
 @requires_auth(sf)
+def findValidRoute(user):
+    return findValid(user)
+
 def findValid(user):
     user_id = user.get('id')
     global pod_names
@@ -447,7 +453,7 @@ def findValid(user):
                     status = 'allowed'
                 else:
                     status = 'no access'
-                    break    
+                    break
         total_dict[pod_map_name] = {'status': status, 'completed': True if tot_completed == tot_outcomes else False}
         
     return total_dict

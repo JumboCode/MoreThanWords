@@ -12,11 +12,11 @@
  *     3) The name of the task.
  */
 
-import Constants from 'expo-constants';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { getAccessToken } from '../../utils/auth.js';
+
+import { updateSalesforce } from '../../utils/tasks';
 
 class Task extends React.Component {
     constructor(props) {
@@ -75,36 +75,6 @@ class Task extends React.Component {
         this.setState({clickable: newValue});
     }
 
-    async updateSalesforce(updated_value, isStar) {
-        success = false;
-        // Make request to update checkbox
-        await fetch(`${Constants.manifest.extra.apiUrl}/updateCheckbox`, {
-            method: 'POST',
-            headers: {
-                'Authorization': "Bearer " + await getAccessToken(),
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                task_title: isStar ? this.props.backendBoolID : this.props.backendID,
-                new_value: updated_value,
-                pod: this.props.pod
-            })
-        })
-        .then(response => {
-            if (response.status != 200) {
-                success = false;
-            } else {
-                success = true;
-            }
-        })
-        .catch(error => {
-            console.error(error);
-            success = false;
-        });
-        return success;
-    }
-
     render() {
         let name = this.props.name;
 
@@ -120,7 +90,7 @@ class Task extends React.Component {
                     size={20}
                     onPress={!this.props.accessible || this.state.ydmApproved || !this.state.clickable ? null : () => {
                         this.setClickable(false);
-                        let success = this.updateSalesforce(!this.state.starIsFilled, true);
+                        let success = updateSalesforce(!this.state.starIsFilled, true, this.props.backendBoolID, this.props.backendID, this.props.pod);
                         if (success) {
                             this.props.handleSetOutcomeData(this.props.backendID, this.state.checked, !this.state.starIsFilled);
                             // Prevent user from clicking again until a second has passed
@@ -147,7 +117,7 @@ class Task extends React.Component {
                     underlayColor='transparent'
                     onPress={!this.props.accessible || this.state.ydmApproved || !this.state.clickable ? null : () => {
                         this.setClickable(false);
-                        let success = this.updateSalesforce(!this.state.checked, false);
+                        let success = updateSalesforce(!this.state.checked, false, this.props.backendBoolID, this.props.backendID, this.props.pod);
                         if (success) {
                             this.props.handleSetOutcomeData(this.props.backendID, !this.state.checked, this.state.starIsFilled);
                             // Prevent user from clicking again until a second has passed

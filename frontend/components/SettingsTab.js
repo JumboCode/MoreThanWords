@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     text: {
-        fontSize: 14
+        fontSize: 15
     },
     largeHeader: {
       fontSize: 24,
