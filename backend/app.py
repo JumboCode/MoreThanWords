@@ -153,7 +153,29 @@ def handle_auth_error(ex):
 @app.route("/userinfo")
 @requires_auth(sf)
 def sample(user):
-    return jsonify(user)
+    soql = format_soql(
+        """
+            SELECT 
+            Id, Email, Name
+            FROM 
+            Contact 
+            WHERE 
+            (Has_Youth_App_Account__c = true AND auth0_user_id__c = {user_id})
+        """,
+        user_id=user['id']
+    )
+    result = sf.query(soql)
+
+    if (result["totalSize"] == 1):
+        user_info = result['records'][0]
+        res = {
+            "email": user_info['Email'],
+            "name": user_info['Name']
+        }
+        return jsonify(res)
+    else:
+        return "{}"
+
 
 @app.route("/finishSignUp", methods=['POST'])
 def finishSignup():
@@ -219,8 +241,6 @@ def verify():
             email_value=email, 
             full_name=name))
 
-    print(result["totalSize"] == 1)
-
     if (result["totalSize"] == 1):
         return {"verified": bool(1)} # true
 	
@@ -234,6 +254,7 @@ def HomeScreenOutcome(user):
         user_id = user.get('id')
 
         desc = getattr(sf, pod_map_name).describe()
+
         field_names_and_labels = [(field['name'], field['label']) for field in desc['fields']]
         filtered_field_names = [field for field in field_names_and_labels if "Completed__c" in field[0] or field[0] == "Total_Checked__c"]
         Pod_field_names = [field[0] for field in filtered_field_names]

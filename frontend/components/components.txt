@@ -1,2 +1,0 @@
-Place components here
-home.js

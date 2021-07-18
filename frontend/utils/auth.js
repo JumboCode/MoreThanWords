@@ -9,6 +9,7 @@ const EXPIRE_TIME_KEY = "expire_time";
 const REFRESH_TOKEN_KEY = "refresh_token";
 const auth0ClientId = Constants.manifest.extra.auth0_client_id;
 const auth0_domain = Constants.manifest.extra.auth0_domain;
+const server_add = Constants.manifest.extra.apiUrl;
 
 /* returns raw jwt. */
 export async function getjwt() {
@@ -25,6 +26,18 @@ export async function getName() {
         return jwt.name;
     }
 }
+
+
+export async function getUserInfo() {
+    const token = await getAccessToken();
+    const response = await fetch(server_add + "/userinfo", {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
+    return await response.json();
+}
+
 
 /* returns if the token has expired or not */
 export async function isTokenValid() {

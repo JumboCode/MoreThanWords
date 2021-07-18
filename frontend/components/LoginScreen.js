@@ -102,6 +102,7 @@ export default class LoginPage extends React.Component {
         } 
 
         // stores the token in SecureStore (only supported on mobile devices)
+        console.log(accessToken);
         if (useProxy) {
             await setItemAsync("id_token", idToken);
             await setItemAsync("access_token", accessToken);
