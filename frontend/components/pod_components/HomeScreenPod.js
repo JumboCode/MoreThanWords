@@ -20,7 +20,8 @@ export default class HomeScreenPod extends React.Component {
         const { pod } = this.props;
         const nav_pod_name = pod + ' Pod';
         const { checked, progress, total } = this.props.progress_data;
-        const { completed, status } = this.props.pod_data;
+        const { completed, status, current } = this.props.pod_data;
+        let should_grey_out = false;
 
         let blocktext, block;
         let icon;
@@ -35,10 +36,11 @@ export default class HomeScreenPod extends React.Component {
             } else {
                 icon = PARTNER_MEDAL;
             }
-        } else if (progress != 0 && progress < total) {
+        } else if ((progress != 0 && progress < total) || (progress == 0 && current)) {
             blocktext = styles.highlightBlockText;
             block = styles.highlightBlock;
         } else {
+            should_grey_out = true;
             blocktext = styles.greyBlockText;
             block = styles.greyBlock;
         }
@@ -60,6 +62,7 @@ export default class HomeScreenPod extends React.Component {
                         <Image style={styles.medal} source={icon} />
                         <Text style={blocktext}> {pod} </Text>
                         <ProgressBar 
+                            greyout={should_grey_out}
                             progress={progress} 
                             checked={checked} 
                             total_outcomes={total} 

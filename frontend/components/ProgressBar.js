@@ -29,7 +29,7 @@ const ProgressBar = (props) => {
     extrapolate: "clamp"
   });
 
-  const GreyOut = (props.progress == 0);
+  const GreyOut = props.greyout;
   const IsCompleted = (props.progress == props.total_outcomes && props.total_outcomes != 0);
   var Progresstextstyle = (GreyOut ? styles.ProgressBarText : styles.ongoing_ProgressBarText)
   var Progressbarstyle = styles.ongoing_progressBar;
@@ -43,7 +43,7 @@ const ProgressBar = (props) => {
 
   return (
     <View style={{alignItems: 'center'}}> 
-    {props.progress != 0 && <>
+    {!GreyOut && <>
       <View style={Progressbarstyle} key={1}>
         {!IsCompleted ? <Animated.View style={{ width: checked_width, backgroundColor: checked_bar_color, position: 'absolute', ...styles.barFill}}/> : null}
         <Animated.View style={{ width, backgroundColor: bar_color, position: 'absolute', ...styles.barFill}}/>

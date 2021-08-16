@@ -178,7 +178,7 @@ def youthCheck(user):
 
 @app.route("/updateCheckbox", methods=['POST'])
 @requires_auth(sf)
-def updateSalesforce(user):
+def updateCheckbox(user):
     # Extract user details from the user object
     user_id = user.get('id')
 
@@ -211,7 +211,7 @@ def handle_auth_error(ex):
 
 @app.route("/userinfo")
 @requires_auth(sf)
-def sample(user):
+def userInfo(user):
     soql = format_soql(
         """
             SELECT 
@@ -454,7 +454,20 @@ def findValid(user):
                 else:
                     status = 'no access'
                     break
-        total_dict[pod_map_name] = {'status': status, 'completed': True if tot_completed == tot_outcomes else False}
+        total_dict[pod_map_name] = {
+            'status': status, 
+            'completed': True if tot_completed == tot_outcomes else False,
+            'current': False
+        }
+
+        # marks current sections for display
+        prev_completed = False
+        for _, item in total_dict.items():
+            if prev_completed and not item['completed']:
+                item['current'] = True
+                break
+            elif item['completed']:
+                prev_completed = True
         
     return total_dict
 
