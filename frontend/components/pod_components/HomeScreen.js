@@ -55,11 +55,19 @@ export default class HomeScreen extends React.Component {
                         refreshing={this.state.refreshing} 
                         onRefresh={this.fetchData}/>}
             >
+               
+                // 'condition ? value1 : value2' syntax   
+                
+                // (condition)
+                // check if progress_data or pods is empty (condition)
                 {progress_data && pods ?
+                 
+                // (value 1)
+                // assign values for all pods 
                 <SafeAreaView style={{backgroundColor: '#ffffff' }}>
                     {Object.keys(pods).map((pod, index) => 
                                 <HomeScreenPod
-                                    pod={pod.slice(0, -11) /* removing suffix */}
+                                    pod={pod.slice(0, -11)} /* removing suffix */
                                     key={index}
                                     route={this.props.route}
                                     navigation={this.props.navigation}
@@ -68,6 +76,9 @@ export default class HomeScreen extends React.Component {
                                 />
                     )}
                 </SafeAreaView>  :
+                
+                // (value 2)
+                // display blank if data is empty
                 <SafeAreaView style={{backgroundColor: '#ffffff' }}>
                     <LoadingModal/>
                 </SafeAreaView>
